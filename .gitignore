@@ -1,0 +1,11 @@
+*.dll
+*.exe
+*.o
+*.so
+*.com
+*.class
+target/
+.classpath
+.project
+.springBeans
+.settings/
