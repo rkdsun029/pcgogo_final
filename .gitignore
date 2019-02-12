@@ -4,8 +4,8 @@
 *.so
 *.com
 *.class
-target/
+target/*
 .classpath
 .project
 .springBeans
-.settings/
+.settings/*
