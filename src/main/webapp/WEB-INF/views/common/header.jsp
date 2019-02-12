@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/header.css" />
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
 <script>
 $(function(){
     $("div#head-container").on("mouseenter", function(){
