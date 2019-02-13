@@ -20,7 +20,7 @@ $(function(){
             "background": "white",
             "animation": "colorAni1 .5s 1 forwards" ,
         });
-        $("div#head-container>a#main-title").css("color", "rgba(255, 40, 40)");
+        $("div#head-container>a#main-title").css("color", "rgba(255, 40, 40, .7)");
         $("ul#main-menu li").css("visibility", "visible");
     });
     $("div#head-container").on("mouseleave", function(){
@@ -51,11 +51,11 @@ $(function(){
 </head>
 <body>
     <div id="head-container">
-        <a href="#" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
+        <a href="${pageContext.request.contextPath }" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
             <li><a href="${pageContext.request.contextPath }/search/search.do">PC방 검색</a></li>
             <li><a href="#">인기 PC방</a></li>
-            <li><a href="#">분실물 찾기</a></li>
+            <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
             <li><a href="#">고객센터</a></li>
         </ul>
 
