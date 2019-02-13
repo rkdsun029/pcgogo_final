@@ -58,7 +58,7 @@ ul#main-menu li a{
 	color:black;
 }
 ul#main-menu li a:hover{
-    color:rgba(255, 40, 40);
+    color:rgba(255, 40, 40, .7);
 }
 section#main-container{
     width:1200px;
