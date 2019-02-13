@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>PCGOGO.COM</title>
 
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
@@ -18,16 +18,18 @@ $(function(){
     $("div#head-container").on("mouseenter", function(){
         $("div#head-container").css({
             "background": "white",
-            "animation": "colorAni1 .5s 1 forwards" 
+            "animation": "colorAni1 .5s 1 forwards" ,
         });
-        $("a").css("color", "rgba(255, 40, 40, .7)");
+        $("div#head-container>a#main-title").css("color", "rgba(255, 40, 40, .7)");
+        $("ul#main-menu li").css("visibility", "visible");
     });
     $("div#head-container").on("mouseleave", function(){
         $("div#head-container").css({
             "background": "rgba(30, 30, 30, .3)",
             "animation": "colorAni2 .5s 1 forwards" 
         });
-        $("a").css("color", "white");
+        $("div#head-container>a#main-title").css("color", "white");
+        $("ul#main-menu li").css("visibility", "hidden");
     });
 
     $("#goToTop").on("click", function(){
@@ -45,12 +47,12 @@ $(function(){
 </head>
 <body>
     <div id="head-container">
-        <a href="#"><h1 id="head-title">PCGOGO.COM</h1></a>
+        <a href="#" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
-            <li>PC방 검색</li>
-            <li>인기 PC방</li>
-            <li>분실물찾기</li>
-            <li>고객센터</li>
+            <li><a href="#">PC방 검색</a></li>
+            <li><a href="#">인기 PC방</a></li>
+            <li><a href="#">분실물 찾기</a></li>
+            <li><a href="#">고객센터</a></li>
         </ul>
 
     </div>

@@ -34,7 +34,7 @@ h1#head-title{
     margin-left:150px;
     margin-top:15px;
 }
-a{
+div#head-container a#main-title{
     text-decoration:none;
     color:white;
 }
@@ -50,9 +50,13 @@ ul#main-menu{
 ul#main-menu li{
     display:inline-block;
     padding-right:30px;
-    cursor:pointer;
+    visibility:hidden;
 }
-ul#main-menu li:hover{
+ul#main-menu li a{
+	text-decoration:none;
+	color:black;
+}
+ul#main-menu li a:hover{
     color:rgba(255, 40, 40, .7);
 }
 section#main-container{
