@@ -53,7 +53,7 @@ $(function(){
     <div id="head-container">
         <a href="#" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
-            <li><a href="#">PC방 검색</a></li>
+            <li><a href="${pageContext.request.contextPath }/search/search.do">PC방 검색</a></li>
             <li><a href="#">인기 PC방</a></li>
             <li><a href="#">분실물 찾기</a></li>
             <li><a href="#">고객센터</a></li>
@@ -68,3 +68,6 @@ $(function(){
     </div>
 
     <section id="main-container">
+    	<div id="padding">
+	    	<h1 id="page-title">${param.pageTitle}</h1>
+			<hr>

@@ -123,3 +123,17 @@ div#goToTop{
     cursor:pointer;
     font-size:15px;
 }
+div#padding{
+	padding:30px;
+}
+h1#page-title{
+	font-family:'Nanum Gothic', san serif;
+	font-weight:bold;
+	margin:0px;
+	margin-bottom:20px;
+}
+hr{
+	background:lightgray;
+	border-top:1px solid #c8c8c8;
+	border-bottom:none;
+}
