@@ -6,8 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MemberController {
 
-	@RequestMapping("/register.do")
+	@RequestMapping("/signUp.do")
 	public String register() {
-		return "member/register";
+		return "member/signUp";
+	}
+	
+	@RequestMapping("/signUp/manager.do")
+	public String register_manager() {
+		return "member/register_manager2";
 	}
 }
