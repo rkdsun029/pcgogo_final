@@ -56,10 +56,8 @@ ul#main-menu li:hover{
     color:rgba(255, 40, 40, .7);
 }
 section#main-container{
-    /* width: 1008px; */
     width:1200px;
-    /* min-height:100px; */
-    height:2000px;
+    min-height:100px;
     margin:0 auto;
     margin-top:90px;
     background:white;
