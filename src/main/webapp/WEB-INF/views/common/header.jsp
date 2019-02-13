@@ -42,6 +42,10 @@ $(function(){
         var top = $(document).scrollTop();
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
+    
+    $("#menu1").on("click", function(){location.href = "";});
+    $("#menu2").on("click", function(){location.href = "";});
+    $("#menu3").on("click", function(){location.href = "";});
 });
 </script>
 </head>
@@ -57,9 +61,9 @@ $(function(){
 
     </div>
     <div id="quick-menu">
-        <div class="quick" id="menu1">로그인</div>
-        <div class="quick" id="menu2">회원가입</div>
-        <div class="quick" id="menu3">FAQ</div>
+        <div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/login.png" alt="" />로그인</div>
+        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/register.png" alt="" />회원가입</div>
+        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
         <div id="goToTop">▲ TOP</div>
     </div>
 
