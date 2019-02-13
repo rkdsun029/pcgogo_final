@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="UTF-8" />
 <style>
-div#select-container{position: relative; text-align: center; top: 150px;}
+div#select-container{position: relative; text-align: center; top: 100px;}
 div#reg-manager, div#reg-member{
     position: relative;
     border: 1.5px solid black;
@@ -33,11 +33,50 @@ div#reg-manager:hover, div#reg-member:hover{
 }
 section{height: 700px;}
 div#step-container{width: 300px; height: 50px; border: 1px solid black; margin: 0 auto;}
+div.stepLine{
+  display: inline-block;
+  border-bottom: 1px solid #f67001;
+  height: 0;
+}
+div.stepDot{
+  width: 15px;
+  height: 15px;
+  background-color: #fff;
+  border: 1px solid #cecece;
+  border-radius: 50%;
+  float: left;
+  margin: -8px 40px 0px 40px;
+  color:#cecece;
+}
+div.stepDot.activeStep{
+  background-color:#f67001 !important;
+  border-color: #f67001 !important;
+  color: #f67001;
+}
+div.stepDot.activeStep ~ div.stepDot{
+  background-color: #fff;
+  border: 1px solid #f67001;
+}
+div.stepDot:after{
+  content:  attr(title);
+  white-space: nowrap;
+  position: relative;
+  top: 20px;
+  right: 8px;
+  font: 12px arial, sans-serif;  
+}
 </style>
-<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-<div id="step-container">
-	
-</div>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="회원가입" name="pageTitle"></jsp:param>
+</jsp:include>
+<center>
+	<div class="stepLine">
+  		<div title="분류선택" class="stepDot activeStep"></div>
+  		<div title="이용약관" class="stepDot"></div>
+  		<div title="정보입력" class="stepDot"></div>
+ 	 	<div title="가입완료" class="stepDot"></div>
+	</div>
+</center><br><br><br>
 <div id="select-container">
     <div id="reg-manager">
         <img src="${pageContext.request.contextPath }/resources/image/member/register/manager2.png" alt="">
@@ -50,7 +89,7 @@ div#step-container{width: 300px; height: 50px; border: 1px solid black; margin: 
 <h1>회원 구분을 선택해주세요.</h1>
 <script>
 $("#reg-manager").click(function(){
-	location.href = "${pageContext.request.contextPath}/signUp/manager.do";
+	location.href = "${pageContext.request.contextPath}/signUp/manager?page=1";
 });
 </script>
 </div>

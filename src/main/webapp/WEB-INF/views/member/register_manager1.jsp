@@ -58,25 +58,19 @@ div.stepDot:after{
 }
 .btn_order, .btn_cancel1:hover{background:#f67001; cursor:pointer;}
 </style>
-<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="회원가입" name="pageTitle"/>
+</jsp:include>
 <table width=960px align=center>
-<tr>
-	<td>
-  		<h1 id="title">회원가입</h1>
-  	</td>
-</tr>
-<tr>
-	<td align=center>
-	  <center>
-	  	<div class="stepLine">
-	    	<div title="이용약관" class="stepDot activeStep"></div>
-	    	<div title="실명인증" class="stepDot"></div>
-	    	<div title="정보입력" class="stepDot"></div>
-	   	 <div title="가입완료" class="stepDot"></div>
-	  	</div>
-	  </center><br><br><br>
-	</td>
-</tr>
+ <center>
+ 	<div class="stepLine">
+   	<div title="분류선택" class="stepDot"></div>
+   	<div title="이용약관" class="stepDot activeStep"></div>
+   	<div title="정보입력" class="stepDot"></div>
+  	 <div title="가입완료" class="stepDot"></div>
+ 	</div>
+ </center><br><br><br>
+
 <tr>
 <td align=center>
     <!--이용약관 테이블 시작-->
@@ -450,7 +444,7 @@ $(".btn_order").on('click', function(){
 	var check1 = $("input[type=checkbox]:first").is(":checked");
 	var check2 = $("input[type=checkbox]:last").is(":checked");
 	if(check1&&check2){
-		
+		location.href="${pageContext.request.contextPath}/signUp/manager?page=2";
 	}else if(check1&&!check2){alert("개인정보 수집 및 이용에 대한 안내에 동의해주세요.");}
 	else{alert("이용약관에 동의해주세요.");}
 });
