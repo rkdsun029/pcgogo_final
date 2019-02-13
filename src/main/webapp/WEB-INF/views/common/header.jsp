@@ -20,7 +20,7 @@ $(function(){
             "background": "white",
             "animation": "colorAni1 .5s 1 forwards" ,
         });
-        $("div#head-container>a#main-title").css("color", "rgba(255, 40, 40, .7)");
+        $("div#head-container>a#main-title").css("color", "rgba(255, 40, 40)");
         $("ul#main-menu li").css("visibility", "visible");
     });
     $("div#head-container").on("mouseleave", function(){
@@ -44,7 +44,7 @@ $(function(){
     });
     
     $("#menu1").on("click", function(){location.href = "";});
-    $("#menu2").on("click", function(){location.href = "";});
+    $("#menu2").on("click", function(){location.href = "${pageContext.request.contextPath}/signUp.do";});
     $("#menu3").on("click", function(){location.href = "";});
 });
 </script>
