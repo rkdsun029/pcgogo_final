@@ -8,7 +8,7 @@
 	<jsp:param value="사장님 모드" name="pageTitle"></jsp:param>
 </jsp:include>
 <jsp:include page="/WEB-INF/views/common/managerFixMenu.jsp">
-	<jsp:param value="소제목" name="smallTitle"></jsp:param>
+	<jsp:param value="가격표" name="smallTitle"></jsp:param>
 </jsp:include>
 
 babo
