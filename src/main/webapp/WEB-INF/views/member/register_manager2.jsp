@@ -60,6 +60,7 @@ div.stepDot:after{
 .btn_order, .btn_cancel1:hover{background:#f67001; cursor:pointer;}
 div.mb-3{padding:0px;}
 input[type=text], input[type=password]{width: 250px;}
+fieldset input{width: 220px !important;}
 .btn-secondary{height:38px; margin:30px 0 0 10px;}
 </style>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -141,13 +142,48 @@ input[type=text], input[type=password]{width: 250px;}
 	});
 	</script>
   	</div>
-  	<div class="form-row">
-	  	<div class="col-md-5 mb-3">
-	  		<label for="managerCode_">사업자등록번호 *</label>
-	  		<input type="text" class="form-control" name="managerCode" id="managerCode_" placeholder="'-'없이 입력"/>
+  	<fieldset style="border: 1px solid black; padding-left: 30px; margin-bottom: 10px;">
+  		<legend style="width:85px; font-size: 1rem;">&nbsp;&nbsp;&nbsp;본인인증</legend>
+	  	<div class="form-row">
+		  	<div class="col-md-5 mb-3">
+				<label for="managerName_">예금주명 또는 상호명 *</label>
+				<input type="hidden" value="0" "/>
+				<input type="text" class="form-control" name="managerName" id="managerName_" required>
+		  	</div>
+		  	<div class="col-md-5 mb-3">
+				<label for="accountNumber">계좌번호 *</label>
+				<input type="text" class="form-control" id="accountNumber" placeholder="'-'없이 입력" required>
+		  	</div>
 	  	</div>
-  		<button type="button" class="btn btn-secondary">인증받기</button>
-  	</div>
+	  	<div class="form-row">
+		  	<div class="col-md-5 mb-3">
+		  		<label for="managerCode_">사업자등록번호 *</label>
+		  		<input type="text" class="form-control" name="managerCode" id="managerCode_" placeholder="'-'없이 입력"/>
+				<div class=""></div>
+			</div>
+	  		<button type="button" class="btn btn-secondary" onclick="check_manager();">인증하기</button>
+	  	</div>
+	  	<script>
+	  	var data = {
+	  			"bank_code_std": "098",
+	  			"account_num": "0001230000678",
+	  			"account_holder_info": "8801012",
+	  			"tran_dtime": "20160310101921"
+	  			};
+	  	function check_manager(){
+	  		$.ajax({
+	  			url: "https://openapi.open-platform.or.kr/inquiry/real_name",
+	  			data: JSON.stringify(data),
+	  			type: "post",
+	  			contentType: "application/json; charset=UTF-8",
+	  			success: function(data){
+	  				console.log(data);
+	  			}
+	  			
+	  		});
+	  	}
+	  	</script>
+  	</fieldset>
   	<div class="form-row">
 	  	<div class="col-md-5 mb-3">
 	  		<label for="managerPhone">휴대폰번호 *</label>
@@ -163,7 +199,7 @@ input[type=text], input[type=password]{width: 250px;}
   	</div>
   	<div class="form-row">
   		<div class="col-md-5 mb-3">
-  			<label for="search-addr">우편번호 *</label>
+  			<label for="search-addr">pc방 우편번호 *</label>
 	  		<input type="text" id="search-addr" class="postcodify_postcode5 form-control" required/>
   		</div>
 		<button id="postcodify_search_button" class="btn btn-secondary">검색</button>

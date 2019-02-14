@@ -1,6 +1,8 @@
 package project.go.pcgogo.member.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,8 @@ import project.go.pcgogo.member.model.vo.Manager;
 public class MemberController {
 	
 	Logger logger = Logger.getLogger(getClass());
+	@Autowired
+	BCryptPasswordEncoder pwdEncoder;
 	
 	@RequestMapping("/signUp.do")
 	public String signUp() {
@@ -25,9 +29,13 @@ public class MemberController {
 	
 	@RequestMapping("/signUpEnd/{flag}")
 	public String insertMember(@PathVariable String flag, Manager manager, @RequestParam("address") String[] address) {
+		String addr = address[0]+" "+address[1];
+		logger.info("암호화 전 : "+manager.getManagerPassword());
+		String encPassword = pwdEncoder.encode(manager.getManagerPassword());
+		logger.info("암호화 후 : "+encPassword);
+		manager.setManagerAddress(addr);
+		manager.setManagerPassword(encPassword);
 		logger.info(manager);
-		System.out.println(address[0]);
-		System.out.println(address[1]);
 		return "member/signUpEnd";
 	}
 }

@@ -7,17 +7,19 @@ public class Manager implements Serializable{
 	private String managerId;
 	private String managerPassword;
 	private String managerCode;
+	private String managerName;
 	private String managerPhone;
 	private String managerEmail;
 	private String managerAddress;
 	
 	public Manager() {}
 	
-	public Manager(String managerId, String managerPassword, String managerCode, String managerPhone,
+	public Manager(String managerId, String managerPassword, String managerCode, String managerName, String managerPhone,
 			String managerEmail, String managerAddress) {
 		this.managerId = managerId;
 		this.managerPassword = managerPassword;
 		this.managerCode = managerCode;
+		this.managerName = managerName;
 		this.managerPhone = managerPhone;
 		this.managerEmail = managerEmail;
 		this.managerAddress = managerAddress;
@@ -27,7 +29,7 @@ public class Manager implements Serializable{
 	@Override
 	public String toString() {
 		return "Manager [managerId=" + managerId + ", managerPassword=" + managerPassword + ", managerCode="
-				+ managerCode + ", managerPhone=" + managerPhone + ", managerEmail=" + managerEmail
+				+ managerCode + ", managerName="+ managerName +", managerPhone=" + managerPhone + ", managerEmail=" + managerEmail
 				+ ", managerAddress=" + managerAddress + "]";
 	}
 
@@ -48,6 +50,12 @@ public class Manager implements Serializable{
 	}
 	public void setManagerCode(String managerCode) {
 		this.managerCode = managerCode;
+	}
+	public String getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(String managerName) {
+		this.managerCode = managerName;
 	}
 	public String getManagerPhone() {
 		return managerPhone;
