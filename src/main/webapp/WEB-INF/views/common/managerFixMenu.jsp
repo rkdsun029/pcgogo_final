@@ -7,11 +7,11 @@
 		<div class="sub-card">
 			<ul id="sub-card-list">
 				<li>ROMARU PC CAFE&nbsp;&nbsp;&nbsp;<span id="change">전환 &gt;</span></li>
-				<li>- 기본정보</li>
-				<li>- 자리배치도</li>
-				<li>- 가격표</li>
-				<li>- 예약현황</li>
-				<li>- 광고문의</li>
+				<li><a href="${pageContext.request.contextPath }/manager/pcRoomView_manager.do">- 기본정보</a></li>
+				<li><a href="${pageContext.request.contextPath }/manager/placement.do">- 자리배치도</a></li>
+				<li><a href="${pageContext.request.contextPath }/manager/priceList.do">- 가격표</a></li>
+				<li><a href="${pageContext.request.contextPath }/manager/reservationList.do">- 예약현황</a></li>
+				<li><a href="#">- 광고문의</a></li>
 			</ul>
 		</div>
 		<div class="card"><span>PC방 등록하기</span></div>

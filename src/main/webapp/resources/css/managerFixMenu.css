@@ -65,11 +65,14 @@ span#change{
 	cursor:pointer;
 }
 div#manager-body{
-	position:relative;
+	position:absolute;
 	width:870px;
 	min-height:100px;
-	top:-245px;
 	margin-left:30px;
 	display:inline-block;
 	font-family:'Nanum Gothic', sans-serif;
+}
+ul#sub-card-list li a{
+	text-decoration:none;
+	color:white;
 }
