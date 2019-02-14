@@ -24,8 +24,10 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/signUpEnd/{flag}")
-	public String insertMember(@PathVariable String flag, Manager manager) {
+	public String insertMember(@PathVariable String flag, Manager manager, @RequestParam("address") String[] address) {
 		logger.info(manager);
+		System.out.println(address[0]);
+		System.out.println(address[1]);
 		return "member/signUpEnd";
 	}
 }
