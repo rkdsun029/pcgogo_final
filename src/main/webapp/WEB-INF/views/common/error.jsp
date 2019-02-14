@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <title>Error</title>
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-<script src="js/jquery-3.3.1.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <style>
 body{
     background:skyblue;
