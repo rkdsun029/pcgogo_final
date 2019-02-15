@@ -1,12 +1,15 @@
 package project.go.pcgogo.faq.model.vo;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Post {
+public class Post implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int postNo; // FAQ번호
-	private String memberId; // 회원이름
+	private String memberId; // 회원아이디
 	private String postTitle; // FAQ제목
 	private String postWriter; // FAQ작성자
+	private String postContent; // FAQ내용
 	private String postOriginalFile; // FAQ첨부파일(오리지널)
 	private String postRenamedFile; // FAQ첨부파일(바뀐이름)
 	private Date postDate; // FAQ등록일
@@ -17,13 +20,14 @@ public class Post {
 		super();
 	}
 
-	public Post(int postNo, String memberId, String postTitle, String postWriter, String postOriginalFile,
-			String postRenamedFile, Date postDate, int postReadCount, String postOpened) {
+	public Post(int postNo, String memberId, String postTitle, String postWriter, String postContent, 
+			String postOriginalFile, String postRenamedFile, Date postDate, int postReadCount, String postOpened) {
 		super();
 		this.postNo = postNo;
 		this.memberId = memberId;
 		this.postTitle = postTitle;
 		this.postWriter = postWriter;
+		this.postContent = postContent;
 		this.postOriginalFile = postOriginalFile;
 		this.postRenamedFile = postRenamedFile;
 		this.postDate = postDate;
@@ -61,6 +65,14 @@ public class Post {
 
 	public void setPostWriter(String postWriter) {
 		this.postWriter = postWriter;
+	}
+	
+	public String getPostContent() {
+		return postContent;
+	}
+	
+	public void setPostContent(String postContent) {
+		this.postContent = postContent;
 	}
 
 	public String getPostOriginalFile() {
@@ -106,8 +118,9 @@ public class Post {
 	@Override
 	public String toString() {
 		return "Post [postNo=" + postNo + ", memberId=" + memberId + ", postTitle=" + postTitle + ", postWriter="
-				+ postWriter + ", postOriginalFile=" + postOriginalFile + ", postRenamedFile=" + postRenamedFile
-				+ ", postDate=" + postDate + ", postReadCount=" + postReadCount + ", postOpened=" + postOpened + "]";
+				+ postWriter + ", postContent" + postContent + ", postOriginalFile=" + postOriginalFile 
+				+ ", postRenamedFile=" + postRenamedFile + ", postDate=" + postDate + ", postReadCount=" 
+				+ postReadCount + ", postOpened=" + postOpened + "]";
 	}
 	
 }
