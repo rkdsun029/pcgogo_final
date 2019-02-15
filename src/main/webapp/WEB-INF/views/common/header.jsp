@@ -57,7 +57,7 @@ $(function(){
             <li><a href="#">인기 · 추천 PC방</a></li>
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
             <li><a href="#">고객센터</a></li>
-            <li><a href="${pageContext.request.contextPath }/manager/manager.do" id="manager">사장님 모드</a></li>
+            <li><a href="${pageContext.request.contextPath }/manager/manager.do" id="manager">사장님 메뉴</a></li>
         </ul>
 
     </div>

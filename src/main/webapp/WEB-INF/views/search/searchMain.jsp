@@ -15,19 +15,22 @@ div#search-container{
 }
 div#location-search-bar{
 	position:relative;
-	width:300px;
+	display:inline-block;
+	width:600px;
 	height:300px;
 }
 div#location-search-bar select{
+	display:inline-block;
 	width:150px;
 	height:30px;
 	font-family:'Nanum Gothic', sans-serif;
 	font-size:15px;
 }
 div#map{
-	position:relative;
-	width:300px;
-	height:300px;
+	position:absolute;
+	display:inline-block;
+	width:500px;
+	height:500px;
 }
 </style>
 

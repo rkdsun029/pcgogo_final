@@ -30,4 +30,19 @@ public class ManagerController {
 	public String reservationList() {
 		return "manager/reservationList";
 	}
+	
+	@RequestMapping("/manager/insertPcRoom.do")
+	public String insertPcRoom() {
+		return "manager/insertPcRoom";
+	}
+	
+	@RequestMapping("manager/pcRoomForm.do")
+	public String pcRoomForm() {
+		return "manager/pcRoomForm";
+	}
+	
+	@RequestMapping("manager/managerCommunity.do")
+	public String managerCommunity() {
+		return "manager/managerCommunity";
+	}
 }

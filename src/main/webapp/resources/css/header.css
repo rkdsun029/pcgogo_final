@@ -25,6 +25,7 @@ div#head-container{
     padding:0px;
     background:rgba(30, 30, 30, .3);
     white-space:nowrap;
+    z-index:100;
 }
 h1#head-title{
     display:inline-block;
@@ -96,6 +97,7 @@ div#quick-menu{
     font-family:'Nanum Gothic', sans-serif;
     font-weight:bold;
     font-size:13px;
+    z-index:100;
 }
 div#quick-menu .quick{
     position: relative;
@@ -105,6 +107,7 @@ div#quick-menu .quick{
     margin-bottom: 7px;
     background:white;
     cursor:pointer;
+    z-index:100;
 }
 div.quick img{
 	display:block;
@@ -113,6 +116,7 @@ div.quick img{
 	margin:0 auto;
 	padding-top:10px;
 	padding-bottom:10px;
+	z-index:100;
 }
 div#quick-menu div:first-of-type{
     margin-top: 5px;
@@ -123,9 +127,12 @@ div#goToTop{
     height:30px;
     cursor:pointer;
     font-size:15px;
+    z-index:100;
 }
 div#padding{
 	padding:30px;
+	padding-bottom:50px;
+	min-height:400px;
 }
 h1#page-title{
 	font-family:'Nanum Gothic', san serif;

@@ -5,6 +5,8 @@ div#outer-container{
 }
 div#left-nav{
 	display:inline-block;
+	position:absolute;
+	top:180px;
 	margin-top:20px;
 	width:230px;
 	min-height:40px;
@@ -65,11 +67,12 @@ span#change{
 	cursor:pointer;
 }
 div#manager-body{
-	position:absolute;
-	width:870px;
-	min-height:100px;
-	margin-left:30px;
+	position:relative;
+	top:0px;
 	display:inline-block;
+	width:870px;
+	margin-bottom:30px;
+	margin-left:270px;
 	font-family:'Nanum Gothic', sans-serif;
 }
 ul#sub-card-list li a{
