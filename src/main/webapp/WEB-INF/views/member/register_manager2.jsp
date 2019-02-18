@@ -144,52 +144,76 @@ fieldset input{width: 220px !important;}
   	</div>
   	<fieldset style="border: 1px solid black; padding-left: 30px; margin-bottom: 10px;">
   		<legend style="width:85px; font-size: 1rem;">&nbsp;&nbsp;&nbsp;본인인증</legend>
+  		<span style="color: gray;">※ 계좌번호 실명인증을 시행하고 있습니다.</span><br /><br />
 	  	<div class="form-row">
 		  	<div class="col-md-5 mb-3">
-				<label for="managerName_">예금주명 또는 상호명 *</label>
+				<label for="managerName_">예금주명 *</label>
 				<input type="hidden" value="0" "/>
 				<input type="text" class="form-control" name="managerName" id="managerName_" required>
 		  	</div>
 		  	<div class="col-md-5 mb-3">
+		  		<label for="managerBirth_">생년월일 *</label>
+		  		<input type="text" class="form-control" name="managerBirth" id="managerBirth_" placeholder="주민등록번호 앞 7자리"/>
+				<div class=""></div>
+			</div>
+	  	</div>
+	  	<div class="form-row">
+	  		<div class="col-md-3 mb-3">
+		  		<label for="bank" style="margin-bottom: 10px;">은행</label><br />
+			  	<select class="custom-select custom-select-sm" id="bank" style="width: 130px;">
+					<option selected>선택해주세요.</option>
+					<option value="1">One</option>
+				  	<option value="2">Two</option>
+				  	<option value="3">Three</option>
+				</select>
+	  		</div>
+		  	<div class="col-md-5 mb-3">
 				<label for="accountNumber">계좌번호 *</label>
 				<input type="text" class="form-control" id="accountNumber" placeholder="'-'없이 입력" required>
 		  	</div>
-	  	</div>
-	  	<div class="form-row">
-		  	<div class="col-md-5 mb-3">
-		  		<label for="managerCode_">사업자등록번호 *</label>
-		  		<input type="text" class="form-control" name="managerCode" id="managerCode_" placeholder="'-'없이 입력"/>
-				<div class=""></div>
-			</div>
-	  		<button type="button" class="btn btn-secondary" onclick="check_manager();">인증하기</button>
+	  		<button type="button" class="btn btn-secondary" onclick="auth();" style="margin-left:0px;">인증하기</button>
 	  	</div>
 	  	<script>
-	  	var data = {
-	  			"bank_code_std": "098",
-	  			"account_num": "0001230000678",
-	  			"account_holder_info": "8801012",
-	  			"tran_dtime": "20160310101921"
-	  			};
-	  	function check_manager(){
+	  	function auth(){
+/* 		  	var data = {
+		  			"client_id": "l7xx04817220b5ef49729c30ee3561503312",
+		  			"client_secret": "da27e06064234aeb957289bc3c148c6c",
+		  			"scope": "oob",
+		  			"grant_type": "client_credentials"
+		  			};
+		  	https://testapi.open-platform.or.kr/oauth/2.0/token
+			var accessToken = getToken(data); */
 	  		$.ajax({
-	  			url: "https://openapi.open-platform.or.kr/inquiry/real_name",
-	  			data: JSON.stringify(data),
+	  			url: "${pageContext.request.contextPath}/signUp/getToken",
 	  			type: "post",
-	  			contentType: "application/json; charset=UTF-8",
 	  			success: function(data){
-	  				console.log(data);
+	  				console.log("성공");
 	  			}
-	  			
 	  		});
 	  	}
 	  	</script>
   	</fieldset>
+  	<div class="form-row" style="height: 70px;">
+  		<div class="col-md-4 mb-3">
+  			<label for="managerCode_">사업자등록번호*</label>
+  			<input type="text" class="form-control" name="managerCode" id="managerCode_" placeholder="'-'없이 입력"/>
+  		</div>
+  		<div class="col-md-6 mb-3" style="margin-left:60px;">
+  			<label for="uploadFile">사업자등록증 사본*</label>
+	  		<div class="input-group mb-3" id="uploadFile">
+			    <div class="custom-file">
+			      <label class="custom-file-label" for="inputGroupFile01">파일 선택...</label>
+			      <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+			    </div>
+			</div>
+  		</div>
+  	</div>
+  	<span style="color: gray; margin-bottom: 15px; display:block;"> - PC방 인증을 위해 최대 2일 소요 될 수 있습니다.</span>
   	<div class="form-row">
 	  	<div class="col-md-5 mb-3">
-	  		<label for="managerPhone">휴대폰번호 *</label>
+	  		<label for="managerPhone">전화번호 *</label>
 	  		<input type="text" class="form-control" name="managerPhone" id="managerPhone_" placeholder="'-'없이 입력"/>
 	  	</div>
-  		<button type="button" class="btn btn-secondary">인증번호 발송</button>
   	</div>
   	<div class="form-row">
 	  	<div class="col-md-5 mb-3">
