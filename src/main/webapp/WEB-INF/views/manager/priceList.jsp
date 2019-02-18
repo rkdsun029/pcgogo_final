@@ -11,7 +11,7 @@
 	<jsp:param value="가격표" name="smallTitle"></jsp:param>
 </jsp:include>
 
-babo
+babownfwelkffwejwefl
 
 <jsp:include page="/WEB-INF/views/common/managerFixMenu_foot.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
