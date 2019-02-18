@@ -63,21 +63,6 @@ div#nav {
 				</tr>
 			</c:forEach>
 		</table>
-		<!-- 페이지바-->
-		<%
-			int totalContents = (int)request.getAttribute("totalContents");
-			int numPerPage = (int)request.getAttribute("numPerPage");
-			String cPageTemp = request.getParameter("cPage");
-			
-			// 파라미터 cPage가 null이거나 "", "가나다"일 때는 기본값을 1로 세팅.
-			int cPage = 1;
-			try{
-				cPage = Integer.parseInt(cPageTemp);
-			} catch(NumberFormatException e){
-				
-			}
-		%>
-		<%=project.go.pcgogo.faq.Utils.getPageBar(totalContents, cPage, numPerPage, "boardList.do")%>
 	</div>
 </section>
 
