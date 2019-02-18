@@ -8,5 +8,6 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
 	</settings>
 	<typeAliases>
+		<typeAlias type="project.go.pcgogo.pcRoom.model.vo.pcRoom" alias="pcRoom"/>
 	</typeAliases>
 </configuration>
