@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/managerFixMenu.css" />
+<script>
+$(function(){
+	$("div#insertPcRoom").on("click", function(){
+		location.href = "${pageContext.request.contextPath}/manager/insertPcRoom.do";
+	});
+	
+	$("div#managerCommunity").on("click", function(){
+		location.href = "${pageContext.request.contextPath}/manager/managerCommunity.do";
+	});
+});
+</script>
 <div id="outer-container">
 	<div id="left-nav">
 		<div class="card"><span>내 점포 관리하기</span></div>
@@ -14,8 +25,8 @@
 				<li><a href="#">- 광고문의</a></li>
 			</ul>
 		</div>
-		<div class="card"><span>PC방 등록하기</span></div>
-		<div class="card"><span>사장님 커뮤니티</span></div>
+		<div class="card" id="insertPcRoom"><span>PC방 등록하기</span></div>
+		<div class="card" id="managerCommunity"><span>사장님 커뮤니티</span></div>
 	</div>
 	<div id="manager-body">
 		<h3>${param.smallTitle}</h3>
