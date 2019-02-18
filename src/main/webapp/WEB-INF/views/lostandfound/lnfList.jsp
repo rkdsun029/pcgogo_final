@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="UTF-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="분실물 찾기" name="pageTitle"></jsp:param>
+	<jsp:param value="분실물 찾기" name="lostandfound"></jsp:param>
 </jsp:include>
 
 <style>
@@ -89,7 +89,7 @@ table#lnfList{
 	<div id="search-bar">
 		<h3>분실물 검색</h3>
 		&nbsp;&nbsp;&nbsp;
-		<select name="areaOption1" id="areaOption1">
+		<select name="optioName" id="optionId">
 			<option value="" disabled selected>분류를 선택해 주세요.</option>
 			<option value="1">분류1 : 핸드폰 / 지갑 / 가방</option>
 			<option value="2">분류2 : 충전기 / USB</option>
@@ -98,12 +98,13 @@ table#lnfList{
 			<option value="5">분류5 : 기타</option>
 		</select>
 		&nbsp;&nbsp;&nbsp;
-		<input type="text" id="lnfName" name="lnfName" placeholder="이름을 입력해주세요."/>
+		<input type="text" id="lnfName" name="lnfName" placeholder="물품을 입력해주세요."/>
 		&nbsp;&nbsp;&nbsp;
 		<button onclick="keywordSearch();">찾기</button>
 	</div>   
 	
 	<div id="lnfList-container">
+	<p>총 ${totalContents }건의 분실물이 있습니다.</p>
 		<table id="lnfList">
 			<tr>
 				<th>번호</th>
@@ -112,15 +113,69 @@ table#lnfList{
 				<th>사진유무</th>
 				<th>보관 중인 pc방</th>
 				<th>습득날짜</th>
+				<th>상태</th>
 			</tr>
+			
+			<c:forEach items="${list}" var="lnf"> 
+			<tr no="${lnf.LNFNO}">
+				<td>${lnf.LNFNO}</td>
+				<td>${lnf.LNFCLASS}</td>
+				<td>${lnf.LNFNAME}</td>
+				<td>${lnf.LNFPHOTOCHECK}</td>
+				<td>${lnf.LNFPCROOMNAME}</td>
+				<td>${lnf.LNFGETDATE}</td>
+				<td>${lnf.LNFSTATUS}</td>
+			</c:forEach>
+			</tr>
+			<div class="result" id="lnfType-result"></div>
 		</table>
+		<% 
+		//int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
+		//int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
+		int totalContents = (int)request.getAttribute("totalContents");
+		int numPerPage = (int)request.getAttribute("numPerPage");
+		
+		//파라미터 cPage가 null이거나 "", "가나다"일때는 기본값 1로 세팅함.  
+		String cPageTemp = request.getParameter("cPage");
+		int cPage = 1;
+		try{
+			cPage = Integer.parseInt(cPageTemp);
+		} catch(NumberFormatException e){
+			
+		}
+		
+	%>
+	<%= project.go.pcgogo.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "lnfList.do") %>
 	</div>
 </div>
 
 <script>
-function keywordSearch(){
-	
-}
+$("#optionId").on("change", function(){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/lnfList/"+$(this).val(),
+		dataType: "json",
+		type: "get",
+		success: function(data){
+			console.log(data);
+			var html = "<table class = table>";
+			html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>사진유무</th><th>보관 중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
+			for(var i in data){
+				html +="<tr><td>"+data[i].lnfNo+"</td>";
+				html +="<td>"+data[i].lnfClass+"</td>";
+				html +="<td>"+data[i].lnfName+"</td>";
+				html +="<td>"+data[i].lnfPhotoCheck+"</td>";
+				html +="<td>"+data[i].lnfPcRoomName+"</td>";
+				html +="<td>"+data[i].lnfGetDate+"</td>";
+				html +="<td>"+data[i].lnfStatus+"</td>";
+			}
+			html+="</table>";
+			$("#lnfType-result").html(html);
+			},
+			error: function(){
+				console.log("ajax에러!")
+			}
+	});
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
