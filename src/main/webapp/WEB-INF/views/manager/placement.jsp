@@ -17,27 +17,34 @@ span#help{
 	cursor:pointer;
 }
 div#seat-legend{
-	position:relative;
     display:inline-block;
-    width:120px;
-    border-radius:10px;
+    width:85px;
     margin:0 auto;
     background:white;
     position:relative;
+    border:1px solid;
+    top:130px;
+    left:20px;
 }
 div#seat-container{
 	position:relative;
-    width:800px;
+    width:850px;
     height:600px;
-    border-radius:30px;
+    border-radius:10px;
     background:lightgray;
-    margin:0 auto;
+    font-size:12px;
+}
+div#seat-container h1{
+	marign:0px;
+	text-align:center;
+	padding-top:20px;
 }
 div#seat-legend ul{
     list-style:none;
     padding-left:0;
 }
 div#seat-legend ul li{
+	margin-left:10px;
     margin-bottom:10px;
 }
 div.legend{
@@ -59,12 +66,27 @@ div.water{background:cyan;}
 div.smoking{background:brown;}
 div.etc{background:darkslategrey}
 div.wall{background:gray;}
+
+button#updatePlacement{
+	position:relative;
+	right:30px;
+	float:right;
+	width:150px;
+	height:30px;
+	color:white;
+	background:rgb(255, 40, 40, .7);
+	border:1px rgb(255, 40, 40, .7);
+	border-radius:5px;
+	cursor:pointer;
+}
 </style>
 
 <span id="help"><u>도움이 필요하시면 여기를 클릭해주세요.</u></span>
+<br>
+<button id="updatePlacement">자리배치도 수정하기</button>
 <br><br>
-
 <div id="seat-container">
+	<h1>ROMARU PC CAFE &lt;B1층&gt;</h1>
     <div id="seat-legend">
         <ul>
             <li>일반석 <div class="legend plain"></div></li>
