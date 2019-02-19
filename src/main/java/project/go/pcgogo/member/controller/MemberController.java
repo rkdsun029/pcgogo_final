@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,13 +28,20 @@ public class MemberController {
 	BCryptPasswordEncoder pwdEncoder;
 	
 	@RequestMapping(value="/signUp.do")
-	public String signUp() {
+	public String goSignUp() {
 		return "member/signUp";
 	}
 	
+	@RequestMapping(value="/signUp/first")
+	public String goRegisterFirst(HttpServletRequest req){
+		String type = req.getParameter("type");
+		req.setAttribute("type", type);
+		return "member/register_first";
+	}
+	
 	@RequestMapping(value="/signUp/{flag}")
-	public String register(@PathVariable String flag, @RequestParam("page") int page) {
-		return "member/register_"+flag+page;
+	public String goRegisterMain(@PathVariable String flag) {
+		return "member/register_"+flag;
 	}
 	
 	@RequestMapping(value="/signUpEnd/{flag}")

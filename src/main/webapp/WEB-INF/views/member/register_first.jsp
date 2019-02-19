@@ -444,7 +444,7 @@ $(".btn_order").on('click', function(){
 	var check1 = $("input[type=checkbox]:first").is(":checked");
 	var check2 = $("input[type=checkbox]:last").is(":checked");
 	if(check1&&check2){
-		location.href="${pageContext.request.contextPath}/signUp/manager?page=2";
+		location.href="${pageContext.request.contextPath}/signUp/${type}";
 	}else if(check1&&!check2){alert("개인정보 수집 및 이용에 대한 안내에 동의해주세요.");}
 	else{alert("이용약관에 동의해주세요.");}
 });

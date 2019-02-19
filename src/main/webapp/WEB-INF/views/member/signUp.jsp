@@ -89,7 +89,7 @@ div.stepDot:after{
 <h1>회원 구분을 선택해주세요.</h1>
 <script>
 $("#reg-manager").click(function(){
-	location.href = "${pageContext.request.contextPath}/signUp/manager?page=1";
+	location.href = "${pageContext.request.contextPath}/signUp/first?type=manager";
 });
 </script>
 </div>
