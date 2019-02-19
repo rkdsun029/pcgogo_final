@@ -8,6 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project.go.pcgogo.lostandfound.model.vo.LostAndFound;
+
 @Repository
 public class LofDaoImpl implements LofDao {
 	@Autowired
@@ -24,6 +26,12 @@ public class LofDaoImpl implements LofDao {
 	@Override
 	public int selectlnfTotalContents() {
 		return sqlSession.selectOne("lnf.selectlofTotalContents");
+	}
+
+	@Override
+	public List<LostAndFound> selectlnfListType(int no) {
+		
+		return sqlSession.selectList("lnf.selectlnfListType", no);
 	}
 
 }

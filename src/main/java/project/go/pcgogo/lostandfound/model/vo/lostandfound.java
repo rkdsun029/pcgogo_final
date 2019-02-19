@@ -1,28 +1,28 @@
 package project.go.pcgogo.lostandfound.model.vo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
-public class lostandfound implements Serializable {
+public class LostAndFound implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String lnfUserName;
 	private String lnfEnrollName;
 	private int lnfNo;
-	private int lnfClass;
+	private String lnfClass;
 	private String lnfName;
 	private char lnfPhotoCheck;
 	private String lnfOriginalFileName;
 	private String lnfRenamedFile;
-	private String lnfPcRoonName;
+	private String lnfPcRoomName;
 	private Date lnfGetDate;
 	private String lnfStatus;
 	
-	public lostandfound() {}
+	public LostAndFound() {}
 
-	public lostandfound(String lnfUserName, String lnfEnrollName, int lnfNo, int lnfClass, String lnfName,
-			char lnfPhotoCheck, String lnfOriginalFileName, String lnfRenamedFile, String lnfPcRoonName,
-			Date lnfGetDate) {
+	public LostAndFound(String lnfUserName, String lnfEnrollName, int lnfNo, String lnfClass, String lnfName,
+			char lnfPhotoCheck, String lnfOriginalFileName, String lnfRenamedFile, String lnfPcRoomName,
+			Date lnfGetDate, String lnfStatus) {
 		super();
 		this.lnfUserName = lnfUserName;
 		this.lnfEnrollName = lnfEnrollName;
@@ -32,8 +32,9 @@ public class lostandfound implements Serializable {
 		this.lnfPhotoCheck = lnfPhotoCheck;
 		this.lnfOriginalFileName = lnfOriginalFileName;
 		this.lnfRenamedFile = lnfRenamedFile;
-		this.lnfPcRoonName = lnfPcRoonName;
+		this.lnfPcRoomName = lnfPcRoomName;
 		this.lnfGetDate = lnfGetDate;
+		this.lnfStatus = lnfStatus;
 	}
 
 	public String getLnfUserName() {
@@ -60,11 +61,11 @@ public class lostandfound implements Serializable {
 		this.lnfNo = lnfNo;
 	}
 
-	public int getLnfClass() {
+	public String getLnfClass() {
 		return lnfClass;
 	}
 
-	public void setLnfClass(int lnfClass) {
+	public void setLnfClass(String lnfClass) {
 		this.lnfClass = lnfClass;
 	}
 
@@ -100,12 +101,12 @@ public class lostandfound implements Serializable {
 		this.lnfRenamedFile = lnfRenamedFile;
 	}
 
-	public String getLnfPcRoonName() {
-		return lnfPcRoonName;
+	public String getLnfPcRoomName() {
+		return lnfPcRoomName;
 	}
 
-	public void setLnfPcRoonName(String lnfPcRoonName) {
-		this.lnfPcRoonName = lnfPcRoonName;
+	public void setLnfPcRoomName(String lnfPcRoomName) {
+		this.lnfPcRoomName = lnfPcRoomName;
 	}
 
 	public Date getLnfGetDate() {
@@ -116,18 +117,26 @@ public class lostandfound implements Serializable {
 		this.lnfGetDate = lnfGetDate;
 	}
 
+	public String getLnfStatus() {
+		return lnfStatus;
+	}
+
+	public void setLnfStatus(String lnfStatus) {
+		this.lnfStatus = lnfStatus;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return "lostandfound [lnfUserName=" + lnfUserName + ", lnfEnrollName=" + lnfEnrollName + ", lnfNo=" + lnfNo
+		return "LostAndFound [lnfUserName=" + lnfUserName + ", lnfEnrollName=" + lnfEnrollName + ", lnfNo=" + lnfNo
 				+ ", lnfClass=" + lnfClass + ", lnfName=" + lnfName + ", lnfPhotoCheck=" + lnfPhotoCheck
 				+ ", lnfOriginalFileName=" + lnfOriginalFileName + ", lnfRenamedFile=" + lnfRenamedFile
-				+ ", lnfPcRoonName=" + lnfPcRoonName + ", lnfGetDate=" + lnfGetDate + "]";
+				+ ", lnfPcRoomName=" + lnfPcRoomName + ", lnfGetDate=" + lnfGetDate + ", lnfStatus=" + lnfStatus + "]";
 	}
-	
-	
+
+
 
 }

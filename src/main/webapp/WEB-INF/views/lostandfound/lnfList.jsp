@@ -89,22 +89,24 @@ table#lnfList{
 	<div id="search-bar">
 		<h3>분실물 검색</h3>
 		&nbsp;&nbsp;&nbsp;
-		<select name="optioName" id="optionId">
+		<select name="optioName" id="optionSelector">
 			<option value="" disabled selected>분류를 선택해 주세요.</option>
-			<option value="1">분류1 : 핸드폰 / 지갑 / 가방</option>
-			<option value="2">분류2 : 충전기 / USB</option>
-			<option value="3">분류3 : 카드 / 신분증 / 면허증</option>
-			<option value="4">분류4 : 악세사리 / 의류</option>
-			<option value="5">분류5 : 기타</option>
+			<option value="1" id="value1">분류1 : 핸드폰 / 지갑 / 가방</option>
+			<option value="2" id="value2">분류2 : 충전기 / USB</option>
+			<option value="3" id="value3">분류3 : 카드 / 신분증 / 면허증</option>
+			<option value="4" id="value4">분류4 : 악세사리 / 의류</option>
+			<option value="5" id="value5">분류5 : 기타</option>
 		</select>
 		&nbsp;&nbsp;&nbsp;
 		<input type="text" id="lnfName" name="lnfName" placeholder="물품을 입력해주세요."/>
 		&nbsp;&nbsp;&nbsp;
-		<button onclick="keywordSearch();">찾기</button>
+		<button onclick="keywordSearch();" class="btn-send">찾기</button>
 	</div>   
 	
 	<div id="lnfList-container">
 	<p>총 ${totalContents }건의 분실물이 있습니다.</p>
+	<div id="lnfTotalSearch">
+	
 		<table id="lnfList">
 			<tr>
 				<th>번호</th>
@@ -117,6 +119,7 @@ table#lnfList{
 			</tr>
 			
 			<c:forEach items="${list}" var="lnf"> 
+			
 			<tr no="${lnf.LNFNO}">
 				<td>${lnf.LNFNO}</td>
 				<td>${lnf.LNFCLASS}</td>
@@ -127,8 +130,10 @@ table#lnfList{
 				<td>${lnf.LNFSTATUS}</td>
 			</c:forEach>
 			</tr>
-			<div class="result" id="lnfType-result"></div>
 		</table>
+		
+	</div>
+	
 		<% 
 		//int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
 		//int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
@@ -147,35 +152,37 @@ table#lnfList{
 	%>
 	<%= project.go.pcgogo.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "lnfList.do") %>
 	</div>
+	<div class="result" id="lnfType-result"></div>
 </div>
 
 <script>
-$("#optionId").on("change", function(){
-	$.ajax({
-		url:"${pageContext.request.contextPath}/lnfList/"+$(this).val(),
-		dataType: "json",
-		type: "get",
-		success: function(data){
-			console.log(data);
-			var html = "<table class = table>";
-			html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>사진유무</th><th>보관 중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
-			for(var i in data){
-				html +="<tr><td>"+data[i].lnfNo+"</td>";
-				html +="<td>"+data[i].lnfClass+"</td>";
-				html +="<td>"+data[i].lnfName+"</td>";
-				html +="<td>"+data[i].lnfPhotoCheck+"</td>";
-				html +="<td>"+data[i].lnfPcRoomName+"</td>";
-				html +="<td>"+data[i].lnfGetDate+"</td>";
-				html +="<td>"+data[i].lnfStatus+"</td>";
-			}
-			html+="</table>";
-			$("#lnfType-result").html(html);
-			},
-			error: function(){
-				console.log("ajax에러!")
-			}
-	});
-});
+	$("#optionSelector").on("change", function(){	
+		$("#lnfList-container").hide(1000);
+		  		$.ajax({
+		  			url: "${pageContext.request.contextPath}/lostandfound/lnfList/"+$(this).val(),
+		  			dataType: "json",
+		  			type: "get",
+		  			success: function(data){
+		  				console.log(data);
+		                var html = "<table id='lnfList'>";
+		                html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>사진유무</th><th>보관중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
+		                for(var i in data){
+		                    html += "<tr><td>"+data[i].lnfNo+"</td>";
+		                    html += "<td>"+data[i].lnfClass+"</td>";
+		                    html += "<td>"+data[i].lnfName+"</td>";
+		                    html += "<td>"+data[i].lnfPhotoCheck+"</td>";
+		                    html += "<td>"+data[i].lnfPcRoomName+"</td>";
+		                    html += "<td>"+new Date(data[i].lnfGetDate).toISOString().slice(0,10)+"</td>";
+		                    html += "<td>"+data[i].lnfStatus+"</td></tr>";
+		                }
+		                html+="</table>";
+		                $("#lnfType-result").html(html);
+		  			},
+		  			error : function(jqxhr, textStatus, errorThrown){
+		                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+		            }
+		});
+  	});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
