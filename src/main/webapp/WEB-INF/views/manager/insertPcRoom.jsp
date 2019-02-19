@@ -14,9 +14,13 @@
 <style>
 div#open-container{
 	width:600px;
-	height:200px;
+	min-height:300px;
 	margin:0 auto;
 	text-align:center;
+}
+div#open-container h3{
+	color:red;
+	margin-top:50px;
 }
 button#open-Window{
 	width:200px;
@@ -27,21 +31,36 @@ button#open-Window{
 	background:rgb(255, 40, 40, .7);
 	border:1px rgb(255, 40, 40, .7);
 	border-radius:10px;
+	margin-top:40px;
 	cursor:pointer;
+}
+ul#warning{
+	list-style-type:decimal;
+	width:450px;
+	margin:0 auto;
+}
+ul#warning li{
+	float:left;
+	margin-bottom:20px;
+	font-weight:bold;
 }
 </style>
 
 
 <div id="open-container">
-	<br><br><br>
-	<span>작업 중 팝업을 닫으시면 입력했던 정보가 복구되지 않습니다.</span>
-	<br><br><br>
+	<h3>아래의 주의사항을 반드시 숙지 후 진행하여 주십시오.</h3>
+	<br><br>
+	<ul id="warning">
+		<li>&nbsp;작업 중 팝업을 닫으시면 입력했던 정보가 복구되지 않습니다.</li>
+		<li>&nbsp;자리배치도 미등록시 자리예약 서비스를 이용할 수 없습니다.</li>
+		<li>&nbsp;정확한 정보가 아닐 시 관리자에 의해 임의로 삭제될 수 있습니다.</li>
+	</ul>
 	<button id="open-Window" onclick="startInsert();">등록 시작하기</button>
 </div>
 
 <script>
 function startInsert(){
-	window.open("${pageContext.request.contextPath}/manager/pcRoomForm.do",
+	window.open("${pageContext.request.contextPath}/manager/pcRoomForm_step1.do",
 					"startInsert", "width=1000, height=700, left=50, top=20");
 }
 </script>

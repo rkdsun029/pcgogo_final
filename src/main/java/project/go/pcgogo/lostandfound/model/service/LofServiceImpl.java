@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.lostandfound.model.dao.LofDao;
+import project.go.pcgogo.lostandfound.model.vo.LostAndFound;
 
 @Service
 public class LofServiceImpl implements LofService {
@@ -27,6 +28,12 @@ public class LofServiceImpl implements LofService {
 	@Override
 	public int selectlnfTotalContents() {
 		return lofDao.selectlnfTotalContents();
+	}
+
+
+	@Override
+	public List<LostAndFound> selectlnfListType(int no) {
+		return lofDao.selectlnfListType(no);
 	}
 
 }

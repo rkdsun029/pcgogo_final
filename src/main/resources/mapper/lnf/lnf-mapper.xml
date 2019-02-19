@@ -13,4 +13,9 @@
 	<select id="selectlofTotalContents" resultType="_int">
 	    select count(*) from lostandfound 	
 	</select>
+	
+	<select id="selectlnfListType" resultType="lnfMap">
+		select * from lostandfound
+		where lnfclass = #{lnfclass}
+	</select>
 </mapper>
