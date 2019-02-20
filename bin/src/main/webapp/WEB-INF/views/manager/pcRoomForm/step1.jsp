@@ -15,20 +15,16 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 </head>
 <body>
+<!-- 비밀번호 재입력 -->
 <div id="outer-container">
 	<h1 id="head-title">PCGOGO.COM</h1>
-	<h3>좌석 배치도 입력을 시작합니다.</h3>
-	<span>여기는 도움말자리</span><br>
-	<span>${option }</span>
-	<button onclick="goToStep5();">다음</button>
+	<h3>신규 PC방 등록화면입니다.</h3>
+	<h3>비밀번호를 한 번 더 입력하여 주십시오.</h3>
+	<form action="${pageContext.request.contextPath }/manager/pcRoomForm_step2.do">
+		<input type="password" id="password" name="password"/>
+		<button id="checkPassword" type="submit">확인</button>
+	</form>
 </div>
-<script>
-$(function(){
-	console.log("${option}");
-});
-function goToStep5(){
-	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do";
-}
-</script>
+
 </body>
 </html>

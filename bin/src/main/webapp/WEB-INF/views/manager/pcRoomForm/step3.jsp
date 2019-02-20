@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
-<script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <style>
 button#addFloor{
 	text-align:center;
@@ -63,7 +63,7 @@ button[type=submit]{
 </div>
 <script>
 $("button[type=submit]").on("click", function(){
-	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step4.do?option=" + $("select#seats").val();
+	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step4.do";
 });
 </script>
 </body>
