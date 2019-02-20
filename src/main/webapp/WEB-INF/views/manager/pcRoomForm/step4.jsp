@@ -19,7 +19,6 @@
 	<h1 id="head-title">PCGOGO.COM</h1>
 	<h3>좌석 배치도 입력을 시작합니다.</h3>
 	<span>여기는 도움말자리</span><br>
-	<span>${option }</span>
 	<button onclick="goToStep5();">다음</button>
 </div>
 <script>
@@ -27,7 +26,7 @@ $(function(){
 	console.log("${option}");
 });
 function goToStep5(){
-	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do";
+	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do?option=${option}";
 }
 </script>
 </body>
