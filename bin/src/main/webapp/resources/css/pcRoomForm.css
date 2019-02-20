@@ -1,0 +1,138 @@
+@charset "UTF-8";
+div#outer-container{
+	position:relative;
+	width:400px;
+	height:300px;
+	border-radius:10px;
+	border:1px solid #c8c8c8;
+	margin:0 auto;
+	margin-top:175px;
+	text-align:center;
+	font-family:'Nanum Gothic', sans-serif;
+}
+div#outer-container h3{
+	font-family:'Nanum Gothic', sans-serif;
+	text-align:center;
+	font-size:15px;
+}
+div#outer-container h3:first-of-type{
+	padding-top:20px;
+}
+input{
+	width:200px;
+	height:30px;
+	outline:none;
+	border-radius:5px;
+	border:1px solid #c8c8c8;
+	font-size:20px;
+	padding:3px;
+}
+input#password{
+	margin-top:30px;
+}
+button#checkPassword{
+	width:80px;
+	height:35px;
+	font-size:15px;
+	color:white;
+	background:rgb(255, 40, 40, .7);
+	border-radius:5px;
+	border:1px rgb(255, 40, 40, .7);
+	cursor:pointer;
+}
+h1#head-title{
+	text-align:center;
+    display:inline-block;
+    font-family: 'Fredoka One', cursive; 
+    font-size:30px;
+    color:rgb(255, 40, 40, .7);
+}
+div#placement-container{
+	position:relative;
+	width:970px;
+	height:680px;
+	border-radius:10px;
+	border:1px solid #c8c8c8;
+	margin:0 auto;
+	text-align:center;
+	font-family:'Nanum Gothic', sans-serif;
+}
+table#placement{
+	margin:0 auto;
+    border-collapse:collapse;
+}
+table#placement td{
+    width:30px;
+    height:30px;
+    margin:0px;
+    padding:0px;
+}
+div.seat{
+	display:block;
+    width:30px;
+    height:30px;
+    margin:1px;
+    cursor:pointer;
+}
+div.plain{background:white;}
+div.special{background:red;}
+div.toilet{background:purple;}
+div.exit{background:skyblue;}
+div.counter{background:orange;}
+div.kiosk{background:blue;}
+div.water{background:cyan;}
+div.smoking{background:brown;}
+div.etc{background:darkslategrey;}
+
+select#classification{
+	width:170px;
+	height:30px;
+	font-family:'Nanum Gothic', sans-serif;
+	position:relative;
+	top:35px;
+}
+div#ready-placement label{
+	position:relative;
+	top:35px;
+}
+fieldset#status-container{
+	width:50px;
+	height:70px;
+	border:2px solid;
+	border-radius:10px;
+	display:inline-block;
+	margin-left:30px;
+}
+div#status{
+	width:30px;
+	height:30px;
+	border:1px solid;
+	margin:0 auto;
+	margin-top:7px;
+}
+div#ready-placement{
+	width:600px;
+	height:100px;
+	margin:0 auto;
+	margin-bottom:30px;
+}
+button.formBtn{
+	width:120px;
+	height:40px;
+	font-size:15px;
+	font-family:'Nanum Gothic', sans-serif;
+	border-radius:5px;
+	margin:30px 10px 30px 10px;
+	background:gray;
+	cursor:pointer;
+}
+button#resetPlacement{
+	border:1px solid #c8c8c8;
+	backround:#c8c8c8;
+	color:white;
+}
+button#submitPlacement{
+	border:1px rgb(255, 40, 40, .7);
+	background:rgb(255, 40, 40, .7);
+	color:white;
+}
