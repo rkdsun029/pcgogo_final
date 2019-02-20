@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="lnf">
+	<select id="selectlofList" resultMap="lnfMap">
+	select * 
+	from lostandfound
+	order by lnfno desc 
+	</select>
+	<resultMap type="map" id="lnfMap">
+	
+	</resultMap>
+	
+	<select id="selectlofTotalContents" resultType="_int">
+	    select count(*) from lostandfound 	
+	</select>
+	
+	<select id="selectlnfListType" resultType="lnfMap">
+		select * from lostandfound
+		where lnfclass = #{lnfclass}
+	</select>
+</mapper>
