@@ -2,6 +2,8 @@ package project.go.pcgogo.manager.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ManagerController {
@@ -57,13 +59,33 @@ public class ManagerController {
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step4.do")
-	public String pcRoomFormStep4() {
-		return "manager/pcRoomForm/step4";
+	public ModelAndView pcRoomFormStep4(@RequestParam (value="option") String temp_option, ModelAndView mav) {
+		int option = Integer.parseInt(temp_option);
+		mav.addObject("option", option);
+		mav.setViewName("manager/pcRoomForm/step4");
+		return mav;
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step5.do")
-	public String pcRoomFormStep5() {
-		return "manager/pcRoomForm/step5";
+	public ModelAndView pcRoomFormStep5(@RequestParam (value="option") int option, ModelAndView mav) {
+		int pmRow = 0;
+		int pmCol = 0;
+		
+		switch(option) {
+		case 1 : pmRow = 5; pmCol = 5;
+			break;
+		case 2 : pmRow = 20; pmCol = 40;
+			break;
+		case 3 : pmRow = 30; pmCol = 40;
+			break;
+		case 4 : pmRow = 40; pmCol = 50;
+			break;
+		}
+		
+		mav.addObject("pmRow", pmRow);
+		mav.addObject("pmCol", pmCol);
+		mav.setViewName("manager/pcRoomForm/step5");
+		return mav;
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step6.do")

@@ -52,10 +52,10 @@ button[type=submit]{
 	<label for="seats">좌석 수</label>
 	<select name="seats" id="seats">
 		<option value="none" disabled selected>좌석수를 선택해주세요.</option>
-		<option value="option1">200석 이하</option> <!-- 20 * 15 -->
-		<option value="option2">200석~300석</option> <!-- 25 * 15 -->
-		<option value="option3">300석~400석</option> <!-- 30 * 15 -->
-		<option value="option4">400석 이상</option> <!-- 40 * 20 -->
+		<option value="1">200석 이하</option> <!-- 20 * 15 -->
+		<option value="2">200석~300석</option> <!-- 25 * 15 -->
+		<option value="3">300석~400석</option> <!-- 30 * 15 -->
+		<option value="4">400석 이상</option> <!-- 40 * 20 -->
 	</select>
 	<br>
 	<button id="addFloor">층 추가 ▼</button>
