@@ -32,8 +32,26 @@ public class LofServiceImpl implements LofService {
 
 
 	@Override
-	public List<LostAndFound> selectlnfListType(int no) {
+	public List<LostAndFound> selectlnfListType(String no) {
 		return lofDao.selectlnfListType(no);
+	}
+
+
+	@Override
+	public int selectlnfSelectContents(String no) {
+		return lofDao.selectlnfSelectContents(no);
+	}
+
+
+	@Override
+	public List<LostAndFound> selectLnfNameList(String lnfName) {
+		return lofDao.selectLnfNameList(lnfName);
+	}
+
+
+	@Override
+	public int selectLnfNameCount(String lnfName) {
+		return lofDao.selectLnfNameCount(lnfName);
 	}
 
 }
