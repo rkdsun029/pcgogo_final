@@ -1,8 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="member">
+<mapper namespace="user">
 	<insert id="insertManager" parameterType="manager">
 		insert into manager values(#{managerId}, #{managerPassword}, #{managerCode}, #{managerCodeImgOriginal},
 		#{managerCodeImgRenamed}, #{managerName}, #{managerPhone}, #{managerEmail}, #{managerAddress}, default, default)
 	</insert>
+	<insert id="insertMember" parameterType="member">
+		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default)
+	</insert>
+	<select id="selectOneById" resultType="object">
+		select *
+		from ${flag}
+		<if test="flag=='manager'">
+			where managerId=#{userId}
+		</if>
+		<if test="flag=='member'">
+			where memberId=#{userId}
+		</if>
+	</select>
 </mapper>

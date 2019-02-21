@@ -1,4 +1,4 @@
-package project.go.pcgogo.member.model.vo;
+package project.go.pcgogo.user.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
