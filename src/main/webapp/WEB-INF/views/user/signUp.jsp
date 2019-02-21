@@ -87,9 +87,15 @@ div.stepDot:after{
         <span>일반회원</span>
     </div>
 <h1>회원 구분을 선택해주세요.</h1>
+<form action="${pageContext.request.contextPath}/signUp/first" id="flagFrm" method="post">
+	<input type="hidden" name="type" value=""/>
+</form>
 <script>
 $("#reg-manager").click(function(){
-	location.href = "${pageContext.request.contextPath}/signUp/first?type=manager";
+	$("#flagFrm input").val("manager").parent().submit();
+});
+$("#reg-member").click(function(){
+	$("#flagFrm input").val("member").parent().submit();
 });
 </script>
 </div>

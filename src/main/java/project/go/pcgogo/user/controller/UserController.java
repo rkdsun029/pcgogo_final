@@ -1,4 +1,4 @@
-package project.go.pcgogo.member.controller;
+package project.go.pcgogo.user.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,13 +7,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,48 +22,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import project.go.pcgogo.common.util.Utils;
-import project.go.pcgogo.member.model.service.MemberService;
-import project.go.pcgogo.member.model.vo.Manager;
+import project.go.pcgogo.user.model.service.UserService;
+import project.go.pcgogo.user.model.vo.Manager;
+import project.go.pcgogo.user.model.vo.Member;
 
 
 @Controller
-public class MemberController {
+public class UserController {
 	Logger logger = Logger.getLogger(getClass());
-	
+		
 	@Autowired
-	BCryptPasswordEncoder pwdEncoder;
-	
-	@Autowired
-	MemberService memberService;
+	UserService userService;
 	
 	@RequestMapping(value="/signUp.do")
 	public String goSignUp() {
-		return "member/signUp";
+		return "user/signUp";
 	}
 	
 	@RequestMapping(value="/signUp/first")
 	public String goRegisterFirst(HttpServletRequest req){
 		String type = req.getParameter("type");
 		req.setAttribute("type", type);
-		return "member/register_first";
+		return "user/register_first";
 	}
 	
 	@RequestMapping(value="/signUp/{flag}")
 	public String goRegisterMain(@PathVariable String flag) {
-		return "member/register_"+flag;
+		return "user/register_"+flag;
 	}
 	
 	@RequestMapping(value="/signUpEnd/manager")
-	public String insertMember(Manager manager, @RequestParam("address") String[] address,
+	public String insertManager(Manager manager, @RequestParam("address") String[] address,
 							   @RequestParam(name="managerCodeImg", required=false) MultipartFile file,
 							   HttpServletRequest request) {
 		String addr = address[0]+" "+address[1];
-		logger.info("암호화 전 : "+manager.getManagerPassword());
-		String encPassword = pwdEncoder.encode(manager.getManagerPassword());
-		logger.info("암호화 후 : "+encPassword);
 		manager.setManagerAddress(addr);
-		manager.setManagerPassword(encPassword);
 		
 		//1. 파일업로드
 		String saveDirectory = request.getSession().getServletContext().getRealPath("/resources/upload/register");
@@ -73,24 +70,41 @@ public class MemberController {
 			//파일명(업로드)
 			String originalFileName = file.getOriginalFilename();
 			//파일명(서버저장용)
-			String renamedFileName = Utils.getRenamedFileName(originalFileName);
-			logger.debug("renamedFileNam="+renamedFileName);
-			//실제서버에 파일저장
-			try {
-				file.transferTo(new File(saveDirectory+"/"+renamedFileName));
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
+			if(!"".equals(originalFileName)) {
+				String renamedFileName = Utils.getRenamedFileName(originalFileName);
+				logger.debug("renamedFileNam="+renamedFileName);
+				//실제서버에 파일저장
+				try {
+					file.transferTo(new File(saveDirectory+"/"+renamedFileName));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+				manager.setManagerCodeImgOriginal(originalFileName);
+				manager.setManagerCodeImgRenamed(renamedFileName);
 			}
-			manager.setManagerCodeImgOriginal(originalFileName);
-			manager.setManagerCodeImgRenamed(renamedFileName);
 		}
 		
 		logger.info(manager);
-		int result = memberService.insertManager(manager);
+		int result = userService.insertManager(manager);
+		request.setAttribute("result", result);
+		request.setAttribute("flag", "manager");
 		logger.info(result>0?"등록성공":"등록실패");
-		return "member/signUpEnd";
+		return "user/signUpEnd";
 	}
 	
+	@RequestMapping("/signUpEnd/member")
+	public String insertUser(Member m, HttpServletRequest request) {
+		logger.info(m.toString());
+		int result = userService.insertMember(m);
+		request.setAttribute("result", result);
+		request.setAttribute("flag", "member");
+		return "user/signUpEnd";
+	}
+	
+	@RequestMapping("/signUpEnd/test")
+	public String goSignUpEnd() {
+		return "user/signUpEnd";
+	}
 	@RequestMapping(value="/signUp/getToken")
 	@ResponseBody
 	public String getToken() {
@@ -146,6 +160,54 @@ public class MemberController {
 		} finally {try{os.close(); br.close();}catch(IOException e) {e.printStackTrace();}}
 		
 		logger.info(result);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/signUp/sendToken")
+	public Map<String, Object> sendToken(@RequestParam("phone") String phone) {
+		final String KEY = "NCSECO19STV9WOMR";
+		final String SECRET = "PGBCM9FUATHCVUH5VHY2G3CSZHCXKVRM";
+		final String FROM = "01051940502";
+		int token = (int)Math.floor((Math.random()*100000)+1);
+		String text = "PCGOGO 회원가입 인증번호는 \n"
+					+ "["+token+"]입니다. \n"
+					+ "타인에게 노출되지 않게 주의바랍니다.";
+		
+		Message msg = new Message(KEY, SECRET);
+		
+		HashMap<String, String> settings = new HashMap<>();
+		settings.put("to", phone);
+		settings.put("from", FROM);
+		settings.put("type", "SMS");
+		settings.put("text", text);
+		settings.put("app_version", "pcgogo");
+		
+		Map<String, Object> resultMap;
+		try {
+			JSONObject result = (JSONObject)msg.send(settings);
+			resultMap = new HashMap<>();
+			resultMap.put("result", result.get("error_count"));
+			resultMap.put("token", String.valueOf(token));
+		} catch (CoolsmsException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getCode());
+			resultMap = null;
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping("/signUp/checkDuplicate/{flag}")
+	@ResponseBody
+	public Map<String, Object> checkDuplicate(@PathVariable String flag, @RequestParam("userId") String userId){
+		Map<String, String> map = new HashMap<>();
+		map.put("flag", flag);
+		map.put("userId", userId);
+		Object obj = userService.selectOneById(map);
+		logger.info(obj);
+		boolean isUsable = obj==null?true:false;
+		Map<String, Object> result = new HashMap<>();
+		result.put("isUsable", isUsable);
 		return result;
 	}
 }

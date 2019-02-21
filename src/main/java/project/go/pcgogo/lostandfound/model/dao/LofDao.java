@@ -11,6 +11,12 @@ public interface LofDao {
 
 	int selectlnfTotalContents();
 
-	List<LostAndFound> selectlnfListType(int no);
+	List<LostAndFound> selectlnfListType(String no);
+
+	int selectlnfSelectContents(String no);
+
+	List<LostAndFound> selectLnfNameList(String lnfName);
+
+	int selectLnfNameCount(String lnfName);
 
 }

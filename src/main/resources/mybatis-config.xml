@@ -10,6 +10,7 @@
 	<typeAliases>
 	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.LostAndFound"
 				   alias="lnfMap"/>
-	   <typeAlias type="project.go.pcgogo.member.model.vo.Manager" alias="manager"/>
+	   <typeAlias type="project.go.pcgogo.user.model.vo.Manager" alias="manager"/>
+	   <typeAlias type="project.go.pcgogo.user.model.vo.Member" alias="member"/>
 	</typeAliases>
 </configuration>
