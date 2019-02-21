@@ -14,85 +14,154 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <style>
+div.plain{background:url("${pageContext.request.contextPath}/resources/image/manager/plain.png");}
+div.special{background:url("${pageContext.request.contextPath}/resources/image/manager/special.png");}
+div.couple{background:url("${pageContext.request.contextPath}/resources/image/manager/couple.png");}
 div.wall{background:url("${pageContext.request.contextPath}/resources/image/manager/wall.png");}
 </style>
-</head>
-<body>
-<div id="placement-container">
-	<h1 id="head-title">PCGOGO.COM</h1>
-	<br>
-	<div id="ready-placement">
-		<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
-		<select name="classification" id="classification">
-			<option value="default" disabled selected>구분을 선택해 주세요.</option>
-			<option value="plain">일반석</option>
-			<option value="special">특별석</option>
-			<option value="toilet">화장실</option>
-			<option value="exit">출입구</option>
-			<option value="counter">카운터</option>
-			<option value="kiosk">무인기</option>
-			<option value="water">정수기</option>
-			<option value="smoking">흡연실</option>
-			<option value="etc">기타</option>
-			<option value="wall">벽</option>
-		</select>
-		<fieldset id="status-container">
-			<legend>&nbsp;선택&nbsp;</legend>
-			<div id="status"></div>
-		</fieldset>
-	</div>
-	
-	<table id="placement">
-		<!-- for문으로 변경 예정 -->
-		<tr>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-		</tr>
-		<tr>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-		</tr>
-		<tr>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-			<td><div class="seat wall"></div></td>
-		</tr>
-		
-	</table>
-	<button class="formBtn" id="resetPlacement">초기화</button>
-	<button class="formBtn" id="submitPlacement">등록</button>
-</div>
 
 <script>
-$("select#classification").on("change", function(){
-	var status = $(this).val();
+$(function(){
+	var pmRow_ = $("tr").length;
+	var pmCol_ = $("tr:first-of-type td").length;
+	var plainSize = $(".plain").length;
+	var specialSize = $(".special").length;
+	var pmTd_ = $("td").length;
+	var pmContent_ = "";
+
+	$("h4#table-legend").children("span#pmRow_").html(pmRow_);
+	$("h4#table-legend").children("span#pmCol_").html(pmCol_);
+	$("h4#table-legend").children("span#plainSize").html(plainSize);
+	$("h4#table-legend").children("span#specialSize").html(specialSize);
 	
-	$("div#status").removeClass();
-	$("div#status").addClass(status);
-	
-	$("[class*=seat]").on("click", function(){
-		$(this).removeClass();
-		$(this).addClass("seat");
-		$(this).addClass(status);
+	$("select#classification").on("change", function(){
+		var status = $(this).val();
+		console.log(status);
+		
+		$("div#status").removeClass();
+		$("div#status").addClass(status);
+		
+		$("div#seat__").on("click", function(){
+			$(this).removeClass();
+			$(this).addClass("seat");
+			$(this).addClass(status);
+			
+			if(status == "plain") $(this).find("input[type=hidden]").val("a");
+			if(status == "special") $(this).find("input[type=hidden]").val("b");
+			if(status == "couple") $(this).find("input[type=hidden]").val("c");
+			if(status == "toilet") $(this).find("input[type=hidden]").val("d");
+			if(status == "exit") $(this).find("input[type=hidden]").val("e");
+			if(status == "counter") $(this).find("input[type=hidden]").val("f");
+			if(status == "kiosk") $(this).find("input[type=hidden]").val("g");
+			if(status == "water") $(this).find("input[type=hidden]").val("h");
+			if(status == "air") $(this).find("input[type=hidden]").val("i");
+			if(status == "smoking") $(this).find("input[type=hidden]").val("j");
+			if(status == "etc") $(this).find("input[type=hidden]").val("k");
+			if(status == "wall") $(this).find("input[type=hidden]").val("z");
+		});
 	});
-});
 
-$("button#resetPlacement").on("click", function(){
-	var temp = confirm("정말 초기화 하시겠습니까?");
+	$("table#placement").on("click", function(){
+		var pmRow_ = $("tr").length;
+		var pmCol_ = $("tr:first-of-type td").length;
+		var plainSize = $(".plain").length;
+		var specialSize = $(".special").length;
+
+		$("h4#table-legend").children("span#pmRow_").html(pmRow_);
+		$("h4#table-legend").children("span#pmCol_").html(pmCol_);
+		$("h4#table-legend").children("span#plainSize").html(plainSize);
+		$("h4#table-legend").children("span#specialSize").html(specialSize);
+	});
 	
-	if(!temp){
-		return;
-	}
-});
+	$("button#resetPlacement").on("click", function(){
+		var temp = confirm("정말 초기화 하시겠습니까?");
+		if(!temp) return;
+		else window.location.reload(true);
+	});
+	
+	$("button#submitPlacement").on("click", function(){
+		var temp = confirm("배치도를 저장하시겠습니까?");
+		
+		if(!temp) return;
+		else{			
+			var pmRow_ = $("tr").length;
+			var pmCol_ = $("tr:first-of-type td").length;
+			var pmTd_ = $("td").length;
+			var pmContent_ = "";
+			
+			for(var s=0; s<pmTd_; s++){
+				/* console.log("찍기:",s,":", $("td").eq(s).find("input").val()); */
+				if(s == parseInt(pmTd_)-1)pmContent_ += $("td").eq(s).find("input[type=hidden]").val();				
+				else pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";
+			}
+			
+			/* console.log("pmContent_:", pmContent_); */
+			
+			$("input[name=pmRow_]").val(pmRow_);
+			$("input[name=pmCol_]").val(pmCol_);
+			$("input[name=pmContent_]").val(pmContent_);
+			
+			console.log($("input[name=pmRow_]").val());
+			console.log($("input[name=pmCol_]").val());
+			console.log($("input[name=pmContent_]").val());
+			
+			//location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
+			$("form#main-placement-info").submit();
+		}
+	});
 
+});
 </script>
+</head>
+<body>
+<h1 id="head-title">PCGOGO.COM</h1>
+<br>
+<form id="main-placement-info" action="${pageContext.request.contextPath }/manager/pcRoomForm_step6.do">
+	<input type="hidden" name="pmRow_"/>
+	<input type="hidden" name="pmCol_"/>
+	<input type="hidden" name="pmContent_"/>
+</form>
+<div id="ready-placement">
+	<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
+	<select name="classification" id="classification">
+		<option value="default" disabled selected>구분을 선택해 주세요.</option>
+		<option value="plain">일반석</option>
+		<option value="special">특별석</option>
+		<option value="couple">다인석(커플, 3인 등)</option>
+		<option value="toilet">화장실</option>
+		<option value="exit">출입구</option>
+		<option value="counter">카운터</option>
+		<option value="kiosk">무인기</option>
+		<option value="water">정수기</option>
+		<option value="air">에어컨, 히터</option>
+		<option value="smoking">흡연실</option>
+		<option value="etc">기타</option>
+		<option value="wall">벽</option>
+	</select>
+	<fieldset id="status-container">
+		<legend>&nbsp;선택&nbsp;</legend>
+		<div id="status"></div>
+	</fieldset>
+</div>
+
+<h4 id="table-legend">행 개수 : <span id="pmRow_"></span>, &nbsp; 열 개수 : <span id="pmCol_"></span>, &nbsp; 
+					일반석 : <span id="plainSize"></span>, &nbsp; 특별석 : <span id="specialSize"></span></h4><br>
+
+<table id="placement">
+	<c:forEach var="i" begin="1" end="${pmRow }" step="1">
+		<tr>
+			<c:forEach var="j" begin="1" end="${pmCol }" step="1">
+				<td>
+					<div id="seat__" class="seat wall">
+						<input type="hidden" value="z"/>
+					</div>
+				</td>
+			</c:forEach>
+		</tr>		
+	</c:forEach>
+</table>
+<button class="formBtn" id="resetPlacement">초기화</button>
+<button class="formBtn" id="submitPlacement">등록</button>
+
 </body>
 </html>
