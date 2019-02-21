@@ -46,20 +46,18 @@ $(function(){
 			$(this).addClass("seat");
 			$(this).addClass(status);
 			
-			/* console.log($(this)); */
-			
-			if(status == "plain") $(this).find("input").val() == "a";
-			if(status == "special") $(this).find("input").val() == "b";
-			if(status == "couple") $(this).find("input").val() == "c";
-			if(status == "toilet") $(this).find("input").val() == "d";
-			if(status == "exit") $(this).find("input").val() == "e";
-			if(status == "counter") $(this).find("input").val() == "f";
-			if(status == "kiosk") $(this).find("input").val() == "g";
-			if(status == "water") $(this).find("input").val() == "h";
-			if(status == "air") $(this).find("input").val() == "i";
-			if(status == "smoking") $(this).find("input").val() == "j";
-			if(status == "etc") $(this).find("input").val() == "k";
-			if(status == "wall") $(this).find("input").val() == "0";
+			if(status == "plain") $(this).find("input[type=hidden]").val("a");
+			if(status == "special") $(this).find("input[type=hidden]").val("b");
+			if(status == "couple") $(this).find("input[type=hidden]").val("c");
+			if(status == "toilet") $(this).find("input[type=hidden]").val("d");
+			if(status == "exit") $(this).find("input[type=hidden]").val("e");
+			if(status == "counter") $(this).find("input[type=hidden]").val("f");
+			if(status == "kiosk") $(this).find("input[type=hidden]").val("g");
+			if(status == "water") $(this).find("input[type=hidden]").val("h");
+			if(status == "air") $(this).find("input[type=hidden]").val("i");
+			if(status == "smoking") $(this).find("input[type=hidden]").val("j");
+			if(status == "etc") $(this).find("input[type=hidden]").val("k");
+			if(status == "wall") $(this).find("input[type=hidden]").val("z");
 		});
 	});
 
@@ -92,13 +90,23 @@ $(function(){
 			var pmContent_ = "";
 			
 			for(var s=0; s<pmTd_; s++){
-				console.log("찍기:",s,":", $("td").eq(s).find("input").val());
- 				/* if($("td:" + t + "th-child").val() == 1) */
-				/* pmContent_ += $("td:nth-child(" + parseInt(t) + ")").find("input").val() + ","; */
+				/* console.log("찍기:",s,":", $("td").eq(s).find("input").val()); */
+				if(s == parseInt(pmTd_)-1)pmContent_ += $("td").eq(s).find("input[type=hidden]").val();				
+				else pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";
 			}
 			
-			alert("fasdfasdf");	
-			location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
+			/* console.log("pmContent_:", pmContent_); */
+			
+			$("input[name=pmRow_]").val(pmRow_);
+			$("input[name=pmCol_]").val(pmCol_);
+			$("input[name=pmContent_]").val(pmContent_);
+			
+			console.log($("input[name=pmRow_]").val());
+			console.log($("input[name=pmCol_]").val());
+			console.log($("input[name=pmContent_]").val());
+			
+			//location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
+			$("form#main-placement-info").submit();
 		}
 	});
 
@@ -108,6 +116,11 @@ $(function(){
 <body>
 <h1 id="head-title">PCGOGO.COM</h1>
 <br>
+<form id="main-placement-info" action="${pageContext.request.contextPath }/manager/pcRoomForm_step6.do">
+	<input type="hidden" name="pmRow_"/>
+	<input type="hidden" name="pmCol_"/>
+	<input type="hidden" name="pmContent_"/>
+</form>
 <div id="ready-placement">
 	<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
 	<select name="classification" id="classification">
@@ -140,8 +153,7 @@ $(function(){
 			<c:forEach var="j" begin="1" end="${pmCol }" step="1">
 				<td>
 					<div id="seat__" class="seat wall">
-						<!-- <input type="hidden" id="pmpm" value="eval('i*j')"/> -->
-						<input type="hidden" value="zzz"/>
+						<input type="hidden" value="z"/>
 					</div>
 				</td>
 			</c:forEach>

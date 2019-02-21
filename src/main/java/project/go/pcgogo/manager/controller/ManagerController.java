@@ -72,7 +72,7 @@ public class ManagerController {
 		int pmCol = 0;
 		
 		switch(option) {
-		case 1 : pmRow = 5; pmCol = 5;
+		case 1 : pmRow = 20; pmCol = 30;
 			break;
 		case 2 : pmRow = 20; pmCol = 40;
 			break;
@@ -89,8 +89,21 @@ public class ManagerController {
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step6.do")
-	public String pcRoomFormStep6() {
-		return "manager/pcRoomForm/step6";
+	public ModelAndView pcRoomFormStep6(@RequestParam (value="pmRow_") int pmRow,
+								  @RequestParam (value="pmCol_") int pmCol,
+								  @RequestParam (value="pmContent_") String pmContent,
+								  ModelAndView mav) {
+		
+		mav.addObject("pmRow", pmRow);
+		mav.addObject("pmCol", pmCol);
+		mav.addObject("pmContent", pmContent);
+		mav.setViewName("manager/pcRoomForm/step6");
+		return mav;
+	}
+	
+	@RequestMapping("manager/pcRoomForm_step7.do")
+	public String pcRoomFormStep7() {
+		return "manager/pcRoomForm/step7";
 	}
 	
 	@RequestMapping("manager/pcRoomForm_end.do")
