@@ -7,11 +7,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import project.go.pcgogo.common.util.Utils;
 import project.go.pcgogo.member.model.service.MemberService;
 import project.go.pcgogo.member.model.vo.Manager;
@@ -147,5 +152,39 @@ public class MemberController {
 		
 		logger.info(result);
 		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/signUp/sendToken")
+	public Map<String, Object> sendToken(@RequestParam("phone") String phone) {
+		final String KEY = "NCSECO19STV9WOMR";
+		final String SECRET = "PGBCM9FUATHCVUH5VHY2G3CSZHCXKVRM";
+		final String FROM = "01051940502";
+		int token = (int)Math.floor((Math.random()*100000)+1);
+		String text = "PCGOGO 회원가입 인증번호는 \n"
+					+ "["+token+"]입니다. \n"
+					+ "타인에게 노출되지 않게 주의바랍니다.";
+		
+		Message msg = new Message(KEY, SECRET);
+		
+		HashMap<String, String> settings = new HashMap<>();
+		settings.put("to", phone);
+		settings.put("from", FROM);
+		settings.put("type", "SMS");
+		settings.put("text", text);
+		settings.put("app_version", "pcgogo");
+		
+		Map<String, Object> resultMap;
+		try {
+			JSONObject result = (JSONObject)msg.send(settings);
+			resultMap = new HashMap<>();
+			resultMap.put("result", result.get("error_count"));
+			resultMap.put("token", String.valueOf(token));
+		} catch (CoolsmsException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getCode());
+			resultMap = null;
+		}
+		return resultMap;
 	}
 }
