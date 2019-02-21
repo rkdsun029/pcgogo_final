@@ -99,7 +99,21 @@ fieldset input{width: 220px !important;}
 		var $target = $(this);
 		var mId = $target.val().trim();
 		var exp = /^[A-Za-z0-9]{8,}$/g;
-		if(exp.exec(mId)) activeFeedback($target);
+		if(exp.exec(mId)) {
+			$.ajax({
+				url: "${pageContext.request.contextPath}/signUp/checkDuplicate/member",
+				type: "post",
+				data: "userId="+mId,
+				dataType: "json",
+				success: function(data){
+					if(data.isUsable==false){
+						activeFeedback($target, "이미 사용중인 아이디입니다.");
+						return;
+					}
+				}
+			});
+			activeFeedback($target);
+		}
 		else activeFeedback($target, '아이디를 확인해주세요.');
 	});
 	</script>
@@ -167,13 +181,15 @@ fieldset input{width: 220px !important;}
   	}
   	function send_token(){
 		var $target = $("#memberPhone_")
-   	
+		
   		if($target.val().trim().length!=11){
   			activeFeedback($target, "올바른 휴대폰번호를 입력해주세요.");
   			return;
   		} else $target.removeClass("is-invalid");
   		
-  		$.ajax({
+		disalbeAuth(); //테스트용, 나중에 지울것. 밑에 주석도 취소.
+		
+/*    		$.ajax({
   			url: "${pageContext.request.contextPath}/signUp/sendToken",
   			type: "post",
   			data: "phone="+$target.val().trim(),
@@ -189,12 +205,14 @@ fieldset input{width: 220px !important;}
   		  		disableAuth();
   		  		auth_token(data.token);
   			}
-  		});
+  		}); */
   	}
   	</script>
   	<div class="form-row" id="auth-container" style="display:none;">
 	  	<div class="col-md-5 mb-3">
-	  		<input type="hidden" value="0" />
+	  	
+	  		<!-- 테스트 후 value=0으로 바꿀것. -->
+	  		<input type="hidden" value="1" /> 
 		  	<input type="text" class="form-control" placeholder="인증번호 입력"/>
 		  	<div class=""></div>
 		  	<span id="timer" style="margin: -15px 0px 12px 5px;
@@ -221,12 +239,13 @@ fieldset input{width: 220px !important;}
   	}
   	function auth_token(token){
   		$("#btn-auth").on('click', function(){
-  			$target = ;
-  			var token_ = $("#timer").prev().prev().val();
+  			var $target = $("#timer").prev().prev();
+  			var token_ = $target.val();
   			if(token!=token_){
-  				activeFeedback($("#timer").prev().prev(), "인증번호가 일치하지 않습니다.");
+  				activeFeedback($target, "인증번호가 일치하지 않습니다.");
   			}else{
-  				
+  				activeFeedback($target);
+  				activeFeedback($("#memberPhone_"));
   				$("#timer").remove();
   				$("#auth-container *").prop("disabled", true);
   			}
@@ -252,7 +271,8 @@ function validate(){
 	if($("[type=hidden]").eq(0).val()==0 ||
 	   $("[type=hidden]").eq(1).val()==0 ||
 	   $("[type=hidden]").eq(2).val()==0 ||
-	   $("[type=hidden]").eq(3).val()==0){alert("정보를 다시 확인해주세요."); return false;}
+	   $("[type=hidden]").eq(4).val()==0 ||
+	   $("[type=hidden]").eq(5).val()==0){alert("정보를 다시 확인해주세요."); return false;}
 	return true;
 };
 </script>

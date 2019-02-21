@@ -99,7 +99,21 @@ fieldset input{width: 220px !important;}
 		var $target = $(this);
 		var mId = $target.val().trim();
 		var exp = /^[A-Za-z0-9]{8,}$/g;
-		if(exp.exec(mId)) activeFeedback($target);
+		if(exp.exec(mId)) {
+			$.ajax({
+				url: "${pageContext.request.contextPath}/signUp/checkDuplicate/manager",
+				type: "post",
+				data: "userId="+mId,
+				dataType: "json",
+				success: function(data){
+					if(data.isUsable==false){
+						activeFeedback($target, "이미 사용중인 아이디입니다.");
+						return;
+					}
+				}
+			})
+			activeFeedback($target);
+		}
 		else activeFeedback($target, '아이디를 확인해주세요.');
 	});
 	</script>
