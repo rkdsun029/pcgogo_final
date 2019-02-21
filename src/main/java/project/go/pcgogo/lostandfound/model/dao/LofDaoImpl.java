@@ -29,9 +29,24 @@ public class LofDaoImpl implements LofDao {
 	}
 
 	@Override
-	public List<LostAndFound> selectlnfListType(int no) {
+	public List<LostAndFound> selectlnfListType(String no) {
 		
 		return sqlSession.selectList("lnf.selectlnfListType", no);
+	}
+
+	@Override
+	public int selectlnfSelectContents(String no) {
+		return sqlSession.selectOne("lnf.selectlnfSelectContents", no);
+	}
+
+	@Override
+	public List<LostAndFound> selectLnfNameList(String lnfName) {
+		return sqlSession.selectList("lnf.selectLnfNameList", lnfName);
+	}
+
+	@Override
+	public int selectLnfNameCount(String lnfName) {
+		return sqlSession.selectOne("lnf.selectLnfNameCount",lnfName);
 	}
 
 }

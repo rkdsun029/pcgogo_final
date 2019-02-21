@@ -80,59 +80,63 @@ table#lnfList{
 <div id="lostandfound-container">
 	<table id="lostandfound-help">
 		<tr><th colspan="2">분류번호를 이용하면 빠르게 찾을 수 있습니다.</tr>
-		<tr><td>분류1</td><td>핸드폰 / 지갑 / 가방</td></tr>
-		<tr><td>분류2</td><td>충전기 / USB</td></tr>
-		<tr><td>분류3</td><td>카드 / 신분증 / 면허증</td></tr>
-		<tr><td>분류4</td><td>악세사리 / 의류</td></tr>
-		<tr><td>분류5</td><td>기타</td></tr>
+		<tr><td>분류(L1)</td><td>핸드폰 / 지갑 / 가방</td></tr>
+		<tr><td>분류(L2)</td><td>충전기 / USB</td></tr>
+		<tr><td>분류(L3)</td><td>카드 / 신분증 / 면허증</td></tr>
+		<tr><td>분류(L4)</td><td>악세사리 / 의류</td></tr>
+		<tr><td>분류(L5)</td><td>기타</td></tr>
 	</table>
 	<div id="search-bar">
 		<h3>분실물 검색</h3>
 		&nbsp;&nbsp;&nbsp;
 		<select name="optioName" id="optionSelector">
 			<option value="" disabled selected>분류를 선택해 주세요.</option>
-			<option value="1" id="value1">분류1 : 핸드폰 / 지갑 / 가방</option>
-			<option value="2" id="value2">분류2 : 충전기 / USB</option>
-			<option value="3" id="value3">분류3 : 카드 / 신분증 / 면허증</option>
-			<option value="4" id="value4">분류4 : 악세사리 / 의류</option>
-			<option value="5" id="value5">분류5 : 기타</option>
+			<option value="L1" id="value1">분류1 : 핸드폰 / 지갑 / 가방</option>
+			<option value="L2" id="value2">분류2 : 충전기 / USB</option>
+			<option value="L3" id="value3">분류3 : 카드 / 신분증 / 면허증</option>
+			<option value="L4" id="value4">분류4 : 악세사리 / 의류</option>
+			<option value="L5" id="value5">분류5 : 기타</option>
 		</select>
 		&nbsp;&nbsp;&nbsp;
+		<form name="lofSearchNameFrm" id="lofSearchNameFrm" onsubmit="return false;">
 		<input type="text" id="lnfName" name="lnfName" placeholder="물품을 입력해주세요."/>
 		&nbsp;&nbsp;&nbsp;
-		<button onclick="keywordSearch();" class="btn-send">찾기</button>
+		<button class="btn-send">찾기</button>
+		</form>
+		
+		
+		
+		
+		<script>
+
+		</script>
 	</div>   
 	
 	<div id="lnfList-container">
 	<p>총 ${totalContents }건의 분실물이 있습니다.</p>
-	<div id="lnfTotalSearch">
 	
 		<table id="lnfList">
 			<tr>
 				<th>번호</th>
 				<th>분류</th>
 				<th>물품명</th>
-				<th>사진유무</th>
 				<th>보관 중인 pc방</th>
 				<th>습득날짜</th>
 				<th>상태</th>
 			</tr>
 			
 			<c:forEach items="${list}" var="lnf"> 
-			
 			<tr no="${lnf.LNFNO}">
 				<td>${lnf.LNFNO}</td>
-				<td>${lnf.LNFCLASS}</td>
+				<td>${lnf.LNFTYPE}</td>
 				<td>${lnf.LNFNAME}</td>
-				<td>${lnf.LNFPHOTOCHECK}</td>
-				<td>${lnf.LNFPCROOMNAME}</td>
+				<td>${lnf.LNFPCROOMNAME}</td>			
 				<td>${lnf.LNFGETDATE}</td>
 				<td>${lnf.LNFSTATUS}</td>
-			</c:forEach>
 			</tr>
+			</c:forEach> 
 		</table>
 		
-	</div>
 	
 		<% 
 		//int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
@@ -151,29 +155,37 @@ table#lnfList{
 		
 	%>
 	<%= project.go.pcgogo.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "lnfList.do") %>
+	
 	</div>
-	<div class="result" id="lnfType-result"></div>
+	<div class="result" id="lnfType-result"></div>	
+	<div class="result" id="lnfName-result"></div>
+<!-- 	<div class="result" id="lnfName-result">	
+	
+	</div> -->
 </div>
 
 <script>
+/* 분류 선택 */
 	$("#optionSelector").on("change", function(){	
+
 		$("#lnfList-container").hide(1000);
+		$("#lnfName-result").hide(1000);
+		$("#lnfType-result").show(1000);
 		  		$.ajax({
 		  			url: "${pageContext.request.contextPath}/lostandfound/lnfList/"+$(this).val(),
 		  			dataType: "json",
 		  			type: "get",
 		  			success: function(data){
 		  				console.log(data);
-		                var html = "<table id='lnfList'>";
-		                html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>사진유무</th><th>보관중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
-		                for(var i in data){
-		                    html += "<tr><td>"+data[i].lnfNo+"</td>";
-		                    html += "<td>"+data[i].lnfClass+"</td>";
-		                    html += "<td>"+data[i].lnfName+"</td>";
-		                    html += "<td>"+data[i].lnfPhotoCheck+"</td>";
-		                    html += "<td>"+data[i].lnfPcRoomName+"</td>";
-		                    html += "<td>"+new Date(data[i].lnfGetDate).toISOString().slice(0,10)+"</td>";
-		                    html += "<td>"+data[i].lnfStatus+"</td></tr>";
+		                var html = "<p>총 "+data.selectContents+"건의 분실물이 있습니다.</p><table id='lnfList'>";
+		                html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>보관중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
+		                for(var i in data.list){
+		                	html += "<tr no='" + data.list[i].lnfNo + "'><td>"+data.list[i].lnfNo+"</td>";
+		                    html += "<td>"+data.list[i].lnfType+"</td>";
+		                    html += "<td>"+data.list[i].lnfName+"</td>";
+		                    html += "<td>"+data.list[i].lnfPcRoomName+"</td>";
+		                    html += "<td>"+new Date(data.list[i].lnfGetDate).toISOString().slice(0,10)+"</td>";
+		                    html += "<td>"+data.list[i].lnfStatus+"</td></tr>";
 		                }
 		                html+="</table>";
 		                $("#lnfType-result").html(html);
@@ -183,6 +195,52 @@ table#lnfList{
 		            }
 		});
   	});
+	
+	
+	/* 물품명 검색 */
+	$(".btn-send").on("click",function(){
+		$("#lnfList-container").hide(1000);
+		$("#lnfType-result").hide(1000);
+		$("#lnfName-result").show(1000);
+		
+			var lnfName = $("#lofSearchNameFrm [name=lnfName]").val();
+
+			$.ajax({
+	            url:"${pageContext.request.contextPath}/bbb/aaa/lnfName/"+lnfName,
+	            dataType:"json",
+	            type:"get",
+	            success:function(data){
+	                console.log(data);
+	                //리턴데이터가 null인 경우, json으로 변환불가. 빈 Menu객체를 전달함.
+	        		var html = "<p>총 "+data.selectLnfNameCount+"건의 분실물이 있습니다.</p><table id='lnfList'>";	        		
+		                html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>보관중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
+		                for(var i in data.selectList){
+		                    html += "<tr ><td>"+data.selectList[i].lnfNo+"</td>";
+		                    html += "<td>"+data.selectList[i].lnfType+"</td>";
+		                    html += "<td>"+data.selectList[i].lnfName+"</td>";
+		                    html += "<td>"+data.selectList[i].lnfPcRoomName+"</td>";
+		                    html += "<td>"+new Date(data.selectList[i].lnfGetDate).toISOString().slice(0,10)+"</td>";
+		                    html += "<td>"+data.selectList[i].lnfStatus+"</td></tr>";
+		             	
+	        		}
+	                html+="</table>";
+	                $("#lnfName-result").html(html);  
+	            },
+	            error : function(jqxhr, textStatus, errorThrown){
+	                console.log("ajax 처리 실패 : ",jqxhr,textStatus,errorThrown);
+	            }
+
+	        });
+		});	
+	
+$(function(){
+	$("tr[no]").on("click",function(){
+		var lnfNo = $(this).attr("no");
+		console.log("lnfNo = "+lnfNo);
+		location.href = "${pageContext.request.contextPath}/lostandfound/lnfView.do?no="+lnfNo;
+	});
+});
 </script>
 
+<!-- new Date(data[i].lnfGetDate.toISOString().slice(0,10) -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

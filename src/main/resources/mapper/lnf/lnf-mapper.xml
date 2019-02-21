@@ -16,6 +16,21 @@
 	
 	<select id="selectlnfListType" resultType="lnfMap">
 		select * from lostandfound
-		where lnfclass = #{lnfclass}
+		where lnftype = #{lnfType}
+	</select>
+	
+	<select id="selectlnfSelectContents" resultType="_int">
+		select count(*) from lostandfound
+		where lnftype = #{lnfType}
+	</select>
+	
+	<select id="selectLnfNameList" resultType="lnfMap">
+		select * from lostandfound
+		where lnfName = #{lnfName}
+	</select>
+	
+	<select id="selectLnfNameCount" resultType="_int">
+		select count(*) from lostandfound
+		where lnfName = #{lnfName}
 	</select>
 </mapper>
