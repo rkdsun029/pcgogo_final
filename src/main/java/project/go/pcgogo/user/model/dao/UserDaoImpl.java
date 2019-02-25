@@ -1,6 +1,6 @@
 package project.go.pcgogo.user.model.dao;
 
-import java.util.Map;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,17 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public Object selectOneById(Map<String, String> map) {
-		return sqlSession.selectOne("user.selectOneById", map);
+	public int checkDuplicate(String userId) {
+		return sqlSession.selectOne("user.checkDup", userId);
+	}
+
+	@Override
+	public Member selectOneMember(String userId) {
+		return sqlSession.selectOne("user.selectOneMember", userId);
+	}
+
+	@Override
+	public Manager selectOneManager(String userId) {
+		return sqlSession.selectOne("user.selectOneManager", userId);
 	}
 }

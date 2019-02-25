@@ -43,7 +43,7 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
-    $("#menu1").on("click", function(){location.href = "";});
+    $("#menu1").on("click", function(){location.href = "${pageContext.request.contextPath}/login.do";});
     $("#menu2").on("click", function(){location.href = "${pageContext.request.contextPath}/signUp.do";});
     $("#menu3").on("click", function(){location.href = "";});
 });

@@ -8,14 +8,25 @@
 	<insert id="insertMember" parameterType="member">
 		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default)
 	</insert>
-	<select id="selectOneById" resultType="object">
-		select *
-		from ${flag}
-		<if test="flag=='manager'">
-			where managerId=#{userId}
-		</if>
-		<if test="flag=='member'">
-			where memberId=#{userId}
-		</if>
+	<select id="checkDup" resultType="_int">
+		select count(*) 
+		from(select memberId as userId
+     		 from(select memberId
+          	 from member
+         	 union all
+          	 select managerId 
+          	 from manager))
+		where userId=#{userId}
 	</select>
+	<select id="selectOneMember" resultType="member">
+		select *
+		from member
+		where memberId=#{userId}
+	</select>
+	<select id="selectOneManager" resultType="manager">
+		select *
+		from manager
+		where managerId=#{userId}
+	</select>
+
 </mapper>

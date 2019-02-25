@@ -101,7 +101,7 @@ fieldset input{width: 220px !important;}
 		var exp = /^[A-Za-z0-9]{8,}$/g;
 		if(exp.exec(mId)) {
 			$.ajax({
-				url: "${pageContext.request.contextPath}/signUp/checkDuplicate/manager",
+				url: "${pageContext.request.contextPath}/signUp/checkDuplicate.do",
 				type: "post",
 				data: "userId="+mId,
 				dataType: "json",

@@ -10,17 +10,22 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -33,10 +38,21 @@ import project.go.pcgogo.user.model.vo.Member;
 @Controller
 public class UserController {
 	Logger logger = Logger.getLogger(getClass());
-		
+	
+	@Autowired
+	BCryptPasswordEncoder pwdEncoder;
+	
 	@Autowired
 	UserService userService;
 	
+	@RequestMapping(value="/login.do")
+	public ModelAndView goLogin(@CookieValue(value="saveId", defaultValue="") String userId, ModelAndView mav) {
+		if(!"".equals(userId)) {
+			mav.addObject("savedId", userId);
+		}
+		mav.setViewName("user/login");
+		return mav;
+	}
 	@RequestMapping(value="/signUp.do")
 	public String goSignUp() {
 		return "user/signUp";
@@ -101,10 +117,6 @@ public class UserController {
 		return "user/signUpEnd";
 	}
 	
-	@RequestMapping("/signUpEnd/test")
-	public String goSignUpEnd() {
-		return "user/signUpEnd";
-	}
 	@RequestMapping(value="/signUp/getToken")
 	@ResponseBody
 	public String getToken() {
@@ -197,17 +209,70 @@ public class UserController {
 		return resultMap;
 	}
 	
-	@RequestMapping("/signUp/checkDuplicate/{flag}")
+	@RequestMapping("/signUp/checkDuplicate.do")
 	@ResponseBody
-	public Map<String, Object> checkDuplicate(@PathVariable String flag, @RequestParam("userId") String userId){
-		Map<String, String> map = new HashMap<>();
-		map.put("flag", flag);
-		map.put("userId", userId);
-		Object obj = userService.selectOneById(map);
-		logger.info(obj);
-		boolean isUsable = obj==null?true:false;
+	public Map<String, Object> checkDuplicate(@RequestParam("userId") String userId){
+		int cnt = userService.checkDuplicate(userId);
+		logger.info(cnt);
+		boolean isUsable = cnt==0?true:false;
 		Map<String, Object> result = new HashMap<>();
 		result.put("isUsable", isUsable);
 		return result;
+	}
+	
+	@RequestMapping(value="/loginReq.do")
+	public ModelAndView loginReq(@RequestParam("userId") String userId,
+								 @RequestParam("userPwd") String userPwd,
+								 @RequestParam(value="saveId", defaultValue="N") String isSave,
+								 HttpServletResponse res,
+								 ModelAndView mav){
+		String view ="common/msg";
+		String msg = "";
+		String loc = "/login.do";
+		logger.info(isSave);
+		Object obj = userService.selectOneMember(userId);
+		if("Y".equals(isSave)) {
+			Cookie cook = new Cookie("saveId", userId);
+			cook.setMaxAge(60 * 60 * 24);
+			cook.setPath("/");
+			res.addCookie(cook);
+		}else {
+			Cookie cook = new Cookie("saveId", null);
+			cook.setMaxAge(0);
+			cook.setPath("/");
+			res.addCookie(cook);
+		}
+		
+		if(obj==null) {
+			obj = userService.selectOneManager(userId);
+			if(obj==null) {
+				msg = "존재하지 않는 아이디입니다.";
+			}
+			else{
+				Manager m = (Manager)obj;
+				if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
+					mav.addObject("loggedInManager", m);
+					view = "redirect:/";
+				}
+				else {
+					logger.info(userPwd);
+					logger.info(m.getManagerPassword());
+					msg = "비밀번호가 일치하지 않습니다";
+				}
+			}
+		}else {
+			Member m = (Member)obj;
+			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
+				mav.addObject("loggedInMember", m);
+				view = "redirect:/";
+			}
+			else {
+				msg = "비밀번호가 일치하지 않습니다";
+			}
+		}
+		mav.setViewName(view);
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+		return mav;
 	}
 }
