@@ -72,7 +72,7 @@ public class ManagerController {
 		int pmCol = 0;
 		
 		switch(option) {
-		case 1 : pmRow = 20; pmCol = 30;
+		case 1 : pmRow = 5; pmCol = 5;
 			break;
 		case 2 : pmRow = 20; pmCol = 40;
 			break;
