@@ -2,10 +2,10 @@ package project.go.pcgogo.pcRoom.model.dao;
 
 import java.util.List;
 
-import project.go.pcgogo.pcRoom.model.vo.pcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 
 public interface PcDao {
 
-	List<pcRoom> pcList(String pcRoom);
+	List<PcRoom> pcList(String pcRoom);
 
 }

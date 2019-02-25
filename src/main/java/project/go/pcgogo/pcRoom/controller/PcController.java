@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import project.go.pcgogo.pcRoom.model.service.PcService;
-import project.go.pcgogo.pcRoom.model.vo.pcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 
 @Controller
 public class PcController {
@@ -31,10 +31,10 @@ public class PcController {
 	}
 	
 	@RequestMapping("pcRoom/pcList.do")
-	public @ResponseBody List<pcRoom> pcList(@RequestParam(value="pcRoom")String pcRoom){
+	public @ResponseBody List<PcRoom> pcList(@RequestParam(value="pcRoom")String pcRoom){
 		System.out.println("controller"+pcRoom);
 		
-		List<pcRoom> pc = pcService.pcList(pcRoom);
+		List<PcRoom> pc = pcService.pcList(pcRoom);
 		
 		System.out.println(pc);
 		return pc;

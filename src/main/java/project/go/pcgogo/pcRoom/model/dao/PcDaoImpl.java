@@ -6,7 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import project.go.pcgogo.pcRoom.model.vo.pcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 
 @Repository
 public class PcDaoImpl implements PcDao {
@@ -15,7 +15,7 @@ public class PcDaoImpl implements PcDao {
 	SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<pcRoom> pcList(String pcRoom) {
+	public List<PcRoom> pcList(String pcRoom) {
 		// TODO Auto-generated method stub
 		System.out.println("dao"+pcRoom);
 		return sqlSession.selectList("pcRoom.pcList",pcRoom);

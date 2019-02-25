@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.pcRoom.model.dao.PcDao;
-import project.go.pcgogo.pcRoom.model.vo.pcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 
 @Service
 public class PcServiceImpl implements PcService {
@@ -15,7 +15,7 @@ public class PcServiceImpl implements PcService {
 	PcDao pcDao;
 
 	@Override
-	public List<pcRoom> pcList(String pcRoom) {
+	public List<PcRoom> pcList(String pcRoom) {
 		System.out.println("Service"+pcRoom);
 		return pcDao.pcList(pcRoom);
 	}

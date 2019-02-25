@@ -192,16 +192,6 @@
         top:2px;
         margin-left:10px;
     }
-    div.legend1{
-        
-        display:inline-block;
-        width:12px;
-        height:12px;
-        border:1px solid;
-        top:2px;
-        margin-left:10px;
-        position:absolute;
-    }
     
     div.plain{background:white;}
     div.special{background:red;}
@@ -213,6 +203,7 @@
     div.smoking{background:brown;}
     div.etc{background:darkslategrey}
     div.wall{background:gray;}
+    div.empty{border: 0px; background:rgba(0,0,0,0);}
     div#seats{
         display:inline-block;
         width:850px;
@@ -221,64 +212,157 @@
         margin:0 auto;
         margin-top:50px;
     }
+    
+    .nowSitting{
+        animation-name: nowSitting;
+        animation-duration: .5s;
+        animation-iteration-count: infinite;      
+    }
+    @keyframes nowSitting{
+        0%{border:1px solid white}
+        100%{border:1px solid black}
+    }
+    #seatsTable tr td{
+        width: 20px;
+        height: 20px;
+
+    }
     </style>
  
 	<section id="main-container">
-        <div id="seat-outer-container">
-            <h1>자리배치도</h1>
-            <input type="text" id="pcRoom" name="pcRoom" placeholder="피시방이름" />
-           	<button id="nowPcRoom">검색</button>
-           	<a href="${pageContext.request.contextPath}/pcRoom/pcListAdd.do">피시방추가</a>
-           	
-            <div id="seat-container">
-                <div id="seat-legend">
-                    <ul>
-                        <li>일반석 <div class="legend plain"></div></li>
-                        <li>특별석 <div class="legend special"></div></li>
-                        <li>화장실 <div class="legend toilet"></div></li>
-                        <li>출입구 <div class="legend exit"></div></li>
-                        <li>카운터 <div class="legend counter"></div></li>
-                        <li>무인기 <div class="legend kiosk"></div></li>
-                        <li>정수기 <div class="legend water"></div></li>
-                        <li>흡연실 <div class="legend smoking"></div></li>
-                        <li>기　타 <div class="legend etc"></div></li>
-                        <li>　벽　 <div class="legend wall"></div></li>
-                    </ul>
-                </div>
-                <div id="seats">
-	               
-                </div>
-                
-            </div>
-        </div>
+        <div id="container">
+            <h1>자리현황</h1>
+           	<button onclick="srcPcRoom()">내 주변 검색</button>
+			<select name="setArea" id="setArea">
+				<option value="" disabled selected>지역 선택</option>
+				<option area_seq="1" value="서울">서울</option>
+				<option area_seq="2" value="경기">경기</option>
+				<option area_seq="3" value="인천">인천</option>
+				<option area_seq="4" value="강원">강원</option>
+				<option area_seq="5" value="부산">부산</option>
+				<option area_seq="6" value="대구">대구</option>
+				<option area_seq="7" value="경북">경북</option>
+				<option area_seq="8" value="울산">울산</option>
+				<option area_seq="9" value="대전">대전</option>
+				<option area_seq="10" value="충남">충남</option>
+				<option area_seq="11" value="충북">충북</option>
+				<option area_seq="12" value="광주">광주</option>
+				<option area_seq="13" value="전남">전남</option>
+				<option area_seq="14" value="전북">전북</option>
+				<option area_seq="15" value="제주">제주</option>
+			</select>
+			<input type="text" id="mapSrc" name="mapSrc" placeholder="피씨방 이름" />
+           	<button onclick="mapSrc()">피씨방 검색 </button>
+			</div>
+        <div id="map" style="width:300px;height:300px;"></div>
+			<div id="seats"></div>
     </section>   
-    <script>
-    $("#nowPcRoom").on("click", function(){
-    	var pcRoom = $("#pcRoom").val();
-    	$.ajax({
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec95021a67763d0b8e870b0e01a6797c&libraries=services"></script>
+<script>
+var area = "";
+$("#setArea").change(function(){
+    area = $("#setArea>option:selected").html();
+});
+
+//마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+var infowindow = new daum.maps.InfoWindow({zIndex:1});
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new daum.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new daum.maps.Map(mapContainer, mapOption); 
+
+function mapSrc(){
+	map = new daum.maps.Map(mapContainer, mapOption); 
+	// 장소 검색 객체를 생성합니다
+	var ps = new daum.maps.services.Places(); 
+	var a = $("#mapSrc").val();
+	// 키워드로 장소를 검색합니다
+	ps.keywordSearch(a, placesSearchCB); 
+};
+
+
+
+
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+function placesSearchCB (data, status, pagination) {
+    if (status === daum.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        var bounds = new daum.maps.LatLngBounds();
+        
+		//지도 마커에 표시할 데이터를 보내는 곳 데이터는 
+        for (var i=0; i<data.length; i++) {
+        	var b = data[i].address_name; //지역 이름
+        	if(b.indexOf(area)>-1){//지역이름에 검색할 옵션의 지역이름이 포함되면
+        		displayMarker(data[i]);  //마커표시
+                bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
+        	}
+            
+        }       
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+    } 
+}
+
+// 지도에 마커를 표시하는 함수입니다
+function displayMarker(place) {
+    
+    // 마커를 생성하고 지도에 표시합니다
+    var marker = new daum.maps.Marker({
+        map: map,
+        position: new daum.maps.LatLng(place.y, place.x) 
+    });
+
+    // 마커에 클릭이벤트를 등록합니다
+    daum.maps.event.addListener(marker, 'click', function() {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+        infowindow.open(map, marker);
+        
+        var pcRoom = place.place_name;
+        $.ajax({
     		url:"${pageContext.request.contextPath}/pcRoom/pcList.do",
     	    data: {pcRoom : pcRoom},
     	    dataType: "json",
     		type: "get",
     		success : function(data){
-    			var html = "";
-    			for(var i in data){
-    				html += "<div class='legend1 "+data[i].legend+"' style = 'left : "+data[i].xLoc+"px; top : "+data[i].yLoc+"px;'></div>";
+    			var html = "<table id='seatsTable'>"
+   				for(var j=1; j<4; j++){//j=y값
+    				html += "<tr id='tr"+j+"'>";
+	    			for(var i = 1; i<21; i++){// i=x값 i는 있는데 datak xloc 은 없어 
+	    				for(var k in data){
+        					var x = data[k].xLoc;
+        					var y = data[k].yLoc;
+        					if(j==y && i==x){
+        						var a = data[k].nowSitting;
+	        					console.log("j="+j+", y="+y+", i="+i+", x="+x+", a="+a);
+        						if(a=='y'){
+        	    					html += "<td id='td"+x+"'><div class='nowSitting legend "+data[i].legend+"'></div></td>";}
+                				else if(a=='n'){
+        	    					html += "<td id='td"+x+"'><div class='legend "+data[i].legend+"'></div></td>";}
+        					}
+        					//else if(j==y || i!=x){
+        						//html += "<td id='td"+x+"'><div class='legend empty'></div></td>";}
+						}
+    				}
+    					html +="</tr>";
     			}
+    			html +="</table>";
     			$("#seats").html(html);
     		},
     		error: function(){
     			console.log("error");
-    			
     		}
-    		
     	});
-    	
-    	
     });
-    
-    
-    </script>
-
+}
+</script>
+ 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -2,9 +2,9 @@ package project.go.pcgogo.pcRoom.model.service;
 
 import java.util.List;
 
-import project.go.pcgogo.pcRoom.model.vo.pcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 
 public interface PcService {
 
-	List<pcRoom> pcList(String pcRoom);
+	List<PcRoom> pcList(String pcRoom);
 }
