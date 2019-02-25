@@ -79,11 +79,11 @@ div.stepDot:after{
 </center><br><br><br>
 <div id="select-container">
     <div id="reg-manager">
-        <img src="${pageContext.request.contextPath }/resources/image/member/register/manager.png" alt="">
+        <img src="${pageContext.request.contextPath }/resources/image/user/register/manager.png" alt="">
         <span>사장님</span>
     </div>
     <div id="reg-member">
-        <img src="${pageContext.request.contextPath }/resources/image/member/register/member.png" alt="">
+        <img src="${pageContext.request.contextPath }/resources/image/user/register/member.png" alt="">
         <span>일반회원</span>
     </div>
 <h1>회원 구분을 선택해주세요.</h1>

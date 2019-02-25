@@ -1,6 +1,6 @@
 package project.go.pcgogo.user.model.service;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Object selectOneById(Map<String, String> map) {
-		return memberDao.selectOneById(map);
+	public int checkDuplicate(String userId) {
+		return memberDao.checkDuplicate(userId);
+	}
+
+	@Override
+	public Member selectOneMember(String userId) {
+		return memberDao.selectOneMember(userId);
+	}
+
+	@Override
+	public Manager selectOneManager(String userId) {
+		return memberDao.selectOneManager(userId);
 	}
 
 }
