@@ -50,7 +50,7 @@ h1#head-title{
 div#placement-container{
 	position:relative;
 	width:970px;
-	height:680px;
+	min-height:680px;
 	border-radius:10px;
 	border:1px solid #c8c8c8;
 	margin:0 auto;
@@ -71,19 +71,17 @@ div.seat{
 	display:block;
     width:30px;
     height:30px;
-    margin:1px;
+    /* margin:1px; */
     cursor:pointer;
 }
-div.plain{background:white;}
-div.special{background:red;}
 div.toilet{background:purple;}
 div.exit{background:skyblue;}
 div.counter{background:orange;}
 div.kiosk{background:blue;}
 div.water{background:cyan;}
+div.air{background:pink;}
 div.smoking{background:brown;}
 div.etc{background:darkslategrey;}
-
 select#classification{
 	width:170px;
 	height:30px;
