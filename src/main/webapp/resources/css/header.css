@@ -112,7 +112,6 @@ div#quick-menu .quick{
 div.quick img{
 	display:block;
 	width:55px;
-	height:55px;
 	margin:0 auto;
 	padding-top:10px;
 	padding-bottom:10px;
@@ -139,6 +138,7 @@ h1#page-title{
 	font-weight:bold;
 	margin:0px;
 	margin-bottom:20px;
+	font-size: 1.5em !important;
 }
 hr{
 	background:lightgray;

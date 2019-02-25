@@ -20,12 +20,12 @@ form#loginFrm{
 <form id="loginFrm" action="${pageContext.request.contextPath }/loginReq.do" method="post">
   <div class="form-group">
     <label for="exampleInputEmail1">ID</label>
-    <input type="text" name="userId" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter ID"
+    <input type="text" name="userId" class="form-control" id="userId" aria-describedby="emailHelp" placeholder="Enter ID"
     value="${savedId != null ?savedId:'' }">
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
-    <input type="password" name="userPwd" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    <input type="password" name="userPwd" class="form-control" id="userPwd" placeholder="Password">
   </div>
   <div class="form-group form-check">
     <input type="checkbox" name="saveId" class="form-check-input" id="exampleCheck1" value="N"
@@ -39,8 +39,23 @@ form#loginFrm{
   });
   </script>
   <div style="text-align: center;">
-  	<button type="submit" class="btn btn-primary">Login</button>
+  	<button type="submit" class="btn btn-primary" onclick="return validate();">Login</button>
   	<button type="button" class="btn btn-info" onclick="location.href='${pageContext.request.contextPath}/signUp.do'">SignUp</button>
   </div>
+  <script>
+  function validate(){
+	  var uId = $("#userId").val().trim();
+	  var uPwd = $("#userPwd").val().trim();
+	  if(uId.length==0){
+		  alert("아이디를 입력해주세요.");
+		  return false;
+	  }
+	  if(uPwd.length==0){
+		  alert("비밀번호를 입력해주세요.");
+		  return false;
+	  }
+	  return true;
+  }
+  </script>
 </form>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
