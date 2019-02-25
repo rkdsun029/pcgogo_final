@@ -22,8 +22,11 @@
 	<button onclick="goToStep5();">다음</button>
 </div>
 <script>
+$(function(){
+	console.log("${option}");
+});
 function goToStep5(){
-	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do";
+	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do?option=${option}";
 }
 </script>
 </body>
