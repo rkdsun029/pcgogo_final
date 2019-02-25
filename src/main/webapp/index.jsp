@@ -5,6 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-
+<input type="button" />
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
