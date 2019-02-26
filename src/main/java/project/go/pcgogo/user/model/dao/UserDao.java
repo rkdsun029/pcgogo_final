@@ -2,6 +2,8 @@ package project.go.pcgogo.user.model.dao;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.User;
+
 import project.go.pcgogo.user.model.vo.Manager;
 import project.go.pcgogo.user.model.vo.Member;
 
@@ -16,5 +18,7 @@ public interface UserDao {
 	Member selectOneMember(String userId);
 
 	Manager selectOneManager(String userId);
+
+//	List<User> selectByName(String memberId);
 
 }

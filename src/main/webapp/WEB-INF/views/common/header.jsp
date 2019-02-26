@@ -74,6 +74,8 @@ $(function(){
         onclick="location.href='${pageContext.request.contextPath}/logout.do'"/>로그아웃</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
+        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
     </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>
