@@ -71,13 +71,12 @@ $(function(){
     <c:if test="${loggedInUser != null }">
     	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" />내 정보</div>
         <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
-        onclick="location.href='${pageContext.request.contextPath}/logout.do'"/>로그아웃</div>
+        onclick="location.href='${pageContext.request.contextPath}/logout.do'" />로그아웃</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
     </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>
-	
     <section id="main-container">
     	<div id="padding">
 	    	<h1 id="page-title">${param.pageTitle}</h1>
