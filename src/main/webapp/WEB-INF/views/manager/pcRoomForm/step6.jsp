@@ -15,6 +15,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <script>
 $(function(){
+	var pmContent_ = "";
 	var pmTd_ = $("td").length;
 	var currValNum = 0;
 	
@@ -57,6 +58,14 @@ $(function(){
 		if(tempArr[s] == "z") $("td").eq(s).find("div#seat__").addClass("wall");		
 	}
 	
+	/* 좌석누르면 좌석번호 생성 */
+	$(".plain, .special, .couple").on("click", function(){
+		$(this).find("span").html(++currValNum);
+		$(this).find("span").val(currValNum);
+		
+		$(this).off("click");
+	});	
+
 	/* 되돌리기 */
 	$("button#ctrlZ").on("click", function(){
 		
@@ -73,8 +82,52 @@ $(function(){
 	});
 	
 	/* 초기화 */
+	$("button#resetSeatNo").on("click", function(){
+		var temp = confirm("정말 초기화 하시겠습니까?");
+		if(!temp) return;
+		else window.location.reload(true);
+	});
 	
 	/* 등록 */
+	$("button#submitSeatNo").on("click", function(){
+		var temp = confirm("좌석번호를 저장하시겠습니까?");
+		if(!temp) return;
+		else{
+			for(var s=0; s<pmTd_; s++){
+			/* 	console.log("찍기 span : ",s,":", parseInt($("td").eq(s).find("span").val()));
+				console.log("찍기 input :",s,":", $("td").eq(s).find("input").val()); */
+				
+				if(s == parseInt(pmTd_)-1){
+					if($("td").eq(s).find("span").length != 0){
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
+						pmContent_ += parseInt($("td").eq(s).find("span").val());
+					}
+					else{
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val()";										
+					}
+				}
+				else {
+					if($("td").eq(s).find("span").length != 0){
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
+						pmContent_ += parseInt($("td").eq(s).find("span").val()) + ",";
+					}
+					else{
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";										
+					}
+				}
+			}
+			
+			console.log("pmContent_:", pmContent_);
+
+			$("input[name=pmContent_]").val(pmContent_);
+			
+			console.log($("input[name=pmRow_]").val());
+			console.log($("input[name=pmCol_]").val());
+			console.log($("input[name=pmContent_]").val());
+			
+			/* $("form#main-info-result").submit(); */
+		};
+	});
 });
 </script>
 <style>
@@ -137,6 +190,13 @@ input#currVal{
 </head>
 <body>
 <h1 id="head-title">PCGOGO.COM</h1>
+
+<form id="main-info-result" action="${pageContext.request.contextPath }/manager/pcRoomForm_end.do">
+	<input type="hidden" name="pmRow_" value="${requestScope.pmRow }"/>
+	<input type="hidden" name="pmCol_" value="${requestScope.pmCol }"/>
+	<input type="hidden" name="pmContent_"/>
+</form>
+
 <input type="hidden" id="hiddenPmContent" value="${requestScope.pmContent }"/>
 <h3 id="seatNo-help-legend">&lt; 좌석번호 입력 &gt;</h3>
 <div id="seatNo-help">
@@ -148,7 +208,6 @@ input#currVal{
 </div>
 		
 <div id="seatNo-status">
-	<span>현재번호 : <input type="number" id="currVal" value="0" readonly/></span>
 	<button id="ctrlZ">되돌리기</button>
 	<button id="makeAutoSeatNo">자동으로 번호 생성</button>
 </div>
