@@ -2,6 +2,7 @@ package project.go.pcgogo.faq.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 public class Post implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -15,13 +16,17 @@ public class Post implements Serializable{
 	private Date postDate; // FAQ등록일
 	private int postReadCount; // FAQ조회수
 	private String postOpened; // FAQ비공개여부
+	private int attachNo; // 첨부파일개수
+	private int commentNum; // 댓글개수
+	private List<AttachFile> files;
 	
 	public Post() {
 		super();
 	}
 
 	public Post(int postNo, String memberId, String postTitle, String postWriter, String postContent, 
-			String postOriginalFile, String postRenamedFile, Date postDate, int postReadCount, String postOpened) {
+			String postOriginalFile, String postRenamedFile, Date postDate, int postReadCount, String postOpened, 
+			int attachNo, int commentNum, List<AttachFile> files) {
 		super();
 		this.postNo = postNo;
 		this.memberId = memberId;
@@ -33,6 +38,9 @@ public class Post implements Serializable{
 		this.postDate = postDate;
 		this.postReadCount = postReadCount;
 		this.postOpened = postOpened;
+		this.attachNo = attachNo;
+		this.commentNum = commentNum;
+		this.files = files;
 	}
 
 	public int getPostNo() {
@@ -114,13 +122,37 @@ public class Post implements Serializable{
 	public void setPostOpened(String postOpened) {
 		this.postOpened = postOpened;
 	}
-
+	
+	public int getAttachNo() {
+		return attachNo;
+	}
+	
+	public void setAttachNo(int attachNo) {
+		this.attachNo = attachNo;
+	}
+	
+	public int getCommentNum() {
+		return commentNum;
+	}
+	
+	public void setCommentNum(int commentNum) {
+		this.commentNum = commentNum;
+	}
+	
+	public List<AttachFile> getFiles() {
+		return files;
+	}
+	public void setFiles(List<AttachFile> files) {
+		this.files = files;
+	}
+	
 	@Override
 	public String toString() {
 		return "Post [postNo=" + postNo + ", memberId=" + memberId + ", postTitle=" + postTitle + ", postWriter="
 				+ postWriter + ", postContent" + postContent + ", postOriginalFile=" + postOriginalFile 
 				+ ", postRenamedFile=" + postRenamedFile + ", postDate=" + postDate + ", postReadCount=" 
-				+ postReadCount + ", postOpened=" + postOpened + "]";
+				+ postReadCount + ", postOpened=" + postOpened + ", attachNo=" + attachNo + 
+				", commentNum=" + commentNum + ", files=" + files +  "]";
 	}
 	
 }
