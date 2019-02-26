@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project.go.pcgogo.lostandfound.model.vo.Attachment;
 import project.go.pcgogo.lostandfound.model.vo.LostAndFound;
 
 @Repository
@@ -48,5 +49,27 @@ public class LofDaoImpl implements LofDao {
 	public int selectLnfNameCount(String lnfName) {
 		return sqlSession.selectOne("lnf.selectLnfNameCount",lnfName);
 	}
+
+	@Override
+	public List<Map<String, String>> selectViewList(int no) {
+		return sqlSession.selectList("lnf.selectViewList",no);
+	}
+	
+	@Override
+	public List<Map<String, String>> selectViewImgList(int no) {
+		return sqlSession.selectList("lnf.selectViewImgList",no);
+	}
+	
+	@Override
+	public int insertBoard(LostAndFound lostandfound) {
+		return sqlSession.insert("lnf.insertBoard", lostandfound);
+	}
+
+	@Override
+	public int insertAttachment(Attachment a) {
+		return sqlSession.insert("lnf.insertAttachment", a);
+	}
+
+	
 
 }

@@ -10,6 +10,8 @@
 	<typeAliases>
 	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.LostAndFound"
 				   alias="lnfMap"/>
+	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.Attachment"
+				   alias="attach"/>
 	   <typeAlias type="project.go.pcgogo.member.model.vo.Manager" alias="manager"/>
 	</typeAliases>
 </configuration>
