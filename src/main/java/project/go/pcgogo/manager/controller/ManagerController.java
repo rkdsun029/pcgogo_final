@@ -101,14 +101,16 @@ public class ManagerController {
 		return mav;
 	}
 	
-	@RequestMapping("manager/pcRoomForm_step7.do")
-	public String pcRoomFormStep7() {
-		return "manager/pcRoomForm/step7";
-	}
-	
 	@RequestMapping("manager/pcRoomForm_end.do")
-	public String pcRoomFormEnd() {
-		return "common/msg";
+	public ModelAndView pcRoomFormEnd(@RequestParam (value="pmRow_") int pmRow,
+							  @RequestParam (value="pmCol_") int pmCol,
+							  @RequestParam (value="pmContent_") String pmContent,
+							  ModelAndView mav) {
+		
+		
+		
+		mav.setViewName("manager/pcRoomForm/step7");
+		return mav;
 	}
 	
 }
