@@ -90,7 +90,7 @@ div#quick-menu{
     position: absolute;
     right:25px;
     width: 100px;
-    height: 350px;
+    min-height: 350px;
     background:gray;
     border:1px solid gray; 
     text-align:center;

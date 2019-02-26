@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,6 +39,7 @@ import project.go.pcgogo.user.model.vo.Member;
 
 
 @Controller
+@SessionAttributes(value = {"loggedInUser"})
 public class UserController {
 	Logger logger = Logger.getLogger(getClass());
 	
@@ -53,6 +57,18 @@ public class UserController {
 		mav.setViewName("user/login");
 		return mav;
 	}
+	
+	@RequestMapping(value="/logout.do")
+	public String logout(SessionStatus status) {
+		if(!status.isComplete()) status.setComplete();
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/login/{target}")
+	public String goLoginCallback(@PathVariable String target) {
+		return "user/loginTo_"+target;
+	}
+	
 	@RequestMapping(value="/signUp.do")
 	public String goSignUp() {
 		return "user/signUp";
@@ -109,8 +125,9 @@ public class UserController {
 	}
 	
 	@RequestMapping("/signUpEnd/member")
-	public String insertUser(Member m, HttpServletRequest request) {
+	public String insertMember(Member m, HttpServletRequest request) {
 		logger.info(m.toString());
+		m.setIsSocial(false);
 		int result = userService.insertMember(m);
 		request.setAttribute("result", result);
 		request.setAttribute("flag", "member");
@@ -229,8 +246,8 @@ public class UserController {
 		String view ="common/msg";
 		String msg = "";
 		String loc = "/login.do";
-		logger.info(isSave);
 		Object obj = userService.selectOneMember(userId);
+		
 		if("Y".equals(isSave)) {
 			Cookie cook = new Cookie("saveId", userId);
 			cook.setMaxAge(60 * 60 * 24);
@@ -251,7 +268,8 @@ public class UserController {
 			else{
 				Manager m = (Manager)obj;
 				if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
-					mav.addObject("loggedInManager", m);
+					mav.addObject("loggedInUser", m);
+//					session.setAttribute("loggedInUser", m);
 					view = "redirect:/";
 				}
 				else {
@@ -263,7 +281,9 @@ public class UserController {
 		}else {
 			Member m = (Member)obj;
 			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
-				mav.addObject("loggedInMember", m);
+				mav.addObject("loggedInUser", m);
+				m.setIsSocial(false);
+//				session.setAttribute("loggedInUser", m);
 				view = "redirect:/";
 			}
 			else {
@@ -274,5 +294,24 @@ public class UserController {
 		mav.addObject("msg", msg);
 		mav.addObject("loc", loc);
 		return mav;
+	}
+	
+	@RequestMapping(value="/login/socialLoginEnd")
+	@ResponseBody
+	public void socialLoginEnd(@RequestParam("userId") String userId,
+							   ModelAndView mav,
+							   HttpServletRequest req) {
+		Member m = new Member();
+		if(userId.indexOf("@")>-1) {
+			m.setMemberEmail(userId);
+			userId = userId.substring(0, userId.lastIndexOf("@"));
+			m.setMemberId(userId);
+		}else {
+			m.setMemberId(userId);
+		}
+		m.setIsSocial(true);
+//		mav.addObject("loggedInUser", m);
+		req.getSession(true).setAttribute("loggedInUser", m);
+		logger.info(m);
 	}
 }
