@@ -14,12 +14,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <style>
+h1#head-title{display:block;}
 div.plain{background:url("${pageContext.request.contextPath}/resources/image/manager/plain.png");}
 div.special{background:url("${pageContext.request.contextPath}/resources/image/manager/special.png");}
 div.couple{background:url("${pageContext.request.contextPath}/resources/image/manager/couple.png");}
 div.wall{background:url("${pageContext.request.contextPath}/resources/image/manager/wall.png");}
 </style>
-
 <script>
 $(function(){
 	var pmRow_ = $("tr").length;
@@ -160,8 +160,9 @@ $(function(){
 		</tr>		
 	</c:forEach>
 </table>
-<button class="formBtn" id="resetPlacement">초기화</button>
-<button class="formBtn" id="submitPlacement">등록</button>
-
+<div id="pm-button-container">
+	<button class="formBtn" id="resetPlacement">초기화</button>
+	<button class="formBtn" id="submitPlacement">등록</button>
+</div>
 </body>
 </html>
