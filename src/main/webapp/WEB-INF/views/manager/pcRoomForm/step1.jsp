@@ -20,27 +20,29 @@
 	<h1 id="head-title">PCGOGO.COM</h1>
 	<h3>신규 PC방 등록화면입니다.</h3>
 	<h3>비밀번호를 한 번 더 입력하여 주십시오.</h3>
-	<form name="startInsertForm" action="${pageContext.request.contextPath}/manager/pcRoomForm_step2.do">
-		<input type="hidden" id="managerId" name="managerId" value="${loggedInManager }"/>
-		<input type="password" id="password" name="password"/>
-		<button id="checkPassword">확인</button>
-	</form>
+	<input type="hidden" id="managerId" name="managerId" value="${loggedInManager }"/>
+	<input type="password" id="password" name="password"/>
+	<button id="checkPassword">확인</button>
 </div>
 <script>
 $("button#checkPassword").on("click", function(){
 	$.ajax({
 		url : "${pageContext.request.contextPath}/manager/checkPassword.do",
 		data : {
-			"managerId" : managerId,
-			"password" : password
+			"managerId" : $("input#managerId").val(),
+			"password" : $("input#password").val()
 		},
 		type : "post",
 		dataType : "json",
 		success : function(data){
 			console.log("AJAX SUCCEED");
+			/* console.log(data); */
 			
-			alert("PC방 등록을 시작합니다.");
-			$("form[name=startInsertForm]").submit();
+			if(data.result) {
+				alert("PC방 등록을 시작합니다.");
+				location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step2.do";
+			}
+			else alert("비밀번호가 일치하지 않습니다.")
 		},
 		error : function(){
 			console.log("AJAX ERROR");

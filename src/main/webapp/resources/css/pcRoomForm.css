@@ -177,3 +177,7 @@ button#makeAutoSeatNo{
 	cursor:pointer;
 	margin-left:10px;
 }
+h2.floorNum_, h4#seatLegend{
+	text-align:center;
+	font-family:'Nanum Gothic', sans-serif;
+}
