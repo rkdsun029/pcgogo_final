@@ -26,4 +26,12 @@ public interface LofService {
 
 	List<Map<String, String>> selectViewImgList(int no);
 
+	int completeDev(LostAndFound lostandfound);
+
+	int deleteDev(int lnfNo);
+
+
+
+
+
 }

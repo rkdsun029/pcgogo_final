@@ -14,9 +14,26 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
 <style>
+div#outer-container{
+	width:600px;
+	height:420px;
+	margin-top:120px;
+}
+select#seats{
+	width:200px;
+	height:30px;
+	margin-left:20px;
+	font-family: 'Nanum Gothic', sans-serif;
+}
+select#floorClass{
+	width:55px;
+	height:30px;
+	margin-left:20px;
+	font-family: 'Nanum Gothic', sans-serif;
+}
 button#addFloor{
 	text-align:center;
-    width:300px;
+    width:250px;
     height:30px;
     border-radius:10px;
     background:rgb(170, 170, 170);
@@ -27,15 +44,18 @@ button#addFloor{
     margin:10px;
     font-family: 'Nanum Gothic', sans-serif;	
 }
-button[type=submit]{
-	width:120px;
-	height:40px;
-	font-size:15px;
-	font-family:'Nanum Gothic', sans-serif;
-	border-radius:5px;
-	background:rgb(255, 40, 40, .7);
-	color:white;
-	cursor:pointer;
+table#floor-info{
+	margin:0 auto;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+table#floor-info th{text-align:right;}
+table#floor-info td{text-align:left;}
+table#floor-info input[type=number]{
+	width:40px;
+	margin-left:20px;
+	margin-bottom:7px;
+	font-size:14px;
 }
 </style>
 </head>
@@ -43,23 +63,36 @@ button[type=submit]{
 <!-- 층수, 층당 예상 좌석수 입력 -->
 <div id="outer-container">
 	<h1 id="head-title">PCGOGO.COM</h1>
-	<h3>소유하신 PC방의 층수와<br>층당 좌석수를 대략적으로 입력해 주세요.</h3>
+	<h3>소유하신 PC방의 층 수와, 층 당 좌석 수를 대략적으로 입력해 주세요.</h3>
 	<input type="hidden" name="floors" id="floors" value="1"/>
 	
-	<label for="floorNum">층 수</label>
-	<input type="number" name="floorNum" id="floorNum"/>
-	<br>
-	<label for="seats">좌석 수</label>
-	<select name="seats" id="seats">
-		<option value="none" disabled selected>좌석수를 선택해주세요.</option>
-		<option value="option1">200석 이하</option> <!-- 20 * 15 -->
-		<option value="option2">200석~300석</option> <!-- 25 * 15 -->
-		<option value="option3">300석~400석</option> <!-- 30 * 15 -->
-		<option value="option4">400석 이상</option> <!-- 40 * 20 -->
-	</select>
-	<br>
-	<button id="addFloor">층 추가 ▼</button>
-	<button type="submit">확인</button>
+	<table id="floor-info">
+		<tr>
+			<th>층 수</th>
+			<td>
+				<select name="floorClass" id="floorClass">
+					<option value="" selected>지상</option>
+					<option value="B">지하</option>
+				</select>
+				<input type="number" name="floorNum" step="1" id="floorNum"/>&nbsp;층
+			</td>
+		</tr>
+		<tr>
+			<th>좌석 수</th>
+			<td>
+				<select name="seats" id="seats">
+					<option value="none" disabled selected>예상 좌석 수를 선택해주세요.</option>
+					<option value="1">200석 이하</option> <!-- 20 * 15 -->
+					<option value="2">200석~300석</option> <!-- 25 * 15 -->
+					<option value="3">300석~400석</option> <!-- 30 * 15 -->
+					<option value="4">400석 이상</option> <!-- 40 * 20 -->
+				</select>
+			</td>
+		</tr>
+	</table>
+	
+	<button id="addFloor">층 추가 ▼</button><br>
+	<button type="submit" class="submit-info">다음단계로 이동하기 →</button>
 </div>
 <script>
 $("button[type=submit]").on("click", function(){

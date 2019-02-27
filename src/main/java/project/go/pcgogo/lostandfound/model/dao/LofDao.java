@@ -28,5 +28,11 @@ public interface LofDao {
 
 	int insertAttachment(Attachment a);
 
+	int completeDev(LostAndFound lostandfound);
+
+	int deleteDev(int lnfNo);
+
+
+
 
 }

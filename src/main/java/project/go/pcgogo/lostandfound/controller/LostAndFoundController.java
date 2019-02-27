@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import project.go.pcgogo.common.util.Utils;
 import project.go.pcgogo.lostandfound.model.service.LofService;
@@ -196,10 +200,31 @@ public class LostAndFoundController {
 			logger.error("게시물 등록 에러", e);
 			throw new LofException("게시물 등록 에러", e);
 		}
-		
+		 
 		return mav;
+	}
+
+
+	@RequestMapping("/lostandfound/completeDev")
+	@ResponseBody
+	public Map<String, String> completeDev(@RequestBody LostAndFound lostandfound){
+		logger.info(lostandfound.toString());
+		Map<String, String> map = new HashMap<>();
+		String msg = lofService.completeDev(lostandfound)>0?"메뉴 수정 성공":"메뉴 수정 실패";
+		map.put("msg", msg);
+		return map;
 	}
 	
 	
-	
+	@RequestMapping("/lostandfound/deleteDev")
+	@ResponseBody
+	public Map<String, String> deleteDev(@RequestParam("lnfNo") int lnfNo){
+		logger.info("삭제할 번호 : "+lnfNo);
+		Map<String, String> map = new HashMap<>();
+		
+		String msg = lofService.deleteDev(lnfNo)>0?"삭제 성공":"삭제 실패";
+		map.put("msg",msg);
+		logger.info(msg);
+		return map;
+	}
 }

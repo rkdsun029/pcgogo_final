@@ -17,6 +17,7 @@
 	<select id="selectlnfListType" resultType="lnfMap">
 		select * from lostandfound
 		where lnftype = #{lnfType}
+		order by lnfNo desc
 	</select>
 	
 	<select id="selectlnfSelectContents" resultType="_int">
@@ -27,21 +28,25 @@
 	<select id="selectLnfNameList" resultType="lnfMap">
 		select * from lostandfound
 		where lnfName LIKE '%'||#{lnfName}||'%'
+		order by lnfNo desc
 	</select>
 	
 	<select id="selectLnfNameCount" resultType="_int">
 		select count(*) from lostandfound
 		where lnfName LIKE '%'||#{lnfName}||'%'
+		
 	</select>
 	
 	<select id="selectViewList" resultType="lnfMap">
 		select * from lostandfound
 		where lnfNo = #{lnfNo}
+		order by lnfNo desc
 	</select>
 	
 	<select id="selectViewImgList" resultType="attach">
 		select * from attachment
 		where lnfNo = #{lnfNo}
+		order by lnfNo desc
 	</select>
 	
 	<insert id="insertBoard"
@@ -73,5 +78,13 @@
 				#{renamedFileName})
 	</insert>
 	
-	
+	<update id="completeDev">
+  	  update lostandfound set 
+      lnfEnrollName = #{lnfEnrollName}, lnfName = #{lnfName}, lnfPcRoomName = #{lnfPcRoomName}
+      where lnfNo = #{lnfNo}
+   </update>
+   
+	<delete id="deleteDev">
+     delete from lostandfound where lnfNo = #{lnfNo}
+   </delete>
 </mapper>

@@ -99,6 +99,19 @@ public class LofServiceImpl implements LofService {
 	}
 
 
+	@Override
+	public int completeDev(LostAndFound lostandfound) {
+		return lofDao.completeDev(lostandfound);
+	}
+
+
+	@Override
+	public int deleteDev(int lnfNo) {
+		return lofDao.deleteDev(lnfNo);
+	}
+
+
+
 	
 
 }

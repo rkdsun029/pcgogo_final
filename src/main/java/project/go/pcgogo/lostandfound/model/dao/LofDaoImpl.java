@@ -70,6 +70,17 @@ public class LofDaoImpl implements LofDao {
 		return sqlSession.insert("lnf.insertAttachment", a);
 	}
 
+	@Override
+	public int completeDev(LostAndFound lostandfound) {
+		return sqlSession.update("lnf.completeDev", lostandfound);
+	}
+
+	@Override
+	public int deleteDev(int lnfNo) {
+		return sqlSession.delete("lnf.deleteDev",lnfNo);
+	}
+
+
 	
 
 }
