@@ -8,10 +8,8 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
 	</settings>
 	<typeAliases>
-	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.LostAndFound"
-				   alias="lnfMap"/>
-	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.Attachment"
-				   alias="attach"/>
+	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.LostAndFound" alias="lnfMap"/>
+	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.Attachment" alias="attach"/>
        <typeAlias type="project.go.pcgogo.faq.model.vo.Post" alias="faq" />
 	   <typeAlias type="project.go.pcgogo.user.model.vo.Manager" alias="manager"/>
 	   <typeAlias type="project.go.pcgogo.user.model.vo.Member" alias="member"/>
