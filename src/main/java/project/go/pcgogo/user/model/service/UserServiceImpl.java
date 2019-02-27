@@ -3,6 +3,7 @@ package project.go.pcgogo.user.model.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.user.model.dao.UserDao;
@@ -37,6 +38,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Manager selectOneManager(String userId) {
 		return memberDao.selectOneManager(userId);
+	}
+
+	@Override
+	public List<User> selectByName(String memberId) {
+		return memberDao.selectByName(memberId);
 	}
 
 }
