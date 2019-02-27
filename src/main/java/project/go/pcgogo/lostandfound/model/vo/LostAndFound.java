@@ -11,8 +11,6 @@ public class LostAndFound implements Serializable {
 	private int lnfNo;
 	private String lnfType;
 	private String lnfName;
-	private String lnfOriginalFileName;
-	private String lnfRenamedFile;
 	private String lnfPcRoomName;
 	private Date lnfGetDate;
 	private String lnfStatus;
@@ -20,16 +18,13 @@ public class LostAndFound implements Serializable {
 	public LostAndFound() {}
 
 	public LostAndFound(String lnfUserName, String lnfEnrollName, int lnfNo, String lnfType, String lnfName,
-			String lnfOriginalFileName, String lnfRenamedFile, String lnfPcRoomName, Date lnfGetDate,
-			String lnfStatus) {
+			String lnfPcRoomName, Date lnfGetDate, String lnfStatus) {
 		super();
 		this.lnfUserName = lnfUserName;
 		this.lnfEnrollName = lnfEnrollName;
 		this.lnfNo = lnfNo;
 		this.lnfType = lnfType;
 		this.lnfName = lnfName;
-		this.lnfOriginalFileName = lnfOriginalFileName;
-		this.lnfRenamedFile = lnfRenamedFile;
 		this.lnfPcRoomName = lnfPcRoomName;
 		this.lnfGetDate = lnfGetDate;
 		this.lnfStatus = lnfStatus;
@@ -75,22 +70,6 @@ public class LostAndFound implements Serializable {
 		this.lnfName = lnfName;
 	}
 
-	public String getLnfOriginalFileName() {
-		return lnfOriginalFileName;
-	}
-
-	public void setLnfOriginalFileName(String lnfOriginalFileName) {
-		this.lnfOriginalFileName = lnfOriginalFileName;
-	}
-
-	public String getLnfRenamedFile() {
-		return lnfRenamedFile;
-	}
-
-	public void setLnfRenamedFile(String lnfRenamedFile) {
-		this.lnfRenamedFile = lnfRenamedFile;
-	}
-
 	public String getLnfPcRoomName() {
 		return lnfPcRoomName;
 	}
@@ -122,11 +101,9 @@ public class LostAndFound implements Serializable {
 	@Override
 	public String toString() {
 		return "LostAndFound [lnfUserName=" + lnfUserName + ", lnfEnrollName=" + lnfEnrollName + ", lnfNo=" + lnfNo
-				+ ", lnfType=" + lnfType + ", lnfName=" + lnfName + ", lnfOriginalFileName=" + lnfOriginalFileName
-				+ ", lnfRenamedFile=" + lnfRenamedFile + ", lnfPcRoomName=" + lnfPcRoomName + ", lnfGetDate="
+				+ ", lnfType=" + lnfType + ", lnfName=" + lnfName + ", lnfPcRoomName=" + lnfPcRoomName + ", lnfGetDate="
 				+ lnfGetDate + ", lnfStatus=" + lnfStatus + "]";
 	}
-
 
 
 }
