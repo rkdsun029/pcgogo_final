@@ -6,8 +6,6 @@
 <fmt:requestEncoding value="UTF-8" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="522789660173-f95k8t9vl22hte90r0dgjgekb4s4qbk5.apps.googleusercontent.com">
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="로그인" name="pageTitle"></jsp:param>
 </jsp:include>
@@ -24,7 +22,7 @@ div#loginToSocial{
 	height: 55px;
 }
 div#loginToSocial img{
-	width: 55px;
+	/* width: 55px; */
 }
 div#loginToSocial+span{
 	font-size: 13px;
@@ -64,7 +62,6 @@ div#loginToSocial img:hover{
   </div>
   <div id="loginToSocial">
 	<div id="naverIdLogin"></div>
-	<div class="g-signin2" data-onsuccess="onSignIn"></div>
   </div>
   <span>소셜 로그인으로 편하게 이용하세요.</span>
   
@@ -74,23 +71,13 @@ div#loginToSocial img:hover{
 				clientId: "oh0_gJOPYDMSR3t2vWwl",
 				callbackUrl: "http://localhost:9090/pcgogo/login/naver",
 				isPopup: true, /* 팝업을 통한 연동처리 여부 */
-				loginButton: {color: "green", type: 1, height: 55} /* 로그인 버튼의 타입을 지정 */
+				loginButton: {color: "green", type: 3, height: 55} /* 로그인 버튼의 타입을 지정 */
 			}
 		);
 		
 		/* 설정정보를 초기화하고 연동을 준비 */
-		naverLogin.init();
-		
-		function onSignIn(googleUser) {
-			  var profile = googleUser.getBasicProfile();
-			  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-			  console.log('Name: ' + profile.getName());
-			  console.log('Image URL: ' + profile.getImageUrl());
-			  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-		}
+		naverLogin.init();	
   </script>
-  
-  
   <script>
   function validate(){
 	  var uId = $("#userId").val().trim();

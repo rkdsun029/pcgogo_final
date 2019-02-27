@@ -1,6 +1,11 @@
 package project.go.pcgogo.manager.model.vo;
 
-public class PcRoom {
+import java.io.Serializable;
+
+public class PcRoom implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private int pcRoomNo;
 	private String pcRoomName;
 	private String pcRoomAddress;

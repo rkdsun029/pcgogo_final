@@ -20,11 +20,34 @@
 	<h1 id="head-title">PCGOGO.COM</h1>
 	<h3>신규 PC방 등록화면입니다.</h3>
 	<h3>비밀번호를 한 번 더 입력하여 주십시오.</h3>
-	<form action="${pageContext.request.contextPath }/manager/pcRoomForm_step2.do">
+	<form name="startInsertForm" action="${pageContext.request.contextPath}/manager/pcRoomForm_step2.do">
+		<input type="hidden" id="managerId" name="managerId" value="${loggedInManager }"/>
 		<input type="password" id="password" name="password"/>
-		<button id="checkPassword" type="submit">확인</button>
+		<button id="checkPassword">확인</button>
 	</form>
 </div>
+<script>
+$("button#checkPassword").on("click", function(){
+	$.ajax({
+		url : "${pageContext.request.contextPath}/manager/checkPassword.do",
+		data : {
+			"managerId" : managerId,
+			"password" : password
+		},
+		type : "post",
+		dataType : "json",
+		success : function(data){
+			console.log("AJAX SUCCEED");
+			
+			alert("PC방 등록을 시작합니다.");
+			$("form[name=startInsertForm]").submit();
+		},
+		error : function(){
+			console.log("AJAX ERROR");
+		}
+	});
+});
+</script>
 
 </body>
 </html>

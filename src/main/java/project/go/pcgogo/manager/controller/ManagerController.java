@@ -1,15 +1,31 @@
 package project.go.pcgogo.manager.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import project.go.pcgogo.manager.model.service.ManagerService;
+import project.go.pcgogo.user.model.vo.Manager;
+
 @Controller
 public class ManagerController {
 	
+	Logger logger = Logger.getLogger(getClass());
+	
+	@Autowired
+	ManagerService managerService;
+	
 	@RequestMapping("/manager/manager.do")
-	public String managerMain() {
+	public String managerMain(HttpServletRequest request, ModelAndView mav) {
+		HttpSession session = request.getSession(false);
+		logger.info("로그인한 사장님 : " + session.getAttribute("loggedInUser").toString());
+				
 		return "manager/managerMain";
 	}
 	
@@ -44,8 +60,27 @@ public class ManagerController {
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step1.do")
-	public String pcRoomFormStep1() {
-		return "manager/pcRoomForm/step1";
+	public ModelAndView pcRoomFormStep1(HttpServletRequest request, ModelAndView mav) {
+		HttpSession session = request.getSession(false);
+		logger.info("로그인한 사장님 : " + session.getAttribute("loggedInUser").toString());
+		
+		mav.addObject("loggedInManager", ((Manager) session.getAttribute("loggedInUser")).getManagerId());
+		mav.setViewName("manager/pcRoomForm/step1");
+		return mav;
+	}
+	
+	@RequestMapping("manager/checkPassword.do")
+	public String pcRoomCheckPassword(@RequestParam (value="managerId") String managerId,
+											@RequestParam (value="password") String password,
+											ModelAndView mav) {
+		
+		
+		Manager manager = managerService.selectOne(managerId);
+		
+		System.out.println("step1 manager : " + manager);
+		
+		
+		return "";
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step2.do")
@@ -72,7 +107,7 @@ public class ManagerController {
 		int pmCol = 0;
 		
 		switch(option) {
-		case 1 : pmRow = 5; pmCol = 5;
+		case 1 : pmRow = 20; pmCol = 30;
 			break;
 		case 2 : pmRow = 20; pmCol = 40;
 			break;
