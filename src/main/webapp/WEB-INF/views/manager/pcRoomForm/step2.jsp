@@ -58,7 +58,7 @@ button#postcodify_search_button{
 <div id="outer-container">
 	<h1 id="head-title">PCGOGO.COM</h1>
 	<h3>기본정보를 입력해 주세요.</h3>
-	<form action="${pageContext.request.contextPath }/manager/pcRoomForm_step3.do">
+	<form action="${pageContext.request.contextPath }/manager/pcRoomForm_step3.do" method="POST">
 		<table id="basic-info">
 			<tr>
 				<th>상호명</th>
@@ -80,9 +80,9 @@ button#postcodify_search_button{
 				<td><input type="text" id="details" name="detailAddress" class="postcodify_details form-control" placeholder="직접 입력해주세요." required/></td>
 			</tr>
 		</table>
-		
 		<button type="submit" class="submit-info">다음단계로 이동하기 →</button>
 	</form>
 </div>
+
 </body>
 </html>
