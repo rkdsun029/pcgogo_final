@@ -19,6 +19,6 @@ public interface UserDao {
 
 	Manager selectOneManager(String userId);
 
-//	List<User> selectByName(String memberId);
+	List<User> selectByName(String memberId);
 
 }

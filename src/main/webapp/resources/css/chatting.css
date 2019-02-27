@@ -58,7 +58,7 @@ button#btn-chatting {
 	border : 1px solid skyblue;
 	background : skyblue;
 	margin-top : -7px;
-	margin-right : -6px;
+	margin-right : 3px;
 }
 
 button#search:hover {

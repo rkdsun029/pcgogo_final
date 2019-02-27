@@ -40,8 +40,8 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectOne("user.selectOneManager", userId);
 	}
 
-//	@Override
-//	public List<User> selectByName(String memberId) {
-//		return sqlSession.selectList("user.selectByName", memberId);
-//	}
+	@Override
+	public List<User> selectByName(String memberId) {
+		return sqlSession.selectList("user.selectByName", memberId);
+	}
 }

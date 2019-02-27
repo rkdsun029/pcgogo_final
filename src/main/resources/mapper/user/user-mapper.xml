@@ -29,11 +29,11 @@
 		where managerId=#{userId}
 	</select>
 	
-	<resultMap type="user" id="userMap">
+	<resultMap type="member" id="memberMap">
 		
 	</resultMap>
 	
-	<select id="selectByName" parameterType="string" resultMap="userMap">
+	<select id="selectByName" parameterType="string" resultMap="memberMap">
 		select * from member where memberId like '%'||#{memberId}||'%'
 	</select>
 

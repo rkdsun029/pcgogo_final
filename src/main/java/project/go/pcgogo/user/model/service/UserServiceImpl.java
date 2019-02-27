@@ -40,9 +40,9 @@ public class UserServiceImpl implements UserService {
 		return memberDao.selectOneManager(userId);
 	}
 
-//	@Override
-//	public List<User> selectByName(String memberId) {
-//		return memberDao.selectByName(memberId);
-//	}
+	@Override
+	public List<User> selectByName(String memberId) {
+		return memberDao.selectByName(memberId);
+	}
 
 }
