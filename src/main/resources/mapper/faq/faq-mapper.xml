@@ -80,7 +80,7 @@
 	</select>
 	
 	<!-- FAQ게시판 댓글쓰기 -->
-	<insert id="updateComment">
+	<insert id="insertComment">
 		insert into c_faq 
 		values(seq_c_faq_c_postno.nextval, seq_c_faq_o_postno.nextval, #{c_memberid}, #{c_postwriter}, sysdate, #{c_content})
 	</insert>
