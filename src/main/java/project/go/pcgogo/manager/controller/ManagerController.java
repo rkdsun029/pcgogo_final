@@ -1,9 +1,13 @@
 package project.go.pcgogo.manager.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import project.go.pcgogo.manager.model.jsoup.Crawling;
 
 @Controller
 public class ManagerController {
@@ -38,10 +42,10 @@ public class ManagerController {
 		return "manager/insertPcRoom";
 	}
 	
-	@RequestMapping("manager/managerCommunity.do")
-	public String managerCommunity() {
-		return "manager/managerCommunity";
-	}
+	/*
+	 * @RequestMapping("manager/managerCommunity.do") public String
+	 * managerCommunity() { return "manager/managerCommunity"; }
+	 */
 	
 	@RequestMapping("manager/pcRoomForm_step1.do")
 	public String pcRoomFormStep1() {
@@ -63,6 +67,8 @@ public class ManagerController {
 		int option = Integer.parseInt(temp_option);
 		mav.addObject("option", option);
 		mav.setViewName("manager/pcRoomForm/step4");
+		
+		
 		return mav;
 	}
 	
@@ -111,4 +117,14 @@ public class ManagerController {
 		return "common/msg";
 	}
 	
+	@RequestMapping("/manager/managerCommunity.do")
+	public ModelAndView hotDeal(ModelAndView mav) {
+		List<String> result = new Crawling().crawling2();
+		 
+		mav.addObject("result", result);
+		mav.setViewName("manager/managerCommunity");
+		
+		
+		return mav;
+	}
 }

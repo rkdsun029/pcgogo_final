@@ -100,8 +100,8 @@ public class LofServiceImpl implements LofService {
 
 
 	@Override
-	public int completeDev(LostAndFound lostandfound) {
-		return lofDao.completeDev(lostandfound);
+	public int updateDev(LostAndFound lostandfound) {
+		return lofDao.updateDev(lostandfound);
 	}
 
 
@@ -110,6 +110,11 @@ public class LofServiceImpl implements LofService {
 		return lofDao.deleteDev(lnfNo);
 	}
 
+
+	@Override
+	public int completeDev(LostAndFound lostandfound) {
+		return lofDao.completeDev(lostandfound);
+	}
 
 
 	

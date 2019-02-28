@@ -71,8 +71,8 @@ public class LofDaoImpl implements LofDao {
 	}
 
 	@Override
-	public int completeDev(LostAndFound lostandfound) {
-		return sqlSession.update("lnf.completeDev", lostandfound);
+	public int updateDev(LostAndFound lostandfound) {
+		return sqlSession.update("lnf.updateDev", lostandfound);
 	}
 
 	@Override
@@ -80,7 +80,10 @@ public class LofDaoImpl implements LofDao {
 		return sqlSession.delete("lnf.deleteDev",lnfNo);
 	}
 
+	@Override
+	public int completeDev(LostAndFound lostandfound) {
+		return sqlSession.update("lnf.completeDev", lostandfound);
+	}
 
-	
 
 }
