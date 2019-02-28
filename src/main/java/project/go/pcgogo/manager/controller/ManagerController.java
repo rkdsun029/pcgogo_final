@@ -144,7 +144,7 @@ public class ManagerController {
 			switch(Integer.parseInt(seatsArr[i])) {
 			case 1 : seatMap = new HashMap<>();
 					 seatMap.put("floorNum", floorArr[i]);
-					 seatMap.put("pmRow", 20); seatMap.put("pmCol", 30);
+					 seatMap.put("pmRow", 5); seatMap.put("pmCol", 5);
 					 seatMapList.add(seatMap);
 				break;
 			case 2 : seatMap = new HashMap<>();

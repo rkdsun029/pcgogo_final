@@ -21,15 +21,7 @@ div.couple{background:url("${pageContext.request.contextPath}/resources/image/ma
 div.wall{background:url("${pageContext.request.contextPath}/resources/image/manager/wall.png");}
 </style>
 <script>
-$(function(){
-	/* eq로 하기 */
-	
-	var pmRow_ = $("tr").length;
-	var pmCol_ = $("tr:first-of-type td").length;
-
-	var pmTd_ = $("td").length;
-	var pmContent_ = "";
-	
+$(function(){	
 	$("select#classification").on("change", function(){
 		var status = $(this).val();
 		console.log(status);
@@ -55,6 +47,7 @@ $(function(){
 			if(status == "etc") $(this).find("input[type=hidden]").val("k");
 			if(status == "wall") $(this).find("input[type=hidden]").val("z");
 		});
+
 	});
 	
 	$("button#resetPlacement").on("click", function(){
@@ -67,29 +60,66 @@ $(function(){
 		var temp = confirm("배치도를 저장하시겠습니까?");
 		
 		if(!temp) return;
-		else{			
-			var pmRow_ = $("tr").length;
+			
+		else{
+			/* var pmRow_ = $("tr").length;
 			var pmCol_ = $("tr:first-of-type td").length;
 			var pmTd_ = $("td").length;
 			var pmContent_ = "";
 			
 			for(var s=0; s<pmTd_; s++){
-				/* console.log("찍기:",s,":", $("td").eq(s).find("input").val()); */
 				if(s == parseInt(pmTd_)-1)pmContent_ += $("td").eq(s).find("input[type=hidden]").val();				
 				else pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";
 			}
 			
-			/* console.log("pmContent_:", pmContent_); */
-			
 			$("input[name=pmRow_]").val(pmRow_);
 			$("input[name=pmCol_]").val(pmCol_);
-			$("input[name=pmContent_]").val(pmContent_);
+			$("input[name=pmContent_]").val(pmContent_);*/
 			
-			console.log($("input[name=pmRow_]").val());
-			console.log($("input[name=pmCol_]").val());
-			console.log($("input[name=pmContent_]").val());
+			$("table").each(function(){
+				var html1 = "<input type='hidden' class='table_tdContent' value='";
+				var html2 = "<input type='hidden' class='seat_tdCount' value='";
+				$(this).find("td").each(function(){
+					html1 += $(this).find("input[type=hidden]").val() + ",";
+				});
+				
+				var temp_html2 = $(this).find("[class*=plain], [class*=special], [class*=couple]").length;
+				html2 += temp_html2;
+				
+				html1 += "'/>";
+				html2 += "'/>";
+				
+				$("body").append(html1);
+				$("body").append(html2);
+			});
 			
-			$("form#main-placement-info").submit();
+			var pmContent_ = new Array;
+			var seatCount_ = new Array;
+			
+			var tableLength = $("table").length;
+			
+			for(var i=0; i<tableLength; i++){
+				pmContent_.push($("input.table_tdContent").eq(i).val());
+				seatCount_.push($("input.seat_tdCount").eq(i).val());
+			}
+			
+			console.log(pmContent_);
+			console.log(seatCount_);
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/manager/step6.do",
+				data :{
+					"pmContent_" : pmContent_,
+					"seatCount_" : seatCount_,
+					"seatMapList" : ${seatMapList}
+				}
+				success : function(data){
+					console.log("AJAX SUCCEED");
+				},
+				error : function(){
+					console.log("AJAX ERROR");
+				}
+			});
 		}
 	});
 
@@ -100,9 +130,9 @@ $(function(){
 <h1 id="head-title">PCGOGO.COM</h1>
 <br>
 
-<h4 id="seatLegend">편의를 위하여 자리분류 선택바가 층마다 있습니다. 어느 층에서 선택하시던 무관합니다.</h4>
+<h4 id="seatLegend">편의를 위하여 자리분류 선택바가 층마다 있습니다. 아무거나 이용하셔도 무관합니다.</h4>
 <br>
-<c:forEach var="seatMap" items="${seatMapList }">
+<c:forEach var="seatMap" items="${seatMapList }" varStatus="cnt">
 	<h2 class="floorNum_">${seatMap.floorNum }층</h2>
 	<div id="ready-placement">
 		<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
@@ -130,7 +160,7 @@ $(function(){
 		<c:forEach var="i" begin="1" end="${seatMap.pmRow }" step="1">
 			<tr>
 				<c:forEach var="j" begin="1" end="${seatMap.pmCol }" step="1">
-					<td>
+					<td class="${cnt.count }">
 						<div id="seat__" class="seat wall">
 							<input type="hidden" value="z"/>
 						</div>
@@ -139,11 +169,9 @@ $(function(){
 			</tr>		
 		</c:forEach>
 	</table>
-	<input type="hidden" name="pmRow_"/>
-	<input type="hidden" name="pmCol_"/>
-	<input type="hidden" name="pmContent_"/>
 	<br><br><br>
 </c:forEach>
+
 <div id="pm-button-container">
 	<button class="formBtn" id="resetPlacement">초기화</button>
 	<button class="formBtn" id="submitPlacement">등록</button>
