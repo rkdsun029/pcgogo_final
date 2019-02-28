@@ -10,12 +10,12 @@ public class Member implements Serializable{
 	private String memberEmail;
 	private String memberPhone;
 	private Date memberEnrollDate;
-	private boolean isSocial;
+	private String isSocial;
 	
 	public Member() {}
 
 	public Member(String memberId, String memberPassword, String memberEmail, String memberPhone,
-			Date memberEnrollDate, boolean isSocial) {
+			Date memberEnrollDate, String isSocial) {
 		this.memberId = memberId;
 		this.memberPassword = memberPassword;
 		this.memberEmail = memberEmail;
@@ -70,11 +70,11 @@ public class Member implements Serializable{
 		this.memberEnrollDate = memberEnrollDate;
 	}
 	
-	public boolean getIsSocail() {
+	public String getIsSocial() {
 		return isSocial;
 	}
 	
-	public void setIsSocial(boolean isSocial) {
+	public void setIsSocial(String isSocial) {
 		this.isSocial = isSocial;
 	}
 }
