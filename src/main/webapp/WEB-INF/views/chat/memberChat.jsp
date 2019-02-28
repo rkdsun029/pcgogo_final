@@ -49,6 +49,7 @@
 	</nav>
 	
    <div class="result" id="srchName-result">
+		<input type="hidden" name="fromId" value="${loggedInUser.memberId}" />
    </div>
    
    <script>
@@ -79,6 +80,7 @@
              
              $("#srchName-result").html(html);
              
+             var fromId = $("input[name=fromId]").val();
              var toId = $("input[name=toId]").val();
              
              $("#btn-chatting").on("click", function() {

@@ -3,7 +3,7 @@
 <mapper namespace="chat">
 
 	<insert id="insertChat" parameterType="chat">
-		insert into chat values(seq_roomno.nextval, seq_chatno.nextval, #{fromId}, #{toId}, #{chatContent}, default)
+		insert into chat values(seq_chatno.nextval, #{fromId}, #{toId}, #{chatContent}, default)
 	</insert>
 
 </mapper>

@@ -1,8 +1,6 @@
 package project.go.pcgogo.chat.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,37 +46,90 @@ public class MemberChatController {
 	}
 	
 	@RequestMapping("/chat/chatRoom.do")
-	public String chatRoom() {
+	@ResponseBody
+	public String chatRoom(@RequestParam("fromId") String fromId, Model model) {
 		
+		Chat c = chatService.messageView(fromId);
 		
+		model.addAttribute("c", c);
 		
 		return "chat/chatRoom";
 	}
 	
 	@RequestMapping("/chat/insertChat.do")
-	public ModelAndView chatSend(ModelAndView mav, Chat chat, HttpServletRequest request) {
+	@ResponseBody
+	public String chatSend(@RequestParam("fromId_") String fromId,
+						   @RequestParam("toId_") String toId,
+						   @RequestParam("chatContent") String chatContent) {
+		
+		Chat chat = new Chat(fromId, toId, chatContent);
 		
 		int result = chatService.insertChat(chat);
 		
-		String loc = "/";
-		String msg = "";
-		String view = "";
+		System.out.println(result > 0 ? "전송 성공" : "전송 실패");
 		
-		if(result > 0) {
-			msg = "메세지 전송에 성공했습니다.";
-			view = "common/msg";
-			loc = "/chat/chatRoom.do";
-		}
-		else {
-			msg = "메세지 전송에 실패했습니다.";
-			loc = "common/msg";
-		}
-		
-		request.setAttribute("loc", loc);
-		request.setAttribute("msg", msg);
-		
-		mav.setViewName(view);
-		
-		return mav;
+		return "redirect:/";
 	}
+	
+//	@PostMapping("/chat/insertChat.do")
+//	public Map<String, String> insertChat(@RequestBody Chat chat) {
+//		
+//		Map<String, String> map = new HashMap<>();
+//		
+//		String msg = chatService.insertChat(chat) > 0 ? "메시지 전송에 성공했습니다." : "메세지 전송에 실패했습니다.";
+//		
+//		map.put("msg", msg);
+//		
+//		return map;
+//	}
+	
+//	@RequestMapping("/chat/getChat.do")
+//	@ResponseBody
+//	public List<Chat> getChat(@RequestParam("fromId_") String fromId, Model model) {
+//		
+//		List<Chat> list = chatService.getChat(fromId);
+//		
+//		System.out.println("보낸 메세지 / 받은 메세지" + list);
+//		
+//		model.addAttribute("list", list);
+//		
+//		return list;
+//		
+//	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,12 +18,20 @@
         	<!--Heading-->
     		<div class="panel-heading">
     			<h3 class="panel-title">PCGOGO</h3>
+    			<input type="hidden" id="fromId" name="fromId" value="${loggedInUser.memberId}" />
+    			<input type="hidden" id="toId" name="toId" value="${param.toId}" />
     		</div>
     
     		<!--Widget body-->
     		<div id="demo-chat-body" class="collapse in">
     			<div class="nano has-scrollbar" style="height:700px">
-    				<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+    				<div id="messageList" class="nano-content pad-all" tabindex="0" style="right: -17px;">
+    					
+    					<c:if test="${!loggedInUser.memberId}">
+    						<ul class="list-unstyled media-block">
+    							
+    						</ul>
+    					</c:if>
     					
     				</div>
     			<div class="nano-pane">
@@ -33,31 +41,126 @@
     		</div>
     
     			<!--Widget footer-->
-    			<form class="chatSendFrm" method="post" action="${pageContext.request.contextPath}/chat/insertChat.do">
-    				<input type="hidden" name="fromId" value="${loggedInUser.memberId}" />
-    				<input type="hidden" name="toId" value="${param.toId}" />
+    		<div class="chatSend-container">
+    			<form id="chatSendFrm">
+    				<div id="fromAndto-container">
+    					
+    				</div>
     				<div class="panel-footer">
     				<div class="row">
     					<div class="col-xs-9">
-    						<input type="text" name="chatContent" placeholder="메세지를 입력하세요." class="form-control chat-input">
-    					</div>
-    					<div class="col-xs-3">
-    						<button class="btn btn-primary btn-block" type="submit" id="chatSend">전송</button>
+    						<input type="text" id="chatContent" name="chatContent" placeholder="메세지를 입력하세요." class="form-control chat-input">
     					</div>
     				</div>
     			</div>
     			</form>
+    					<div class="col-xs-3">
+    						<button class="btn btn-primary btn-block" type="submit" id="chatSend">전송</button>
+    					</div>
+    		</div>
     		</div>
     	</div>
     </div>
 </div>
 
 <script>
-	/* $("#chatSend").click(function() {
+	$(".btn-block").click(function() {
 		
-		location.href = "${pageContext.request.contextPath}/chat/insertChat.do";
+		var fromId = $("input[name=fromId]").val();
+		var toId = $("input[name=toId]").val();
 		
-	}); */
+		/* console.log(fromId, toId, chatContent); */
+		
+		var fromAndto = "";
+		
+		fromAndto += "<input type='hidden' id='fromId_' name='fromId_' value='" + fromId + "'/>";
+		fromAndto += "<input type='hidden' id='toId_' name='toId_' value='" + toId + "'/>";
+		
+		$("#fromAndto-container").html(fromAndto);
+		
+		var fromId_ = $("input[name=fromId_]").val();
+		var toId_ = $("input[name=toId_]").val();
+		var chatContent = $("input[name=chatContent]").val();
+		
+		console.log(fromId_, toId_, chatContent);
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/chat/insertChat.do",
+			data: {
+				fromId_ : fromId_,
+				toId_ : toId_,
+				chatContent : chatContent
+			},
+			dataType: "text",
+			type: "post",
+			success: function(data) {
+				console.log("ajax 전송 성공!");
+				
+			},
+			error: function(jqxhr, textStatus, errorThrow) {
+				console.log(jqxhr);
+				console.log(textStatus);
+				console.log(errorThrow);
+				console.log("ajax 전송 실패ㅠㅠ");
+			}
+		});
+		
+		/* $.ajax({
+			url: "${pageContext.request.contextPath}/chat/insertChat.do",
+			data: {
+				fromId : fromId,
+				toId : toId,
+				chatContent : chatContent
+			},
+			dataType: "json",
+			type: "post",
+			success: function(data) {
+				console.log("ajax 성공");
+			},
+			error: function() {
+				console.log("ajax 에러");
+			}
+		}); */
+		
+		/* $("#chatSendFrm").attr("action", "insertChat.do");
+		$("#chatSendFrm").attr("method", "post");
+		$("#chatSendFrm").submit(); */
+		
+		/* var fromId = $("#chatSendFrm [name=fromId]").val();
+		var toId = $("#chatSendFrm [name=toId]").val();
+		var chatContent = $("#chatSendFrm [name=chatContent]").val();
+		
+		console.log(fromId, toId, chatContent);
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/chat/insertChat.do",
+			type: "post",
+			data: {
+				fromId : fromId,
+				toId : toId,
+				chatContent : chatContent
+			},
+			success: function(data) {
+				console.log("성공!", fromId, toId, chatContent);
+				
+			},
+			error: function() {
+				console.log("ajax 에러ㅠㅠ");
+			}
+		}); */
+		
+		/* $.ajax({
+			url: "${pageContext.request.contextPath}/chat/insertChat.do",
+			type: "post",
+			data: param,
+			success: function(data) {
+				console.log(data);
+			},
+			error: function() {
+				console.log("ajax 에러!!");
+			}
+		}); */
+	});
 </script>
 
 

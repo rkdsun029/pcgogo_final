@@ -4,29 +4,25 @@ import java.sql.Date;
 
 public class Chat {
 	
-	private int roomNo;
 	private int chatNo;
 	private String fromId;
 	private String toId;
 	private String chatContent;
 	private Date chatDate;
 	
-	public Chat(int roomNo, int chatNo, String fromId, String toId, String chatContent, Date chatDate) {
+	public Chat(int chatNo, String fromId, String toId, String chatContent, Date chatDate) {
 		super();
-		this.roomNo = roomNo;
 		this.chatNo = chatNo;
 		this.fromId = fromId;
 		this.toId = toId;
 		this.chatContent = chatContent;
 		this.chatDate = chatDate;
 	}
-
-	public int getRoomNo() {
-		return roomNo;
-	}
-
-	public void setRoomNo(int roomNo) {
-		this.roomNo = roomNo;
+	
+	public Chat(String fromId, String toId, String chatContent) {
+		this.fromId = fromId;
+		this.toId = toId;
+		this.chatContent = chatContent;
 	}
 
 	public int getChatNo() {
@@ -71,7 +67,7 @@ public class Chat {
 
 	@Override
 	public String toString() {
-		return "Chat [roomNo=" + roomNo + ", chatNo=" + chatNo + ", fromId=" + fromId + ", toId=" + toId
+		return "Chat [chatNo=" + chatNo + ", fromId=" + fromId + ", toId=" + toId
 				+ ", chatContent=" + chatContent + ", chatDate=" + chatDate + "]";
 	}
 }
