@@ -16,6 +16,7 @@ public class Manager implements Serializable{
 	private String managerAddress;
 	private Date managerEnrollDate;
 	private String managerpermitted;
+	private String isSocial = "manager";
 	
 	public Manager() {}
 
@@ -130,5 +131,9 @@ public class Manager implements Serializable{
 
 	public void setManagerpermitted(String managerpermitted) {
 		this.managerpermitted = managerpermitted;
+	}
+
+	public String getIsSocial() {
+		return isSocial;
 	}
 }
