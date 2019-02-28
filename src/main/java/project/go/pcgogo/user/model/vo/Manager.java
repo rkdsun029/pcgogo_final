@@ -15,14 +15,14 @@ public class Manager implements Serializable{
 	private String managerEmail;
 	private String managerAddress;
 	private Date managerEnrollDate;
-	private String managerpermitted;
+	private String managerPermitted;
 	private String isSocial = "manager";
 	
 	public Manager() {}
 
 	public Manager(String managerId, String managerPassword, String managerCode, String managerCodeImgOriginal,
 			String managerCodeImgRenamed, String managerName, String managerPhone, String managerEmail,
-			String managerAddress, Date managerEnrollDate, String managerpermitted) {
+			String managerAddress, Date managerEnrollDate, String managerPermitted) {
 		this.managerId = managerId;
 		this.managerPassword = managerPassword;
 		this.managerCode = managerCode;
@@ -33,7 +33,7 @@ public class Manager implements Serializable{
 		this.managerEmail = managerEmail;
 		this.managerAddress = managerAddress;
 		this.managerEnrollDate = managerEnrollDate;
-		this.managerpermitted = managerpermitted;
+		this.managerPermitted = managerPermitted;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Manager implements Serializable{
 				+ managerCode + ", managerCodeImgOriginal=" + managerCodeImgOriginal + ", managerCodeImgRenamed="
 				+ managerCodeImgRenamed + ", managerName=" + managerName + ", managerPhone=" + managerPhone
 				+ ", managerEmail=" + managerEmail + ", managerAddress=" + managerAddress + ", managerEnrollDate="
-				+ managerEnrollDate + ", managerpermitted=" + managerpermitted + "]";
+				+ managerEnrollDate + ", managerPermitted=" + managerPermitted + "]";
 	}
 
 	public String getManagerId() {
@@ -125,12 +125,12 @@ public class Manager implements Serializable{
 		this.managerEnrollDate = managerEnrollDate;
 	}
 
-	public String getManagerpermitted() {
-		return managerpermitted;
+	public String getManagerPermitted() {
+		return managerPermitted;
 	}
 
-	public void setManagerpermitted(String managerpermitted) {
-		this.managerpermitted = managerpermitted;
+	public void setManagerPermitted(String managerpermitted) {
+		this.managerPermitted = managerpermitted;
 	}
 
 	public String getIsSocial() {
