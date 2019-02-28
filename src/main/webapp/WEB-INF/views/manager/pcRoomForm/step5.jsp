@@ -112,7 +112,9 @@ $(function(){
 					"pmContent_" : pmContent_,
 					"seatCount_" : seatCount_,
 					"seatMapList" : ${seatMapList}
-				}
+				},
+				type : "post",
+				dataType : "json",
 				success : function(data){
 					console.log("AJAX SUCCEED");
 				},

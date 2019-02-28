@@ -172,14 +172,19 @@ public class ManagerController {
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step6.do")
-	public ModelAndView pcRoomFormStep6(@RequestParam (value="pmRow_") int pmRow,
-								  @RequestParam (value="pmCol_") int pmCol,
-								  @RequestParam (value="pmContent_") String pmContent,
-								  ModelAndView mav) {
+	public ModelAndView pcRoomFormStep6(@RequestParam (value="pmContent_") String[] pmContent_,
+									    @RequestParam (value="seatCount_") String[] seatCount_,
+									    @RequestParam (value="seatMapList") List<Map<String, Object>> seatMapList,
+									    ModelAndView mav) {
 		
-		mav.addObject("pmRow", pmRow);
-		mav.addObject("pmCol", pmCol);
-		mav.addObject("pmContent", pmContent);
+		System.out.println("pmContent_ : " + pmContent_);
+		System.out.println("seatCount_ : " + seatCount_);
+		System.out.println("seatMapList : " + seatMapList);
+		
+		mav.addObject("pmContent_", pmContent_);
+		mav.addObject("seatCount_", seatCount_);
+		mav.addObject("seatMapList", seatMapList);
+		
 		mav.setViewName("manager/pcRoomForm/step6");
 		return mav;
 	}
