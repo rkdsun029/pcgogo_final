@@ -93,49 +93,66 @@ $(function(){
 				$("body").append(html2);
 			});
 			
+			var pmRow_ = new Array;
+			var pmCol_ = new Array;
 			var pmContent_ = new Array;
+			var floorNum_ = new Array;
 			var seatCount_ = new Array;
 			
 			var tableLength = $("table").length;
 			
 			for(var i=0; i<tableLength; i++){
+				pmRow_.push($("table").eq(i).find("tr").length);
+				pmCol_.push($("table").eq(i).find("tr:first-of-type td").length);
+				floorNum_.push($("input#floorNum").eq(i).val());
 				pmContent_.push($("input.table_tdContent").eq(i).val());
 				seatCount_.push($("input.seat_tdCount").eq(i).val());
 			}
 			
+			console.log(pmRow_);
+			console.log(pmCol_);
 			console.log(pmContent_);
+			console.log(floorNum_);
 			console.log(seatCount_);
+			var objectArr = [{id:1, key:"dd"},{id:2, key:"ss"}];
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/manager/step6.do",
+				url : "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do",
 				data :{
+					/* "pmRow_" : pmRow_,
+					"pmCol_" : pmCol_,
 					"pmContent_" : pmContent_,
-					"seatCount_" : seatCount_,
-					"seatMapList" : ${seatMapList}
+					"floorNum_" : floorNum_,
+					"seatCount_" : seatCount_ */
+					objectArr : JSON.stringify(objectArr)
 				},
+				traditional : true,
 				type : "post",
 				dataType : "json",
 				success : function(data){
+					console.log(data);
 					console.log("AJAX SUCCEED");
 				},
-				error : function(){
+				error : function(jqxhr, textStatus, errorThrown){
+					console.log(jqxhr);
+					console.log(textStatus);
+					console.log(errorThrown);
 					console.log("AJAX ERROR");
 				}
 			});
 		}
 	});
-
 });
 </script>
 </head>
 <body>
 <h1 id="head-title">PCGOGO.COM</h1>
 <br>
-
 <h4 id="seatLegend">편의를 위하여 자리분류 선택바가 층마다 있습니다. 아무거나 이용하셔도 무관합니다.</h4>
 <br>
 <c:forEach var="seatMap" items="${seatMapList }" varStatus="cnt">
-	<h2 class="floorNum_">${seatMap.floorNum }층</h2>
+	<input type="hidden" id="floorNum" value="${seatMap.floorNum }"/>
+	<h2 class="floorNum_">${seatMap.floorNum } 층</h2>
 	<div id="ready-placement">
 		<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
 		<select name="classification" id="classification">
