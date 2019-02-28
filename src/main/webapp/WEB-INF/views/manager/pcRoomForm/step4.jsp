@@ -47,10 +47,11 @@ div#outer-container span{
 </div>
 <script>
 $(function(){
-	console.log("${option}");
+	console.log("${floorArr}");
+	console.log("${seatsArr}");
 });
 function goToStep5(){
-	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do?option=${option}";
+	location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step5.do?floorArr=${floorArr}&seatsArr=${seatsArr}";
 }
 </script>
 </body>

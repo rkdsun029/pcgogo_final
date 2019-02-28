@@ -103,7 +103,7 @@ $(function(){
 						pmContent_ += parseInt($("td").eq(s).find("span").val());
 					}
 					else{
-						pmContent_ += $("td").eq(s).find("input[type=hidden]").val()";										
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
 					}
 				}
 				else {

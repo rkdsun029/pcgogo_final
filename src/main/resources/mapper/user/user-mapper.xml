@@ -28,5 +28,13 @@
 		from manager
 		where managerId=#{userId}
 	</select>
+	
+	<resultMap type="member" id="memberMap">
+		
+	</resultMap>
+	
+	<select id="selectByName" parameterType="string" resultMap="memberMap">
+		select * from member where memberId like '%'||#{memberId}||'%'
+	</select>
 
 </mapper>

@@ -7,7 +7,10 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="분실물 찾기" name="lostandfound"></jsp:param>
 </jsp:include>
-
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+	crossorigin="anonymous">
 <style>
 div#lostandfound-container{
 	font-family:'Nanum Gothic', sans-serif;	
@@ -75,6 +78,20 @@ table#lnfList{
 	text-align:center;
 	width:1000px;
 }
+input#btn-add{
+	float:right; 
+	margin: 0 0 15px;
+	display:inline-block;
+	width:100px;
+	height:35px;
+	border-radius:5px;
+	border: 1px rgba(255, 40, 40, .7);
+	background:rgba(255, 40, 40, .7);
+	color:white;
+	font-size:12px;
+	font-family:'Nanum Gothic', sans-serif;
+	cursor:pointer;
+}
 </style>
 
 <div id="lostandfound-container">
@@ -111,7 +128,9 @@ table#lnfList{
 
 		</script>
 	</div>   
-	
+	<div>
+	<input type="button" value="분실물 등록" id="btn-add" class="btn btn-outline-success" onclick="fn_golnfForm();"/>
+	</div>
 	<div id="lnfList-container">
 	<p>총 ${totalContents }건의 분실물이 있습니다.</p>
 	
@@ -130,15 +149,18 @@ table#lnfList{
 				<td>${lnf.LNFNO}</td>
 				<td>${lnf.LNFTYPE}</td>
 				<td>${lnf.LNFNAME}</td>
-				<td>${lnf.LNFPCROOMNAME}</td>			
-				<td>${lnf.LNFGETDATE}</td>
+				<td>${lnf.LNFPCROOMNAME}</td>		
+				<td><fmt:formatDate value="${lnf.LNFGETDATE}" 
+							 	type="date"/></td>
 				<td>${lnf.LNFSTATUS}</td>
 			</tr>
 			</c:forEach> 
 		</table>
-		
+		<br>
+		<br>
+		<br>
 	
-		<% 
+	<% 
 		//int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
 		//int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
 		int totalContents = (int)request.getAttribute("totalContents");
@@ -188,6 +210,7 @@ table#lnfList{
 		                    html += "<td>"+data.list[i].lnfStatus+"</td></tr>";
 		                }
 		                html+="</table>";
+		                
 		                $("#lnfType-result").html(html);
 		  			},
 		  			error : function(jqxhr, textStatus, errorThrown){
@@ -240,6 +263,12 @@ $(function(){
 		location.href = "${pageContext.request.contextPath}/lostandfound/lnfView.do?no="+lnfNo;
 	});
 });
+
+function fn_golnfForm(){
+	location.href="${pageContext.request.contextPath}/lostandfound/lnfForm.do";
+}
+
+
 </script>
 
 <!-- new Date(data[i].lnfGetDate.toISOString().slice(0,10) -->
