@@ -33,7 +33,7 @@
 						return;
 					}
 					$.ajax({
-						url: "${pageContext.request.contextPath}/login/socialLoginEnd",
+						url: "${pageContext.request.contextPath}/login/socialLoginEnd/naver",
 						data: "userId="+email,
 						success: function(){
 							self.close();

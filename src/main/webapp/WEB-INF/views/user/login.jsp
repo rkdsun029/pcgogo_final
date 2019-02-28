@@ -6,6 +6,12 @@
 <fmt:requestEncoding value="UTF-8" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="522789660173-lpfikvtl76o0p15h09bva0v7m905jjqv.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
 <jsp:include page="/WEB-INF/views/common/header.jsp">
    <jsp:param value="로그인" name="pageTitle"></jsp:param>
 </jsp:include>
@@ -18,12 +24,15 @@ form#loginFrm{
 	padding: 20px;
 }
 div#loginToSocial{
-	border: 1px solid black;
-	height: 55px;
+	text-align: center;	
 }
-div#loginToSocial img{
-	/* width: 55px; */
+div#loginToSocial>*{
+	width: 200px;
+	height: 45px;
+	margin-bottom: 5px;
+	display: inline-block;
 }
+div#loginToSocial>div#naverIdLogin>a>img{width: 200px;}
 div#loginToSocial+span{
 	font-size: 13px;
 	color: gray;
@@ -62,22 +71,59 @@ div#loginToSocial img:hover{
   </div>
   <div id="loginToSocial">
 	<div id="naverIdLogin"></div>
+	<img src="${pageContext.request.contextPath}/resources/image/user/login/kakao.png" onclick="login_kakao()"/>
+	<div class="g-signin2" data-onsuccess="onSignIn" data-width="200" data-height="45"></div>
   </div>
-  <span>소셜 로그인으로 편하게 이용하세요.</span>
-  
+ <!--  <span>소셜 로그인으로 편하게 이용하세요.</span> -->
+ 
   <script>
-	var naverLogin = new naver.LoginWithNaverId(
-			{
-				clientId: "oh0_gJOPYDMSR3t2vWwl",
-				callbackUrl: "http://localhost:9090/pcgogo/login/naver",
-				isPopup: true, /* 팝업을 통한 연동처리 여부 */
-				loginButton: {color: "green", type: 3, height: 55} /* 로그인 버튼의 타입을 지정 */
-			}
-		);
-		
-		/* 설정정보를 초기화하고 연동을 준비 */
-		naverLogin.init();	
+  var naverLogin = new naver.LoginWithNaverId(
+		{
+			clientId: "oh0_gJOPYDMSR3t2vWwl",
+			callbackUrl: "http://localhost:9090/pcgogo/login/naver",
+			isPopup: true, /* 팝업을 통한 연동처리 여부 */
+			loginButton: {color: "green", type: 3, height: 45} /* 로그인 버튼의 타입을 지정 */
+		}
+  );
+  naverLogin.init();
+	
+  function login_kakao(){
+      Kakao.init('b0d1d7505f46a344dbdd4ff7a064f2f7');
+	
+	  Kakao.Auth.loginForm({
+		  success: function(authObj){
+			  console.log(authObj.access_token);
+				   $.ajax({
+				   url: "${pageContext.request.contextPath}/login/kakao/getUserInfo",
+				   type: "post",
+				   data: "access_token="+authObj.access_token,
+				   dataType: "json",
+				   success: function(data){
+					 if(data.kakao_account.has_email){
+					  	 console.log(data);
+						 console.log(data.kakao_account.email);
+						 location.href="${pageContext.request.contextPath}/login/kakao?userId="+data.kakao_account.email;
+					 }
+				  }
+			  }); 
+		}
+	});
+
+  }
+  
+  function onSignIn(googleUser) {
+      // Useful data for your client-side scripts:
+      var profile = googleUser.getBasicProfile();
+      console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+      console.log('Full Name: ' + profile.getName());
+      console.log('Given Name: ' + profile.getGivenName());
+      console.log('Family Name: ' + profile.getFamilyName());
+      console.log("Image URL: " + profile.getImageUrl());
+      console.log("Email: " + profile.getEmail());
+	  location.href="${pageContext.request.contextPath}/login/google?userId="+profile.getEmail();
+    }
   </script>
+
   <script>
   function validate(){
 	  var uId = $("#userId").val().trim();

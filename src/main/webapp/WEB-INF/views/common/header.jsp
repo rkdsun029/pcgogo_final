@@ -13,6 +13,9 @@
 <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/header.css" />
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+ <meta name="google-signin-client_id" content="522789660173-lpfikvtl76o0p15h09bva0v7m905jjqv.apps.googleusercontent.com">
+ <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 <script>
 $(function(){
     $("div#head-container").on("mouseenter", function(){
@@ -71,7 +74,7 @@ $(function(){
     <c:if test="${loggedInUser != null }">
     	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" />내 정보</div>
         <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
-        onclick="location.href='${pageContext.request.contextPath}/logout.do'" />로그아웃</div>
+        onclick="logout();" />로그아웃</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
         <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
@@ -79,6 +82,51 @@ $(function(){
     </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>
+    <script>
+    function logout(){
+     	if(confirm("정말로 로그아웃하시겠습니까?")){
+	    	if("${loggedInUser.isSocial}"=="kakao"){
+	    		kakao_logout();
+	    	}else if("${loggedInUser.isSocial}"=="google"){
+		    	google_logout();
+	    	}else if("${loggedInUser.isSocial}"=="naver"){
+	    		naver_logout();
+	    	}
+	    	location.href='${pageContext.request.contextPath}/logout.do';
+    	}
+    }
+    function kakao_logout(){
+	    Kakao.init('b0d1d7505f46a344dbdd4ff7a064f2f7');
+    	Kakao.Auth.logout(function(data){
+    			if(data){}
+    			else{
+    				alert("다시 시도해주세요.");
+    				return false;
+    			}
+    		
+    	});
+    }
+    
+    function google_logout(){
+    	 gapi.auth2.getAuthInstance().signOut().then(function () {
+			gapi.auth2.getAuthInstance().disconnect();
+        });
+    }
+    
+    function naver_logout(){
+    	var popup = open("http://nid.naver.com/nidlogin.logout");
+    	popup.close();
+    }
+    
+    function init() {
+   	    gapi.load('auth2', function() {
+   	    	gapi.auth2.init({
+	        	client_id: '522789660173-lpfikvtl76o0p15h09bva0v7m905jjqv.apps.googleusercontent.com'
+	     	});
+   	    });
+    }
+    
+    </script>
     <section id="main-container">
     	<div id="padding">
 	    	<h1 id="page-title">${param.pageTitle}</h1>

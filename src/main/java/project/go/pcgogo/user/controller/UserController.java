@@ -13,7 +13,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -48,7 +47,7 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
-	
+
 	@RequestMapping(value="/login.do")
 	public ModelAndView goLogin(@CookieValue(value="saveId", defaultValue="") String userId, ModelAndView mav) {
 		if(!"".equals(userId)) {
@@ -127,7 +126,7 @@ public class UserController {
 	@RequestMapping("/signUpEnd/member")
 	public String insertMember(Member m, HttpServletRequest request) {
 		logger.info(m.toString());
-		m.setIsSocial(false);
+		m.setIsSocial(null);
 		int result = userService.insertMember(m);
 		request.setAttribute("result", result);
 		request.setAttribute("flag", "member");
@@ -282,7 +281,7 @@ public class UserController {
 			Member m = (Member)obj;
 			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
 				mav.addObject("loggedInUser", m);
-				m.setIsSocial(false);
+				m.setIsSocial(null);
 //				session.setAttribute("loggedInUser", m);
 				view = "redirect:/";
 			}
@@ -296,10 +295,10 @@ public class UserController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/login/socialLoginEnd")
+	@RequestMapping(value="/login/socialLoginEnd/{social}")
 	@ResponseBody
 	public void socialLoginEnd(@RequestParam("userId") String userId,
-							   ModelAndView mav,
+							   @PathVariable String social,
 							   HttpServletRequest req) {
 		Member m = new Member();
 		if(userId.indexOf("@")>-1) {
@@ -309,9 +308,32 @@ public class UserController {
 		}else {
 			m.setMemberId(userId);
 		}
-		m.setIsSocial(true);
-//		mav.addObject("loggedInUser", m);
+		m.setIsSocial(social);
 		req.getSession(true).setAttribute("loggedInUser", m);
 		logger.info(m);
+	}
+	
+	@RequestMapping(value="/login/kakao/getUserInfo")
+	@ResponseBody
+	public String getUserInfo(@RequestParam("access_token") String access_token) {
+		String requestUrl = "https://kapi.kakao.com/v2/user/me";
+
+		String result = "";
+		BufferedReader br = null;
+		try {
+			URL url = new URL(requestUrl);
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			con.setRequestProperty("Authorization", "Bearer "+access_token);
+			
+			br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+			String line;
+			while((line=br.readLine())!=null) {result += line;}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {try {br.close();} catch (IOException e) {e.printStackTrace();}}
+		
+		return result;
 	}
 }
