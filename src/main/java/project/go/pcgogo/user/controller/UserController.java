@@ -268,7 +268,6 @@ public class UserController {
 				Manager m = (Manager)obj;
 				if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
 					mav.addObject("loggedInUser", m);
-//					session.setAttribute("loggedInUser", m);
 					view = "redirect:/";
 				}
 				else {
@@ -282,7 +281,6 @@ public class UserController {
 			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
 				mav.addObject("loggedInUser", m);
 				m.setIsSocial(null);
-//				session.setAttribute("loggedInUser", m);
 				view = "redirect:/";
 			}
 			else {

@@ -84,7 +84,7 @@ $(function(){
     </div>
     <script>
     function logout(){
-     	if(confirm("정말로 로그아웃하시겠습니까?")){
+    	if(confirm("정말로 로그아웃하시겠습니까?")){
 	    	if("${loggedInUser.isSocial}"=="kakao"){
 	    		kakao_logout();
 	    	}else if("${loggedInUser.isSocial}"=="google"){
@@ -92,9 +92,11 @@ $(function(){
 	    	}else if("${loggedInUser.isSocial}"=="naver"){
 	    		naver_logout();
 	    	}
+	    	
 	    	location.href='${pageContext.request.contextPath}/logout.do';
-    	}
+		}
     }
+    
     function kakao_logout(){
 	    Kakao.init('b0d1d7505f46a344dbdd4ff7a064f2f7');
     	Kakao.Auth.logout(function(data){
