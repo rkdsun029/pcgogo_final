@@ -1,6 +1,7 @@
 package project.go.pcgogo.user.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,10 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<User> selectByName(String memberId) {
 		return sqlSession.selectList("user.selectByName", memberId);
+	}
+
+	@Override
+	public int updatePwd(Map<String, String> map) {
+		return sqlSession.update("user.updatePwd", map);
 	}
 }

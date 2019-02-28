@@ -7,5 +7,6 @@
 
 <script>
 alert("${msg}");
+if("${popup}"!=null) ${popup}
 location.href = "${pageContext.request.contextPath}${loc}";
 </script>

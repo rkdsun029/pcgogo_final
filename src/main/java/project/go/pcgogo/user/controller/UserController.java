@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -280,7 +281,7 @@ public class UserController {
 			Member m = (Member)obj;
 			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
 				mav.addObject("loggedInUser", m);
-				m.setIsSocial(null);
+				m.setIsSocial("member");
 				view = "redirect:/";
 			}
 			else {
@@ -333,5 +334,58 @@ public class UserController {
 		} finally {try {br.close();} catch (IOException e) {e.printStackTrace();}}
 		
 		return result;
+	}
+	
+	@RequestMapping(value="/myPage")
+	public ModelAndView goMyPage(ModelAndView mav, HttpSession session) {
+		Object o = session.getAttribute("loggedInUser");
+		if(o instanceof Manager) {mav.setViewName("user/myPage_manager");}
+		else if(o instanceof Member) {mav.setViewName("user/myPage_member");}
+		logger.info(o);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/update/password")
+	public ModelAndView openPasswordPop(ModelAndView mav, @RequestParam("userId") String userId) {
+		mav.setViewName("user/changePwd");
+		mav.addObject("userId", userId);
+		return mav;
+	}
+	
+	@RequestMapping(value="/update/checkPwd")
+	@ResponseBody
+	public Object checkPwd(@RequestParam("userId") String userId, @RequestParam("curPwd") String inputPwd,
+						   @RequestParam("type") String type) {
+		logger.info(userId);
+		logger.info(inputPwd);
+		logger.info(type);
+		boolean result = false;
+		if("manager".equals(type)) {
+			Manager m = userService.selectOneManager(userId);
+			if(pwdEncoder.matches(inputPwd, m.getManagerPassword())) result = true;
+		}
+		else {
+			Member m = userService.selectOneMember(userId);
+			if(pwdEncoder.matches(inputPwd, m.getMemberPassword())) result = true;
+		}
+		
+		
+		return result;
+	}
+	
+	@RequestMapping(value="/updateEnd/{type}/{userId}")
+	public ModelAndView updatePwd(ModelAndView mav, @PathVariable String type, @PathVariable String userId,
+								  @RequestParam("newPwd") String newPwd) {
+		newPwd = pwdEncoder.encode(newPwd);
+		Map<String, String> map = new HashMap<>();
+		map.put("type", type);
+		map.put("userId", userId);
+		map.put("newPwd", newPwd);
+		int result = userService.updatePwd(map);
+		mav.addObject("msg","비밀번호 수정 성공!");
+		mav.addObject("popup", "self.close();");
+		mav.setViewName("common/msg");
+		return mav;
 	}
 }

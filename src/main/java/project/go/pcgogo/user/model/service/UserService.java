@@ -1,6 +1,7 @@
 package project.go.pcgogo.user.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.userdetails.User;
 
@@ -20,5 +21,7 @@ public interface UserService {
 	Manager selectOneManager(String userId);
 
 	List<User> selectByName(String memberId);
+
+	int updatePwd(Map<String, String> map);
 
 }

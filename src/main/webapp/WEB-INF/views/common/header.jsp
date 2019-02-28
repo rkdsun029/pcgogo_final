@@ -72,7 +72,8 @@ $(function(){
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
     </c:if>
     <c:if test="${loggedInUser != null }">
-    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" />내 정보</div>
+    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
+    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
         <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
         onclick="logout();" />로그아웃</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
