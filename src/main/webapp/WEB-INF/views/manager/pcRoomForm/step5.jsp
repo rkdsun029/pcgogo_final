@@ -116,7 +116,8 @@ $(function(){
 			console.log(seatCount_);
 			var objectArr = [{id:1, key:"dd"},{id:2, key:"ss"}];
 			
-			$.ajax({
+			localStorage.setItem('id', '1');
+			/* $.ajax({
 				url : "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do",
 				data :{
 					/* "pmRow_" : pmRow_,
@@ -139,7 +140,7 @@ $(function(){
 					console.log(errorThrown);
 					console.log("AJAX ERROR");
 				}
-			});
+			}); */
 		}
 	});
 });
