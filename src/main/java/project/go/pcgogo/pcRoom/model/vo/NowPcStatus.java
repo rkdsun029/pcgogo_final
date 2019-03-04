@@ -5,21 +5,23 @@ public class NowPcStatus {
 	private int totalSeat;
 	private int usingSeat;
 	private int unUsingSeat;
+	private int pcRoomNo;
 	public NowPcStatus() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public NowPcStatus(String pcRoomName, int totalSeat, int usingSeat, int unUsingSeat) {
+	public NowPcStatus(String pcRoomName, int totalSeat, int usingSeat, int unUsingSeat, int pcRoomNo) {
 		super();
 		this.pcRoomName = pcRoomName;
 		this.totalSeat = totalSeat;
 		this.usingSeat = usingSeat;
 		this.unUsingSeat = unUsingSeat;
+		this.pcRoomNo = pcRoomNo;
 	}
 	@Override
 	public String toString() {
 		return "NowPcStatus [pcRoomName=" + pcRoomName + ", totalSeat=" + totalSeat + ", usingSeat=" + usingSeat
-				+ ", unUsingSeat=" + unUsingSeat + "]";
+				+ ", unUsingSeat=" + unUsingSeat + ", pcRoomNo=" + pcRoomNo + "]";
 	}
 	public String getPcRoomName() {
 		return pcRoomName;
@@ -45,5 +47,13 @@ public class NowPcStatus {
 	public void setUnUsingSeat(int unUsingSeat) {
 		this.unUsingSeat = unUsingSeat;
 	}
+	public int getPcRoomNo() {
+		return pcRoomNo;
+	}
+	public void setPcRoomNo(int pcRoomNo) {
+		this.pcRoomNo = pcRoomNo;
+	}
+	
+	
 	
 }
