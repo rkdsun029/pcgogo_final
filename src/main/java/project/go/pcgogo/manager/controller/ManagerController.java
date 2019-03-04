@@ -249,7 +249,7 @@ public class ManagerController {
 	 public Map<String, Object> managerCommunity() { 
 		 
 		Map<String, Object> test = new HashMap<>();
-		List<Map<String, String>> list = new Crawling().Crawling2();
+		List<Map<String, String>> list = new Crawling().Crawling_hotDeal();
 		System.out.println("list = " + list);
 		//크롤링한 list값을 우선 실행해서 긁어옴 
 
