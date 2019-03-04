@@ -205,13 +205,14 @@ public class LostAndFoundController {
 	}
 
 
-	@RequestMapping("/lostandfound/completeDev")
+	@RequestMapping("/lostandfound/updateDev")
 	@ResponseBody
-	public Map<String, String> completeDev(@RequestBody LostAndFound lostandfound){
+	public Map<String, String> updateDev(@RequestBody LostAndFound lostandfound){
 		logger.info(lostandfound.toString());
 		Map<String, String> map = new HashMap<>();
-		String msg = lofService.completeDev(lostandfound)>0?"메뉴 수정 성공":"메뉴 수정 실패";
+		String msg = lofService.updateDev(lostandfound)>0?"메뉴 수정 성공":"메뉴 수정 실패";
 		map.put("msg", msg);
+		
 		return map;
 	}
 	
@@ -227,4 +228,16 @@ public class LostAndFoundController {
 		logger.info(msg);
 		return map;
 	}
+	
+	@RequestMapping("/lostandfound/completeDev")
+	@ResponseBody
+	public Map<String, String> completeDev(@RequestBody LostAndFound lostandfound){
+		logger.info(lostandfound.toString());
+		Map<String, String> map = new HashMap<>();
+		String msg = lofService.completeDev(lostandfound)>0?"메뉴 처리완료 성공":"메뉴 처리완료 실패";
+		map.put("msg", msg);
+		
+		return map;
+	}
+	
 }
