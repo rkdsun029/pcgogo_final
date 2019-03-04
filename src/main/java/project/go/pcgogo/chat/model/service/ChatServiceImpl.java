@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.chat.model.dao.ChatDao;
 import project.go.pcgogo.chat.model.vo.Chat;
+import project.go.pcgogo.chat.model.vo.InsertChat;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -15,12 +16,17 @@ public class ChatServiceImpl implements ChatService {
 	ChatDao chatDao;
 
 	@Override
-	public int insertChat(Chat chat) {
+	public int insertChat(InsertChat chat) {
 		return chatDao.insertChat(chat);
 	}
 
 	@Override
-	public Chat messageView(String fromId) {
-		return chatDao.messageView(fromId);
+	public List<Chat> selectByToId(String toId) {
+		return chatDao.selectByToId(toId);
 	}
+
+//	@Override
+//	public Chat messageView(String toId) {
+//		return chatDao.messageView(toId);
+//	}
 }

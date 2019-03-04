@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import project.go.pcgogo.chat.model.vo.Chat;
+import project.go.pcgogo.chat.model.vo.InsertChat;
 
 @Repository
 public class ChatDaoImpl implements ChatDao {
@@ -15,12 +16,24 @@ public class ChatDaoImpl implements ChatDao {
 	SqlSessionTemplate sqlSession;
 
 	@Override
-	public int insertChat(Chat chat) {
+	public int insertChat(InsertChat chat) {
 		return sqlSession.insert("chat.insertChat", chat);
 	}
 
 	@Override
-	public Chat messageView(String fromId) {
-		return sqlSession.selectOne("chat.messageView", fromId);
+	public List<Chat> selectByToId(String toId) {
+		
+		System.out.println("Dao@받는 사람 : " + toId);
+		List<Chat> list = sqlSession.selectList("chat.selectByToId", toId);
+		
+		
+		System.out.println("Dao@채팅있으면~ : " + list);
+		
+		return list;
 	}
+
+//	@Override
+//	public Chat messageView(String toId) {
+//		return sqlSession.selectOne("chat.messageView", toId);
+//	}
 }

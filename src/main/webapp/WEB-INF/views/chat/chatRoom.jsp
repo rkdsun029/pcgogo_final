@@ -27,11 +27,7 @@
     			<div class="nano has-scrollbar" style="height:700px">
     				<div id="messageList" class="nano-content pad-all" tabindex="0" style="right: -17px;">
     					
-    					<c:if test="${!loggedInUser.memberId}">
-    						<ul class="list-unstyled media-block">
-    							
-    						</ul>
-    					</c:if>
+    					
     					
     				</div>
     			<div class="nano-pane">
@@ -64,10 +60,47 @@
 </div>
 
 <script>
+
+	var toId = $("input[name=toId]").val();
+	
+	console.log(toId);
+	
+	function getMessage() {
+		$.ajax({
+			url: "${pageContext.request.contextPath}/chat/selectByToId.do",
+			data: {
+				toId : toId
+			},
+			dataType: "json",
+			type: "get",
+			success: function(data) {
+				var html = "";
+				
+				for(var i in data) {
+					var chat = data[i];
+					var chatTime = chat.chatTime;
+					
+					html += "<p>" + chat.fromId + "</p>";
+					html += "<p>" + chat.chatContent + "</p>";
+					html += new Date(chat.chatTime).toISOString().slice(0, 10);
+				}
+				
+				$("#messageList").html(html);
+			},
+			error: function(jqxhr, textStatus, errorThrow) {
+				console.log(jqxhr);
+				console.log(textStatus);
+				console.log(errorThrow);
+				console.log("ajax 전송 실패ㅠㅠ");
+			}
+		});
+	}
+	
+	getMessage();
+			
 	$(".btn-block").click(function() {
 		
 		var fromId = $("input[name=fromId]").val();
-		var toId = $("input[name=toId]").val();
 		
 		/* console.log(fromId, toId, chatContent); */
 		
@@ -81,6 +114,7 @@
 		var fromId_ = $("input[name=fromId_]").val();
 		var toId_ = $("input[name=toId_]").val();
 		var chatContent = $("input[name=chatContent]").val();
+		var input = $("input[name=chatContent]").val();
 		
 		console.log(fromId_, toId_, chatContent);
 		
@@ -95,7 +129,7 @@
 			type: "post",
 			success: function(data) {
 				console.log("ajax 전송 성공!");
-				
+				getMessage();
 			},
 			error: function(jqxhr, textStatus, errorThrow) {
 				console.log(jqxhr);

@@ -2,8 +2,6 @@ package project.go.pcgogo.chat.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -11,10 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import project.go.pcgogo.chat.model.service.ChatService;
 import project.go.pcgogo.chat.model.vo.Chat;
+import project.go.pcgogo.chat.model.vo.InsertChat;
 import project.go.pcgogo.user.model.service.UserService;
 
 @Controller
@@ -46,15 +44,38 @@ public class MemberChatController {
 	}
 	
 	@RequestMapping("/chat/chatRoom.do")
-	@ResponseBody
-	public String chatRoom(@RequestParam("fromId") String fromId, Model model) {
-		
-		Chat c = chatService.messageView(fromId);
-		
-		model.addAttribute("c", c);
+	public String chatRoom() {
 		
 		return "chat/chatRoom";
 	}
+	
+	@RequestMapping("/chat/selectByToId.do")
+	@ResponseBody
+	public List<Chat> selectByToId(@RequestParam("toId") String toId, Model model) {
+		
+		System.out.println("Controller@받는 사람 : " + toId);
+		
+		List<Chat> list = chatService.selectByToId(toId);
+		
+		System.out.println("채팅방 들어왔을 때 메세지가 있으면! : " + list);
+		
+		model.addAttribute("list", list);
+		
+		return list;
+	}
+	
+//	@RequestMapping("/chat/selectByToId.do")
+//	@ResponseBody
+//	public ModelAndView chat(@RequestParam("toId") String toId, ModelAndView mav, Model model, Chat chat) {
+//		
+//		List<Chat> list = chatService.selectByToId(toId);
+//		
+//		model.addAttribute("list", list);
+//		
+//		mav.setViewName("chat/chatRoom");
+//		
+//		return mav;
+//	}
 	
 	@RequestMapping("/chat/insertChat.do")
 	@ResponseBody
@@ -62,7 +83,7 @@ public class MemberChatController {
 						   @RequestParam("toId_") String toId,
 						   @RequestParam("chatContent") String chatContent) {
 		
-		Chat chat = new Chat(fromId, toId, chatContent);
+		InsertChat chat = new InsertChat(fromId, toId, chatContent);
 		
 		int result = chatService.insertChat(chat);
 		

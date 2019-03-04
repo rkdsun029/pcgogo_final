@@ -3,11 +3,14 @@ package project.go.pcgogo.chat.model.service;
 import java.util.List;
 
 import project.go.pcgogo.chat.model.vo.Chat;
+import project.go.pcgogo.chat.model.vo.InsertChat;
 
 public interface ChatService {
 
-	int insertChat(Chat chat);
+	int insertChat(InsertChat chat);
 
-	Chat messageView(String fromId);
+	List<Chat> selectByToId(String toId);
+
+//	Chat messageView(String toId);
 
 }
