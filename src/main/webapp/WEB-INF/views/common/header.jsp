@@ -117,8 +117,10 @@ $(function(){
     }
     
     function naver_logout(){
-    	var popup = open("http://nid.naver.com/nidlogin.logout");
-    	popup.close();
+    	var popup = open("http://nid.naver.com/nidlogin.logout", "", "width=300, height=200");
+    	setInterval(function(){
+		   	popup.close();
+    	}, 800);
     }
     
     function init() {
