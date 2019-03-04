@@ -179,17 +179,20 @@ public class ManagerController {
 	@RequestMapping("manager/pcRoomForm_savePlacement.do")
 	@ResponseBody
 	public void pcRoomFormSavePlacement(ModelAndView mav, HttpSession session,
-										@RequestBody String seatMapList) {
-		logger.info(seatMapList);
-		List<Map<String, Object>> seatMapList_ = new ArrayList<Map<String, Object>>();
-		seatMapList_ = JSONArray.fromObject(seatMapList);
-		logger.info("seatMapList_ : " + seatMapList_);
+										@RequestBody String seatMapList_) {
+		logger.info(seatMapList_);
+		List<Map<String, Object>> seatMapList = new ArrayList<Map<String, Object>>();
+		seatMapList = JSONArray.fromObject(seatMapList_);
+		logger.info("seatMapList : " + seatMapList);
 		
-		mav.addObject("seatMapList", seatMapList_);
+		session.setAttribute("seatMapList", seatMapList);
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step6.do")
-	public String pcRoomFormStep6() {
+	public String pcRoomFormStep6(HttpSession session) {
+		
+		List<Map<String, Object>> seatMapList = (List<Map<String, Object>>) session.getAttribute("seatMapList");
+		logger.info("step6에서 " + seatMapList);
 		return "manager/pcRoomForm/step6";
 	}
 	
@@ -208,6 +211,7 @@ public class ManagerController {
 		return mav;
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////
 	
 	//메인 사장님커뮤니티 view단 이동
 		@RequestMapping("/manager/managerCommunity.do")
@@ -237,10 +241,4 @@ public class ManagerController {
 		test.put("list" , list);
 		return test; 
 	 }
-	 
-	
-	
-	
-	
-	
 }
