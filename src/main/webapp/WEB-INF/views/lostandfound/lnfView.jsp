@@ -7,6 +7,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="분실물 view" name="lostandfound"></jsp:param>
 </jsp:include>
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
@@ -65,11 +66,11 @@ text-align:center;
 		<div class="form-group row">
 			<label for="lnf" class="col-sm-2 col-form-label">등록자</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="lnf" name="lnfEnrollName" value="${list.lnfEnrollName}" >
+				<input type="text" class="form-control" id="lnf" name="lnfEnrollName" value="${list.lnfEnrollName}" style="text-align:center;">
 			</div>
 		</div>
-		<!-- 딱히 등록번호가 필요해보이진않음.... -->
-		<div class="form-group row">
+		<!-- 딱히 등록번호가 보일필요는 없는듯...... -->
+		<div class="form-group row" style="display:none;">
 			<label for="lnf" class="col-sm-2 col-form-label">등록번호</label>
 			<div class="col-sm-10" >
 				<input type="text" class="form-control" id="lnf" name="lnfNo" value="${list.lnfNo}" style="text-align:center;" readonly="readonly">
@@ -78,32 +79,33 @@ text-align:center;
 		<div class="form-group row">
 			<label for="lnf" class="col-sm-2 col-form-label">분류</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="lnf" name="lnfType" value="${list.lnfType}" readonly="readonly">
+				<input type="text" class="form-control" id="lnf" name="lnfType" value="${list.lnfType}" readonly="readonly" style="text-align:center;">
 			</div>
 		</div>
 		<div class="form-group row">
 			<label for="lnf" class="col-sm-2 col-form-label">물품명</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="lnf" name="lnfName" value="${list.lnfName}" >
+				<input type="text" class="form-control" id="lnf" name="lnfName" value="${list.lnfName}" style="text-align:center;">
 			</div>
 		</div>
 		<!-- https://getbootstrap.com/docs/4.1/components/forms/#inline -->
 		<div class="form-group row">
 			<label for="lnf" class="col-sm-2 col-form-label">보관장소</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="lnf" name="lnfPcRoomName" value="${list.lnfPcRoomName}">
+				<input type="text" class="form-control" id="lnf" name="lnfPcRoomName" value="${list.lnfPcRoomName}" style="text-align:center;">
 			</div>
 		</div>
 		<div class="form-group row">
 			<label for="lnf" class="col-sm-2 col-form-label">처리상태</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="lnfStatus" name="lnfStatus" value="${list.lnfStatus}" readonly="readonly">
+				<input type="text" class="form-control" id="lnfStatus2" name="lnfStatus2" value="${list.lnfStatus}" readonly="readonly" style="text-align:center;">
+				<input type="hidden" class="form-control" id="lnfStatus" name="lnfStatus" value="회수완료" style="text-align:center;">
 			</div>
 		</div>
 		<div class="form-group row">
 			<label for="lnf" class="col-sm-2 col-form-label">등록일</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="lnf" name="lnfGetDate" value="${list.lnfGetDate}" readonly="readonly">
+				<input type="text" class="form-control" id="lnf" name="lnfGetDate" value="${list.lnfGetDate}" readonly="readonly" style="text-align:center;">
 			</div>
 		</div>
 	   <c:forEach items="${imgList}" var="imgList" varStatus="vs"> 
@@ -115,12 +117,52 @@ text-align:center;
 			</div>
 			</c:forEach>
 		</c:forEach>
-		<input type="button" id="btn-add" class="completeDev" value="수정">
+		<br><br>
+		<div id="button" style="margin-left:100px;">
+		<input type="button" id="btn-add" class="completeDev" value="처리완료">
+		<input type="button" id="btn-add" class="updateDev" value="수정">
 		<input type="button" id="btn-add" class="deleteDev" value="삭제"> 
+		</div>
 	</form>
 </div>
 <script>
-		$("#devFrm .completeDev").on("click", function(){
+
+/* 처리완료 */
+$("#devFrm .completeDev").on("click", function(){
+	var param = {
+			/* lnfEnrollName: $("#devFrm [name=lnfEnrollName]").val(), */
+			lnfNo: $("#devFrm [name=lnfNo]").val(),
+			/* lnfType: $("#devFrm [name=lnfType]").val(), */
+			/* lnfName: $("#devFrm [name=lnfName]").val(), */
+			/* lnfPcRoomName: $("#devFrm [name=lnfPcRoomName]").val() */
+			lnfStatus: $("#devFrm [name=lnfStatus]").val()
+			/* lnfGetDate: $("#devFrm [name=lnfGetDate]").val(), */	
+			/* renamedFileName: $("#devFrm [name=renamedFileName]").val() */
+  		}
+  		console.log(param);
+  		var jsonStr = JSON.stringify(param);
+  		console.log(jsonStr);		
+  	
+  		$.ajax({
+  			url: "${pageContext.request.contextPath}/lostandfound/completeDev",
+  			data: jsonStr,
+  			type: "put",
+  			dataType: "json", 
+  			contentType: "application/json; charset=utf-8",
+  			success: function(data){
+  				console.log(data);
+  				//입력성공후 form 초기화(jquery)
+  				$("#devFrm")[0].reset();
+  			},
+  			error: function(){
+  				console.log("ajax 처리 에러!!");
+  			}
+	 });
+	 
+ });
+
+/* 수정스크립트 */
+		$("#devFrm .updateDev").on("click", function(){
 			var param = {
 				lnfEnrollName: $("#devFrm [name=lnfEnrollName]").val(),
 				lnfNo: $("#devFrm [name=lnfNo]").val(),
@@ -136,7 +178,7 @@ text-align:center;
 	  		console.log(jsonStr);		
 	  	
 	  		$.ajax({
-	  			url: "${pageContext.request.contextPath}/lostandfound/completeDev",
+	  			url: "${pageContext.request.contextPath}/lostandfound/updateDev",
 	  			data: jsonStr,
 	  			type: "put",
 	  			dataType: "json", 
@@ -152,6 +194,8 @@ text-align:center;
 	  		});
 		});
 		
+		
+		/* 삭제스크립트 */
 		$("#devFrm .deleteDev").on("click", function(){
 			if(!confirm("정말 삭제하시겠습니까?"))
 				return;
