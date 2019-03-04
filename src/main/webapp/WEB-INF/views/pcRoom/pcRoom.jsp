@@ -163,18 +163,26 @@ function placesSearchCB (data, status, pagination) {
         
 		//지도 마커에 표시할 데이터를 보내는 곳 데이터는 
         for (var i=0; i<data.length; i++) {
-        	console.log(data[i]);
-        	var b = data[i].address_name; //지역 이름
-        	if(b.indexOf(area)>-1){//지역이름에 검색할 옵션의 지역이름이 포함되면
-        		displayMarker(data[i]);  //마커표시
+        	//console.log(data[i]);
+        	var c = data[i].category_name;
+        	console.log(c)
+        	var b = data[i].address_name; 	//지역 이름
+        	if(c.indexOf('PC방')>-1){
+        	if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
+        		displayMarker(data[i]);  	//마커표시
                 bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
         	}
-            
+        	}
         }       
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         map.setBounds(bounds);
     } 
+}
+
+function rsv(){
+	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do",
+			"뿌뿌링", "width=1000, height=700, left=50, top=20");
 }
 
 // 지도에 마커를 표시하는 함수입니다
@@ -189,36 +197,39 @@ function displayMarker(place) {
     // 마커에 클릭이벤트를 등록합니다
     daum.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        var pcRoomName = place.place_name;
+        
         $.ajax({
         	url:"${pageContext.request.contextPath}/pcRoom/nowPcStatus.do",
-    	    data: {pcRoomName : place.place_name},
-    	    dataType: "json",
+    	    data: {pcRoomName : pcRoomName},
     		type: "get",
     		success : function(data){
-    			infowindow.setContent(
+    			console.log(data, typeof data);
+    			console.log("@@@@@"+place.place_name);
+    			if(data!=''){
+    				infowindow.setContent(
     					place.place_name+'<div class="txt">피시방의 전체 좌석수 </div>'
-    					+data.totalSeat+'<div class="txt">중 </div>'
-    					+data.usingSeat+'<div class="txt">자리가 이용 중이며 </div>'
-    					+data.unUsingSeat+'<div class="txt">자리가 이용 가능합니다.</div>'
-    					+'<button>좌석확인/예약하기</button>'
-    					
-    					
-    					
-    					
-    					
-    					
-    					'<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+    					+data[0].totalSeat+'<div class="txt">중 </div>'
+    					+data[0].usingSeat+'<div class="txt">자리가 이용 중이며 </div>'
+    					+data[0].unUsingSeat+'<div class="txt">자리가 이용 가능합니다.</div>'
+    					+'<button onclick="rsv();">좌석확인/예약하기</button>'
+    					);
+    			}else{
+        			infowindow.setContent(
+    					pcRoomName+'<div class="txt">피시방은 Pcgogo에 등록되어있지 않는 지점입니다.</div>'
+    				);
+    			}
     			
     		},
     		error : function(){
-    			
+    			console.log("error!!");
     		}
         })
         
         infowindow.open(map, marker);
         
-        var pcRoom = place.place_name;
-        $.ajax({
+        //var pcRoom = place.place_name;
+        /* $.ajax({
     		url:"${pageContext.request.contextPath}/pcRoom/pcList.do",
     	    data: {pcRoom : pcRoom},
     	    dataType: "json",
@@ -251,7 +262,7 @@ function displayMarker(place) {
     		error: function(){
     			console.log("error");
     		}
-    	});
+    	}); */
     });
     
 }

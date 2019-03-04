@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="pcRoom">
-	<select id="pcList" resultType="pcRoom">
-		select A.pcNum, A.legend, A.sitNum, A.xLoc, A.yLoc, A.nowSitting from pcRoom A left join pcRoomName B on A.pcNum = B.pcNum where pcRoom =  #{pcRoom}
-	</select>
 	<select id="pcRoomList" parameterType="String" resultType="pcRoomList">
 		select * from pcRoomList where placename like '%'||#{place_name}||'%'
 	</select>
+	
 	<select id="nowPcStatus" resultType="nowPcStatus">
 		select * from nowPcStatus where pcRoomName = #{ pcRoomName}
 	</select>

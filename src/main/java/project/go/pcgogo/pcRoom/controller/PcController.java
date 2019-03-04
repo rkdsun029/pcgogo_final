@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import project.go.pcgogo.pcRoom.model.service.PcService;
+import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
 
@@ -47,8 +48,20 @@ public class PcController {
     	
     }
     @RequestMapping("/pcRoom/nowPcStatus.do")
-    public String nowPcStatus(@RequestParam(value="pcRoomName")String pcRoomName) {
+    public @ResponseBody List<NowPcStatus> nowPcStatus(@RequestParam(value="pcRoomName")String pcRoomName) {
     	
-    	return pcService.nowPcStatus(pcRoomName);
+    	List<NowPcStatus> a =  pcService.nowPcStatus(pcRoomName);
+    	if(a.isEmpty()){
+    		return null;
+    	}
+    	return a;
     }
+    
+    @RequestMapping("/pcRoom/pcRoomRsv.do")
+    public String pcRoomRsv(@RequestParam(value="pcpc")String pcpc) {
+    return null;
+    
+    }
+    
+    
 }
