@@ -13,10 +13,15 @@ import org.jsoup.select.Elements;
 public class Crawling {
 	
 	public static void main(String[] args) {
+		Crawling c = new Crawling();
+		
+		c.Crawling2();
 		
 	}
 	
-	public List<String> crawling2() {
+	
+	
+	public List<String> Crawling2() {
 		List<String> result = new ArrayList<>();
 		try {
 			Document doc = Jsoup.connect("http://www.danawa.com").get();

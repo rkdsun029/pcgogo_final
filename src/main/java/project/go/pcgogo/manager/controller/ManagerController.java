@@ -119,7 +119,8 @@ public class ManagerController {
 	
 	@RequestMapping("/manager/managerCommunity.do")
 	public ModelAndView hotDeal(ModelAndView mav) {
-		List<String> result = new Crawling().crawling2();
+		
+		List<String> result = new Crawling().Crawling2();
 		 
 		mav.addObject("result", result);
 		mav.setViewName("manager/managerCommunity");
