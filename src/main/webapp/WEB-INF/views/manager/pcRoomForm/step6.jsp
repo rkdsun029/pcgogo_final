@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <script>
-$(function(){
+$(function(){	
 	var pmContent_ = "";
 	var pmTd_ = $("td").length;
 	var currValNum = 0;
@@ -103,7 +103,7 @@ $(function(){
 						pmContent_ += parseInt($("td").eq(s).find("span").val());
 					}
 					else{
-						pmContent_ += $("td").eq(s).find("input[type=hidden]").val()";										
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
 					}
 				}
 				else {

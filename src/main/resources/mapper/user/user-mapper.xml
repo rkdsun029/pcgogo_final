@@ -28,5 +28,20 @@
 		from manager
 		where managerId=#{userId}
 	</select>
-
+	
+	<resultMap type="member" id="memberMap">
+		
+	</resultMap>
+	
+	<select id="selectByName" parameterType="string" resultMap="memberMap">
+		select * from member where memberId like '%'||#{memberId}||'%'
+	</select>
+	<update id="updatePwd" parameterType="map">
+		<if test="type=='member'">
+		update member set memberPassword=#{newPwd} where memberId=#{userId} 
+		</if>
+		<if test="type=='manager'">
+		update manager set managerPassword=#{newPwd} where managerId=#{userId} 
+		</if>
+	</update>
 </mapper>

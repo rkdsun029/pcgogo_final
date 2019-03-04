@@ -21,19 +21,7 @@ div.couple{background:url("${pageContext.request.contextPath}/resources/image/ma
 div.wall{background:url("${pageContext.request.contextPath}/resources/image/manager/wall.png");}
 </style>
 <script>
-$(function(){
-	var pmRow_ = $("tr").length;
-	var pmCol_ = $("tr:first-of-type td").length;
-	var plainSize = $(".plain").length;
-	var specialSize = $(".special").length;
-	var pmTd_ = $("td").length;
-	var pmContent_ = "";
-
-	$("h4#table-legend").children("span#pmRow_").html(pmRow_);
-	$("h4#table-legend").children("span#pmCol_").html(pmCol_);
-	$("h4#table-legend").children("span#plainSize").html(plainSize);
-	$("h4#table-legend").children("span#specialSize").html(specialSize);
-	
+$(function(){	
 	$("select#classification").on("change", function(){
 		var status = $(this).val();
 		console.log(status);
@@ -59,18 +47,7 @@ $(function(){
 			if(status == "etc") $(this).find("input[type=hidden]").val("k");
 			if(status == "wall") $(this).find("input[type=hidden]").val("z");
 		});
-	});
 
-	$("table#placement").on("click", function(){
-		var pmRow_ = $("tr").length;
-		var pmCol_ = $("tr:first-of-type td").length;
-		var plainSize = $(".plain").length;
-		var specialSize = $(".special").length;
-
-		$("h4#table-legend").children("span#pmRow_").html(pmRow_);
-		$("h4#table-legend").children("span#pmCol_").html(pmCol_);
-		$("h4#table-legend").children("span#plainSize").html(plainSize);
-		$("h4#table-legend").children("span#specialSize").html(specialSize);
 	});
 	
 	$("button#resetPlacement").on("click", function(){
@@ -83,83 +60,138 @@ $(function(){
 		var temp = confirm("배치도를 저장하시겠습니까?");
 		
 		if(!temp) return;
-		else{			
-			var pmRow_ = $("tr").length;
+			
+		else{
+			/* var pmRow_ = $("tr").length;
 			var pmCol_ = $("tr:first-of-type td").length;
 			var pmTd_ = $("td").length;
 			var pmContent_ = "";
 			
 			for(var s=0; s<pmTd_; s++){
-				/* console.log("찍기:",s,":", $("td").eq(s).find("input").val()); */
 				if(s == parseInt(pmTd_)-1)pmContent_ += $("td").eq(s).find("input[type=hidden]").val();				
 				else pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";
 			}
 			
-			/* console.log("pmContent_:", pmContent_); */
-			
 			$("input[name=pmRow_]").val(pmRow_);
 			$("input[name=pmCol_]").val(pmCol_);
-			$("input[name=pmContent_]").val(pmContent_);
+			$("input[name=pmContent_]").val(pmContent_);*/
 			
-			console.log($("input[name=pmRow_]").val());
-			console.log($("input[name=pmCol_]").val());
-			console.log($("input[name=pmContent_]").val());
+			$("table").each(function(){
+				var html1 = "<input type='hidden' class='table_tdContent' value='";
+				var html2 = "<input type='hidden' class='seat_tdCount' value='";
+				$(this).find("td").each(function(){
+					html1 += $(this).find("input[type=hidden]").val() + ",";
+				});
+				
+				var temp_html2 = $(this).find("[class*=plain], [class*=special], [class*=couple]").length;
+				html2 += temp_html2;
+				
+				html1 += "'/>";
+				html2 += "'/>";
+				
+				$("body").append(html1);
+				$("body").append(html2);
+			});
 			
-			//location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
-			$("form#main-placement-info").submit();
+			var pmRow_ = new Array;
+			var pmCol_ = new Array;
+			var pmContent_ = new Array;
+			var floorNum_ = new Array;
+			var seatCount_ = new Array;
+			
+			var tableLength = $("table").length;
+			
+			for(var i=0; i<tableLength; i++){
+				pmRow_.push($("table").eq(i).find("tr").length);
+				pmCol_.push($("table").eq(i).find("tr:first-of-type td").length);
+				floorNum_.push($("input#floorNum").eq(i).val());
+				pmContent_.push($("input.table_tdContent").eq(i).val());
+				seatCount_.push($("input.seat_tdCount").eq(i).val());
+			}
+			
+			console.log(pmRow_);
+			console.log(pmCol_);
+			console.log(pmContent_);
+			console.log(floorNum_);
+			console.log(seatCount_);
+			var objectArr = [{id:1, key:"dd"},{id:2, key:"ss"}];
+			
+			localStorage.setItem('id', '1');
+			/* $.ajax({
+				url : "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do",
+				data :{
+					/* "pmRow_" : pmRow_,
+					"pmCol_" : pmCol_,
+					"pmContent_" : pmContent_,
+					"floorNum_" : floorNum_,
+					"seatCount_" : seatCount_ */
+					objectArr : JSON.stringify(objectArr)
+				},
+				traditional : true,
+				type : "post",
+				dataType : "json",
+				success : function(data){
+					console.log(data);
+					console.log("AJAX SUCCEED");
+				},
+				error : function(jqxhr, textStatus, errorThrown){
+					console.log(jqxhr);
+					console.log(textStatus);
+					console.log(errorThrown);
+					console.log("AJAX ERROR");
+				}
+			}); */
 		}
 	});
-
 });
 </script>
 </head>
 <body>
 <h1 id="head-title">PCGOGO.COM</h1>
 <br>
-<form id="main-placement-info" action="${pageContext.request.contextPath }/manager/pcRoomForm_step6.do">
-	<input type="hidden" name="pmRow_"/>
-	<input type="hidden" name="pmCol_"/>
-	<input type="hidden" name="pmContent_"/>
-</form>
-<div id="ready-placement">
-	<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
-	<select name="classification" id="classification">
-		<option value="default" disabled selected>구분을 선택해 주세요.</option>
-		<option value="plain">일반석</option>
-		<option value="special">특별석</option>
-		<option value="couple">다인석(커플, 3인 등)</option>
-		<option value="toilet">화장실</option>
-		<option value="exit">출입구</option>
-		<option value="counter">카운터</option>
-		<option value="kiosk">무인기</option>
-		<option value="water">정수기</option>
-		<option value="air">에어컨, 히터</option>
-		<option value="smoking">흡연실</option>
-		<option value="etc">기타</option>
-		<option value="wall">벽</option>
-	</select>
-	<fieldset id="status-container">
-		<legend>&nbsp;선택&nbsp;</legend>
-		<div id="status"></div>
-	</fieldset>
-</div>
+<h4 id="seatLegend">편의를 위하여 자리분류 선택바가 층마다 있습니다. 아무거나 이용하셔도 무관합니다.</h4>
+<br>
+<c:forEach var="seatMap" items="${seatMapList }" varStatus="cnt">
+	<input type="hidden" id="floorNum" value="${seatMap.floorNum }"/>
+	<h2 class="floorNum_">${seatMap.floorNum } 층</h2>
+	<div id="ready-placement">
+		<label for="classification">구분&nbsp;&nbsp;&nbsp;</label>
+		<select name="classification" id="classification">
+			<option value="default" disabled selected>구분을 선택해 주세요.</option>
+			<option value="plain">일반석</option>
+			<option value="special">특별석</option>
+			<option value="couple">다인석(커플, 3인 등)</option>
+			<option value="toilet">화장실</option>
+			<option value="exit">출입구</option>
+			<option value="counter">카운터</option>
+			<option value="kiosk">무인기</option>
+			<option value="water">정수기</option>
+			<option value="air">에어컨, 히터</option>
+			<option value="smoking">흡연실</option>
+			<option value="etc">기타</option>
+			<option value="wall">벽</option>
+		</select>
+		<fieldset id="status-container">
+			<legend>&nbsp;선택&nbsp;</legend>
+			<div id="status"></div>
+		</fieldset>
+	</div>
+	<table id="placement">
+		<c:forEach var="i" begin="1" end="${seatMap.pmRow }" step="1">
+			<tr>
+				<c:forEach var="j" begin="1" end="${seatMap.pmCol }" step="1">
+					<td class="${cnt.count }">
+						<div id="seat__" class="seat wall">
+							<input type="hidden" value="z"/>
+						</div>
+					</td>
+				</c:forEach>
+			</tr>		
+		</c:forEach>
+	</table>
+	<br><br><br>
+</c:forEach>
 
-<h4 id="table-legend">행 개수 : <span id="pmRow_"></span>, &nbsp; 열 개수 : <span id="pmCol_"></span>, &nbsp; 
-					일반석 : <span id="plainSize"></span>, &nbsp; 특별석 : <span id="specialSize"></span></h4><br>
-
-<table id="placement">
-	<c:forEach var="i" begin="1" end="${pmRow }" step="1">
-		<tr>
-			<c:forEach var="j" begin="1" end="${pmCol }" step="1">
-				<td>
-					<div id="seat__" class="seat wall">
-						<input type="hidden" value="z"/>
-					</div>
-				</td>
-			</c:forEach>
-		</tr>		
-	</c:forEach>
-</table>
 <div id="pm-button-container">
 	<button class="formBtn" id="resetPlacement">초기화</button>
 	<button class="formBtn" id="submitPlacement">등록</button>

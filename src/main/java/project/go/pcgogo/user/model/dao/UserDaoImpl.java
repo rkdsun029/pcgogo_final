@@ -1,9 +1,11 @@
 package project.go.pcgogo.user.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
 import project.go.pcgogo.user.model.vo.Manager;
@@ -37,5 +39,15 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public Manager selectOneManager(String userId) {
 		return sqlSession.selectOne("user.selectOneManager", userId);
+	}
+
+	@Override
+	public List<User> selectByName(String memberId) {
+		return sqlSession.selectList("user.selectByName", memberId);
+	}
+
+	@Override
+	public int updatePwd(Map<String, String> map) {
+		return sqlSession.update("user.updatePwd", map);
 	}
 }
