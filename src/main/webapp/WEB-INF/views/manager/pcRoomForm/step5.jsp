@@ -93,54 +93,38 @@ $(function(){
 				$("body").append(html2);
 			});
 			
-			var pmRow_ = new Array;
-			var pmCol_ = new Array;
-			var pmContent_ = new Array;
-			var floorNum_ = new Array;
-			var seatCount_ = new Array;
-			
 			var tableLength = $("table").length;
 			
+			var seatMapList = new Array();
+			
 			for(var i=0; i<tableLength; i++){
-				pmRow_.push($("table").eq(i).find("tr").length);
-				pmCol_.push($("table").eq(i).find("tr:first-of-type td").length);
-				floorNum_.push($("input#floorNum").eq(i).val());
-				pmContent_.push($("input.table_tdContent").eq(i).val());
-				seatCount_.push($("input.seat_tdCount").eq(i).val());
+				var object = {
+					pmRow_ : $("table").eq(i).find("tr").length,
+					pmCol_ : $("table").eq(i).find("tr:first-of-type td").length,
+					floorNum_ : $("input#floorNum").eq(i).val(),
+					pmContent_ : $("input.table_tdContent").eq(i).val(),
+					seatCount_ : $("input.seat_tdCount").eq(i).val()
+				}
+				
+				seatMapList.push(object);
 			}
 			
-			console.log(pmRow_);
-			console.log(pmCol_);
-			console.log(pmContent_);
-			console.log(floorNum_);
-			console.log(seatCount_);
-			var objectArr = [{id:1, key:"dd"},{id:2, key:"ss"}];
-			
-			localStorage.setItem('id', '1');
-			/* $.ajax({
-				url : "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do",
-				data :{
-					/* "pmRow_" : pmRow_,
-					"pmCol_" : pmCol_,
-					"pmContent_" : pmContent_,
-					"floorNum_" : floorNum_,
-					"seatCount_" : seatCount_ */
-					objectArr : JSON.stringify(objectArr)
-				},
+			console.log(JSON.stringify(seatMapList));
+			alert(JSON.stringify(seatMapList));
+			$.ajax({
+				url : "${pageContext.request.contextPath}/manager/pcRoomForm_savePlacement.do",
+				data : JSON.stringify(seatMapList),
 				traditional : true,
 				type : "post",
-				dataType : "json",
-				success : function(data){
-					console.log(data);
+				contentType : "application/json; charset=utf-8",
+				success : function(){
 					console.log("AJAX SUCCEED");
+					location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
 				},
-				error : function(jqxhr, textStatus, errorThrown){
-					console.log(jqxhr);
-					console.log(textStatus);
-					console.log(errorThrown);
-					console.log("AJAX ERROR");
+				error : function(){
+					console.log("AJAX FAILED");
 				}
-			}); */
+			});
 		}
 	});
 });
