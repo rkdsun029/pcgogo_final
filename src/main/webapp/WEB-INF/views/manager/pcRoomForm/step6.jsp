@@ -14,7 +14,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <script>
-$(function(){	
+$(function(){
+
 	var pmContent_ = "";
 	var pmTd_ = $("td").length;
 	var currValNum = 0;
@@ -29,33 +30,38 @@ $(function(){
 	$(".etc").css("cursor", "default");
 	$(".wall").css("cursor", "default");
 	
-	var pmContent = $("#hiddenPmContent").val();
-	var tempArr = pmContent.split(",");
-	for(var s=0; s<tempArr.length; s++){
-		/* console.log("찍기 : ",s,":", tempArr[s]); */
-		$("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
-		$("td").eq(s).find("div#seat__").removeClass("wall");
-		if(tempArr[s] == "a") {
-			$("td").eq(s).find("div#seat__").addClass("plain").css("cursor", "pointer");
-			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+	var pmContent = $("#hiddenPmContent");
+	
+	var tableLength = $("table").length;
+	for(var i=0; i<tableLength; i++){
+		var tempArr = pmContent[i].val().split(",");
+		
+		for(var s=0; s<tempArr.length; s++){
+			/* console.log("찍기 : ",s,":", tempArr[s]); */
+			$("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
+			$("td").eq(s).find("div#seat__").removeClass("wall");
+			if(tempArr[s] == "a") {
+				$("td").eq(s).find("div#seat__").addClass("plain").css("cursor", "pointer");
+				$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+			}
+			if(tempArr[s] == "b"){
+				$("td").eq(s).find("div#seat__").addClass("special").css("cursor", "pointer");
+				$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+			}
+			if(tempArr[s] == "c"){
+				$("td").eq(s).find("div#seat__").addClass("couple").css("cursor", "pointer");
+				$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+			}
+			if(tempArr[s] == "d") $("td").eq(s).find("div#seat__").addClass("toilet");
+			if(tempArr[s] == "e") $("td").eq(s).find("div#seat__").addClass("exit");
+			if(tempArr[s] == "f") $("td").eq(s).find("div#seat__").addClass("counter");
+			if(tempArr[s] == "g") $("td").eq(s).find("div#seat__").addClass("kiosk");
+			if(tempArr[s] == "h") $("td").eq(s).find("div#seat__").addClass("water");
+			if(tempArr[s] == "i") $("td").eq(s).find("div#seat__").addClass("air");
+			if(tempArr[s] == "j") $("td").eq(s).find("div#seat__").addClass("smoking");
+			if(tempArr[s] == "k") $("td").eq(s).find("div#seat__").addClass("etc");
+			if(tempArr[s] == "z") $("td").eq(s).find("div#seat__").addClass("wall");		
 		}
-		if(tempArr[s] == "b"){
-			$("td").eq(s).find("div#seat__").addClass("special").css("cursor", "pointer");
-			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
-		}
-		if(tempArr[s] == "c"){
-			$("td").eq(s).find("div#seat__").addClass("couple").css("cursor", "pointer");
-			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
-		}
-		if(tempArr[s] == "d") $("td").eq(s).find("div#seat__").addClass("toilet");
-		if(tempArr[s] == "e") $("td").eq(s).find("div#seat__").addClass("exit");
-		if(tempArr[s] == "f") $("td").eq(s).find("div#seat__").addClass("counter");
-		if(tempArr[s] == "g") $("td").eq(s).find("div#seat__").addClass("kiosk");
-		if(tempArr[s] == "h") $("td").eq(s).find("div#seat__").addClass("water");
-		if(tempArr[s] == "i") $("td").eq(s).find("div#seat__").addClass("air");
-		if(tempArr[s] == "j") $("td").eq(s).find("div#seat__").addClass("smoking");
-		if(tempArr[s] == "k") $("td").eq(s).find("div#seat__").addClass("etc");
-		if(tempArr[s] == "z") $("td").eq(s).find("div#seat__").addClass("wall");		
 	}
 	
 	/* 좌석누르면 좌석번호 생성 */
@@ -197,7 +203,6 @@ input#currVal{
 	<input type="hidden" name="pmContent_"/>
 </form>
 
-<input type="hidden" id="hiddenPmContent" value="${requestScope.pmContent }"/>
 <h3 id="seatNo-help-legend">&lt; 좌석번호 입력 &gt;</h3>
 <div id="seatNo-help">
 	<h4>- 일반석, 특별석, 다인석에만 좌석번호 부여가 가능합니다.</h4>
@@ -211,20 +216,25 @@ input#currVal{
 	<button id="ctrlZ">되돌리기</button>
 	<button id="makeAutoSeatNo">자동으로 번호 생성</button>
 </div>
-
-<table id="placement">
-	<c:forEach var="i" begin="1" end="${requestScope.pmRow }" step="1">
-		<tr>
-			<c:forEach var="j" begin="1" end="${requestScope.pmCol }" step="1">
-				<td>
-					<div id="seat__" class="seat wall">
-						<input type="hidden"/>									
-					</div>
-				</td>
-			</c:forEach>
-		</tr>		
-	</c:forEach>
-</table>
+<c:forEach var="seatMap" items="${seatMapList }" varStatus="cnt">
+	<input type="hidden" id="hiddenPmContent" value="${seatMap.pmContent_ }"/>
+	<input type="hidden" id="floorNum" value="${seatMap.floorNum_ }"/>
+	<h2 class="floorNum_">${seatMap.floorNum_ } 층</h2>
+	<table id="placement">
+		<c:forEach var="i" begin="1" end="${seatMap.pmRow_ }" step="1">
+			<tr>
+				<c:forEach var="j" begin="1" end="${seatMap.pmCol_ }" step="1">
+					<td>
+						<div id="seat__" class="seat wall">
+							<input type="hidden"/>									
+						</div>
+					</td>
+				</c:forEach>
+			</tr>		
+		</c:forEach>
+	</table>
+	<br><br><br>
+</c:forEach>
 
 <div id="pm-button-container">
 	<button class="formBtn" id="resetSeatNo">초기화</button>
