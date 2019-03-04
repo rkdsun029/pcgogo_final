@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+pre {
+	font-family: 'Nanum Gothic', sans-serif;
+	font-weight : bold;
+	font-size : 12px;
+	text-align : center;
+	margin-top : 5px;
+}
+
+#selectChatRoom {
+	width : 500px;
+	height : 38px;
+	background : skyblue;
+	margin : 0 auto;
+	margin-top : 35px;
+}
+
+button#userChat {
+	width : 100px;
+	height : 38px;
+	font-family: 'Do Hyeon', sans-serif;
+	font-size : 18px;
+	margin-left : 150px;
+	border : 1px solid skyblue;
+	background : skyblue;
+}
+
+button#userChat:hover {
+	border : 1px solid #FF2828;
+	background : #FF2828;
+}
+
+button#bossChat {
+	width : 100px;
+	height : 38px;
+	font-family: 'Do Hyeon', sans-serif;
+	font-size : 18px;
+	border : 1px solid skyblue;
+	background : skyblue;
+}
+
+button#bossChat:hover {
+	border : 1px solid #FF2828;
+	background : #FF2828;
+}
+
+button#btn-search {
+	width : 100px;
+	font-family: 'Black Han Sans', sans-serif;
+	border : 1px solid skyblue;
+	background : skyblue;
+}
+
+button#btn-chatting {
+	width : 100px;
+	font-family : 'Black Han Sans', sans-serif;
+	border : 1px solid skyblue;
+	background : skyblue;
+	margin-top : -7px;
+	margin-right : 3px;
+}
+
+button#search:hover {
+	border : 1px solid #FF2828;
+	background : #FF2828;
+}
+
+.form-inline {
+	margin : auto;
+}
+
+div.input-group-prepend span {
+	font-family: 'Nanum Gothic', sans-serif;
+	font-weight : bold;
+}

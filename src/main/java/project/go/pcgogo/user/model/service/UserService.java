@@ -1,6 +1,9 @@
 package project.go.pcgogo.user.model.service;
 
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.security.core.userdetails.User;
 
 import project.go.pcgogo.user.model.vo.Manager;
 import project.go.pcgogo.user.model.vo.Member;
@@ -11,6 +14,14 @@ public interface UserService {
 
 	int insertMember(Member m);
 
-	Object selectOneById(Map<String, String> map);
+	int checkDuplicate(String userId);
+
+	Member selectOneMember(String userId);
+
+	Manager selectOneManager(String userId);
+
+	List<User> selectByName(String memberId);
+
+	int updatePwd(Map<String, String> map);
 
 }

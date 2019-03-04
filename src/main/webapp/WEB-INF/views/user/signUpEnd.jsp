@@ -77,7 +77,7 @@ div.stepDot:after{
 	<img src="${pageContext.request.contextPath}/resources/image/user/register/success.png" alt="" />
 	<div>
 		<button type="button" class="btn_goLogin" style="margin-top:40px;"
-		onclick="location.href='${pageContext.request.contextPath}/login'">로 그 인</button>
+		onclick="location.href='${pageContext.request.contextPath}/login.do'">로 그 인</button>
 		<button type="button" class="btn_goMain" style="margin-top:40px;"
 		onclick="location.href='${pageContext.request.contextPath}/'">메 인 으 로</button>
 	</div>

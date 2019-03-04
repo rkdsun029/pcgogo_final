@@ -10,17 +10,25 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -31,11 +39,35 @@ import project.go.pcgogo.user.model.vo.Member;
 
 
 @Controller
+@SessionAttributes(value = {"loggedInUser"})
 public class UserController {
 	Logger logger = Logger.getLogger(getClass());
-		
+	
+	@Autowired
+	BCryptPasswordEncoder pwdEncoder;
+	
 	@Autowired
 	UserService userService;
+
+	@RequestMapping(value="/login.do")
+	public ModelAndView goLogin(@CookieValue(value="saveId", defaultValue="") String userId, ModelAndView mav) {
+		if(!"".equals(userId)) {
+			mav.addObject("savedId", userId);
+		}
+		mav.setViewName("user/login");
+		return mav;
+	}
+	
+	@RequestMapping(value="/logout.do")
+	public String logout(SessionStatus status) {
+		if(!status.isComplete()) status.setComplete();
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/login/{target}")
+	public String goLoginCallback(@PathVariable String target) {
+		return "user/loginTo_"+target;
+	}
 	
 	@RequestMapping(value="/signUp.do")
 	public String goSignUp() {
@@ -93,18 +125,15 @@ public class UserController {
 	}
 	
 	@RequestMapping("/signUpEnd/member")
-	public String insertUser(Member m, HttpServletRequest request) {
+	public String insertMember(Member m, HttpServletRequest request) {
 		logger.info(m.toString());
+		m.setIsSocial(null);
 		int result = userService.insertMember(m);
 		request.setAttribute("result", result);
 		request.setAttribute("flag", "member");
 		return "user/signUpEnd";
 	}
 	
-	@RequestMapping("/signUpEnd/test")
-	public String goSignUpEnd() {
-		return "user/signUpEnd";
-	}
 	@RequestMapping(value="/signUp/getToken")
 	@ResponseBody
 	public String getToken() {
@@ -197,17 +226,166 @@ public class UserController {
 		return resultMap;
 	}
 	
-	@RequestMapping("/signUp/checkDuplicate/{flag}")
+	@RequestMapping("/signUp/checkDuplicate.do")
 	@ResponseBody
-	public Map<String, Object> checkDuplicate(@PathVariable String flag, @RequestParam("userId") String userId){
-		Map<String, String> map = new HashMap<>();
-		map.put("flag", flag);
-		map.put("userId", userId);
-		Object obj = userService.selectOneById(map);
-		logger.info(obj);
-		boolean isUsable = obj==null?true:false;
+	public Map<String, Object> checkDuplicate(@RequestParam("userId") String userId){
+		int cnt = userService.checkDuplicate(userId);
+		logger.info(cnt);
+		boolean isUsable = cnt==0?true:false;
 		Map<String, Object> result = new HashMap<>();
 		result.put("isUsable", isUsable);
 		return result;
+	}
+	
+	@RequestMapping(value="/loginReq.do")
+	public ModelAndView loginReq(@RequestParam("userId") String userId,
+								 @RequestParam("userPwd") String userPwd,
+								 @RequestParam(value="saveId", defaultValue="N") String isSave,
+								 HttpServletResponse res,
+								 ModelAndView mav){
+		String view ="common/msg";
+		String msg = "";
+		String loc = "/login.do";
+		Object obj = userService.selectOneMember(userId);
+		
+		if("Y".equals(isSave)) {
+			Cookie cook = new Cookie("saveId", userId);
+			cook.setMaxAge(60 * 60 * 24);
+			cook.setPath("/");
+			res.addCookie(cook);
+		}else {
+			Cookie cook = new Cookie("saveId", null);
+			cook.setMaxAge(0);
+			cook.setPath("/");
+			res.addCookie(cook);
+		}
+		
+		if(obj==null) {
+			obj = userService.selectOneManager(userId);
+			if(obj==null) {
+				msg = "존재하지 않는 아이디입니다.";
+			}
+			else{
+				Manager m = (Manager)obj;
+				if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
+					mav.addObject("loggedInUser", m);
+					view = "redirect:/";
+				}
+				else {
+					logger.info(userPwd);
+					logger.info(m.getManagerPassword());
+					msg = "비밀번호가 일치하지 않습니다";
+				}
+			}
+		}else {
+			Member m = (Member)obj;
+			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
+				mav.addObject("loggedInUser", m);
+				m.setIsSocial("member");
+				view = "redirect:/";
+			}
+			else {
+				msg = "비밀번호가 일치하지 않습니다";
+			}
+		}
+		mav.setViewName(view);
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+		return mav;
+	}
+	
+	@RequestMapping(value="/login/socialLoginEnd/{social}")
+	@ResponseBody
+	public void socialLoginEnd(@RequestParam("userId") String userId,
+							   @PathVariable String social,
+							   HttpServletRequest req) {
+		Member m = new Member();
+		if(userId.indexOf("@")>-1) {
+			m.setMemberEmail(userId);
+			userId = userId.substring(0, userId.lastIndexOf("@"));
+			m.setMemberId(userId);
+		}else {
+			m.setMemberId(userId);
+		}
+		m.setIsSocial(social);
+		req.getSession(true).setAttribute("loggedInUser", m);
+		logger.info(m);
+	}
+	
+	@RequestMapping(value="/login/kakao/getUserInfo")
+	@ResponseBody
+	public String getUserInfo(@RequestParam("access_token") String access_token) {
+		String requestUrl = "https://kapi.kakao.com/v2/user/me";
+
+		String result = "";
+		BufferedReader br = null;
+		try {
+			URL url = new URL(requestUrl);
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			con.setRequestMethod("POST");
+			con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			con.setRequestProperty("Authorization", "Bearer "+access_token);
+			
+			br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+			String line;
+			while((line=br.readLine())!=null) {result += line;}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {try {br.close();} catch (IOException e) {e.printStackTrace();}}
+		
+		return result;
+	}
+	
+	@RequestMapping(value="/myPage")
+	public ModelAndView goMyPage(ModelAndView mav, HttpSession session) {
+		Object o = session.getAttribute("loggedInUser");
+		if(o instanceof Manager) {mav.setViewName("user/myPage_manager");}
+		else if(o instanceof Member) {mav.setViewName("user/myPage_member");}
+		logger.info(o);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/update/password")
+	public ModelAndView openPasswordPop(ModelAndView mav, @RequestParam("userId") String userId) {
+		mav.setViewName("user/changePwd");
+		mav.addObject("userId", userId);
+		return mav;
+	}
+	
+	@RequestMapping(value="/update/checkPwd")
+	@ResponseBody
+	public Object checkPwd(@RequestParam("userId") String userId, @RequestParam("curPwd") String inputPwd,
+						   @RequestParam("type") String type) {
+		logger.info(userId);
+		logger.info(inputPwd);
+		logger.info(type);
+		boolean result = false;
+		if("manager".equals(type)) {
+			Manager m = userService.selectOneManager(userId);
+			if(pwdEncoder.matches(inputPwd, m.getManagerPassword())) result = true;
+		}
+		else {
+			Member m = userService.selectOneMember(userId);
+			if(pwdEncoder.matches(inputPwd, m.getMemberPassword())) result = true;
+		}
+		
+		
+		return result;
+	}
+	
+	@RequestMapping(value="/updateEnd/{type}/{userId}")
+	public ModelAndView updatePwd(ModelAndView mav, @PathVariable String type, @PathVariable String userId,
+								  @RequestParam("newPwd") String newPwd) {
+		newPwd = pwdEncoder.encode(newPwd);
+		Map<String, String> map = new HashMap<>();
+		map.put("type", type);
+		map.put("userId", userId);
+		map.put("newPwd", newPwd);
+		int result = userService.updatePwd(map);
+		mav.addObject("msg","비밀번호 수정 성공!");
+		mav.addObject("popup", "self.close();");
+		mav.setViewName("common/msg");
+		return mav;
 	}
 }

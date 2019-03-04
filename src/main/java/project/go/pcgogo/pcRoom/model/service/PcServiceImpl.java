@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.pcRoom.model.dao.PcDao;
+import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
 
@@ -28,7 +29,7 @@ public class PcServiceImpl implements PcService {
 	}
 
 	@Override
-	public String nowPcStatus(String pcRoomName) {
+	public List<NowPcStatus> nowPcStatus(String pcRoomName) {
 		// TODO Auto-generated method stub
 		return pcDao.nowPcStatus(pcRoomName);
 	}

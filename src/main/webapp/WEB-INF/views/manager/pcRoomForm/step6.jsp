@@ -14,7 +14,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/pcRoomForm.css" />
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <script>
-$(function(){
+$(function(){	
+	var pmContent_ = "";
+	var pmTd_ = $("td").length;
+	var currValNum = 0;
+	
 	$(".toilet").css("cursor", "default");
 	$(".exit").css("cursor", "default");
 	$(".counter").css("cursor", "default");
@@ -32,16 +36,16 @@ $(function(){
 		$("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
 		$("td").eq(s).find("div#seat__").removeClass("wall");
 		if(tempArr[s] == "a") {
-			$("td").eq(s).find("div#seat__").addClass("plain");
-			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'>88</span>");
+			$("td").eq(s).find("div#seat__").addClass("plain").css("cursor", "pointer");
+			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
 		}
 		if(tempArr[s] == "b"){
-			$("td").eq(s).find("div#seat__").addClass("special");
-			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'>88</span>");
+			$("td").eq(s).find("div#seat__").addClass("special").css("cursor", "pointer");
+			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
 		}
 		if(tempArr[s] == "c"){
-			$("td").eq(s).find("div#seat__").addClass("couple");
-			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'>88</span>");
+			$("td").eq(s).find("div#seat__").addClass("couple").css("cursor", "pointer");
+			$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
 		}
 		if(tempArr[s] == "d") $("td").eq(s).find("div#seat__").addClass("toilet");
 		if(tempArr[s] == "e") $("td").eq(s).find("div#seat__").addClass("exit");
@@ -53,6 +57,77 @@ $(function(){
 		if(tempArr[s] == "k") $("td").eq(s).find("div#seat__").addClass("etc");
 		if(tempArr[s] == "z") $("td").eq(s).find("div#seat__").addClass("wall");		
 	}
+	
+	/* 좌석누르면 좌석번호 생성 */
+	$(".plain, .special, .couple").on("click", function(){
+		$(this).find("span").html(++currValNum);
+		$(this).find("span").val(currValNum);
+		
+		$(this).off("click");
+	});	
+
+	/* 되돌리기 */
+	$("button#ctrlZ").on("click", function(){
+		
+	});
+	
+	/* 자동번호 생성 */
+	$("button#makeAutoSeatNo").on("click", function(){
+		for(var i=0; i<pmTd_; i++){
+			var tempVal_td = $("td").eq(i).find("input[type=hidden]").val();
+			if(tempVal_td == "a" || tempVal_td == "b" || tempVal_td == "c"){
+				$("td").eq(i).find("span#seatNo").html(++currValNum);	
+			}
+		}
+	});
+	
+	/* 초기화 */
+	$("button#resetSeatNo").on("click", function(){
+		var temp = confirm("정말 초기화 하시겠습니까?");
+		if(!temp) return;
+		else window.location.reload(true);
+	});
+	
+	/* 등록 */
+	$("button#submitSeatNo").on("click", function(){
+		var temp = confirm("좌석번호를 저장하시겠습니까?");
+		if(!temp) return;
+		else{
+			for(var s=0; s<pmTd_; s++){
+			/* 	console.log("찍기 span : ",s,":", parseInt($("td").eq(s).find("span").val()));
+				console.log("찍기 input :",s,":", $("td").eq(s).find("input").val()); */
+				
+				if(s == parseInt(pmTd_)-1){
+					if($("td").eq(s).find("span").length != 0){
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
+						pmContent_ += parseInt($("td").eq(s).find("span").val());
+					}
+					else{
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
+					}
+				}
+				else {
+					if($("td").eq(s).find("span").length != 0){
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
+						pmContent_ += parseInt($("td").eq(s).find("span").val()) + ",";
+					}
+					else{
+						pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";										
+					}
+				}
+			}
+			
+			console.log("pmContent_:", pmContent_);
+
+			$("input[name=pmContent_]").val(pmContent_);
+			
+			console.log($("input[name=pmRow_]").val());
+			console.log($("input[name=pmCol_]").val());
+			console.log($("input[name=pmContent_]").val());
+			
+			/* $("form#main-info-result").submit(); */
+		};
+	});
 });
 </script>
 <style>
@@ -72,20 +147,69 @@ div#seatNo-help{
 div#seatNo-help h3{
 	font-family:'Nanum Gothic', sans-serif;
 }
+h1#head-title{display:block;}
+div#seatNo-help{
+	width:530px;
+	height:190px;
+	margin:0 auto;
+	font-family:'Nanum Gothic', sans-serif;
+	border:1px solid #c8c8c8;
+	border-radius:10px;
+}
+div#seatNo-help h4{
+	margin:0px;
+	margin-bottom:10px;
+	margin-left:27px;
+}
+div#seatNo-help h4:first-of-type{
+	margin-top:27px;
+}
+div#seatNo-status{
+	width:370px;
+	height:60px;
+	margin:0 auto;
+	text-align:center;
+	margin-top:30px;
+	font-family:'Nanum Gothic', sans-serif;
+	font-weight:bold;
+}
+h3#seatNo-help-legend{
+	font-family:'Nanum Gothic', sans-serif;
+	text-align:center;
+}
+input#currVal{
+	width:40px;
+	outline:none;
+	border:none;
+	color:red;
+	font-size:17px;
+	font-weight:bold;
+	font-family:'Nanum Gothic', sans-serif;
+}
 </style>
 </head>
 <body>
+<h1 id="head-title">PCGOGO.COM</h1>
+
+<form id="main-info-result" action="${pageContext.request.contextPath }/manager/pcRoomForm_end.do">
+	<input type="hidden" name="pmRow_" value="${requestScope.pmRow }"/>
+	<input type="hidden" name="pmCol_" value="${requestScope.pmCol }"/>
+	<input type="hidden" name="pmContent_"/>
+</form>
+
 <input type="hidden" id="hiddenPmContent" value="${requestScope.pmContent }"/>
+<h3 id="seatNo-help-legend">&lt; 좌석번호 입력 &gt;</h3>
 <div id="seatNo-help">
-	<h3>도움말</h3>
-	<h3>일반석, 특별석, 다인석에만 좌석번호 부여가 가능합니다.</h3>
-	<h3>(일반석 : 흰색, 특별석 : 빨간색, 다인석 : 노란색)</h3>
-	<h3>좌석을 누를때마다 숫자가 1씩 증가하며, <u>xx개 되돌리기</u>를 누르면 <u>해당 숫자만큼 뒤에서부터</u> 번호가 사라집니다.</h3>
-	<h3>(현재번호:5인 상태에서 3개 되돌리기를 누르면 5번, 4번, 3번이 사라집니다.)</h3>
-	<h3><u>자동으로 번호 생성</u>을 실행하시면 <u>가로방향 기준</u>으로 자동으로 번호가 생성됩니다.</h3>
-	<h3>현재번호 : <span></span></h3>	
-	<button>되돌리기</button>
-	<button>자동으로 번호 생성</button>
+	<h4>- 일반석, 특별석, 다인석에만 좌석번호 부여가 가능합니다.</h4>
+	<h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(일반석 : 흰색, 특별석 : 빨간색, 다인석 : 노란색)</h4>
+	<h4>- 좌석을 누를때마다 숫자가 1씩 증가합니다.</h4>
+	<h4>- 되돌리기 : <u>큰 숫자부터 하나씩</u> 좌석번호가 사라집니다.</h4>
+	<h4>- 자동으로 번호 생성 : <u>가로방향 기준</u>으로 자동으로 번호가 생성됩니다.</h4>
+</div>
+		
+<div id="seatNo-status">
+	<button id="ctrlZ">되돌리기</button>
+	<button id="makeAutoSeatNo">자동으로 번호 생성</button>
 </div>
 
 <table id="placement">
@@ -102,8 +226,9 @@ div#seatNo-help h3{
 	</c:forEach>
 </table>
 
-
-<button>초기화</button>
-<button>등록</button>
+<div id="pm-button-container">
+	<button class="formBtn" id="resetSeatNo">초기화</button>
+	<button class="formBtn" id="submitSeatNo">등록</button>
+</div>
 </body>
 </html>

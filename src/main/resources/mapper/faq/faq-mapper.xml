@@ -1,31 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="post">
+<mapper namespace="faq">
+
 	<!-- FAQ게시판 전체보기 쿼리 -->
-	<select id="selectFaqList">
-		select *
-		from faq
-		order by desc
+ 	<select id="selectFaqList" resultMap="faqMap">
+		select A.*,
+			(select count(*) from faqattach where a_postno = a.postno) attachno
+			from faq A
+		order by postno desc
 	</select>
+	<resultMap type="map" id="faqMap">
+	
+	</resultMap>
 	
 	<!-- FAQ게시판 전체 컨텐츠 수 -->
-	<select id="selectFaqTotalContents" resultType="_int">
+ 	<select id="selectFaqTotalContents" resultType="_int">
 	    select count(*) from faq
 	</select>
 
 	<!-- FAQ게시판 검색된 리스트보기 쿼리 -->
-	<select id="selectSearchList">
-	 	select postno, posttitle, postwriter, postcontent
+ 	<select id="selectSearchList" resultType="faq">
+	 	select *
 	 	from faq
-	 	where 
-	 	order by postdate desc
+	 	<if test="searchKeyword != null">
+	 	where posttititle like '%${searchKeyword}%' or postcontent like '%${searchKeyword}%' 
+	 	</if>
+		order by postno desc
 	</select>
 	
-	<!-- FAQ게시판 검색된 컨텐츠 수-->	
-	<select id="selectSearchFaqTotalContents">
+	<!-- FAQ게시판 검색된 컨텐츠 수	 -->
+	<select id="selectSearchFaqTotalContents" resultType="_int">
 		select count(*)
 		from faq
-		where 
+		<if test="searchKeyword != null">
+	 	where posttititle like '%${searchKeyword}%' or postcontent like '%${searchKeyword}%'
+	 	</if>
 	</select>
-		
+	
+	<!-- FAQ게시판 상세보기 -->
+ 	<select id="selectFaqView" parameterType="faq">
+		select postno, posttitle, postwriter, postcontent, postdate, postreadcount, postopened
+		from faq
+		where postno = #{postno}
+	</select>
+	
+	<!-- FAQ게시판 게시글 조회수 올리기 -->
+	<update id="increaseReadCount">
+		update faq set postreadcount = postreadcount + 1 where postno = #{postno}
+	</update>
+	
+	<!-- FAQ게시판 글쓰기 -->
+ 	<insert id="insertFaq" parameterType="faq">	
+		insert into faq
+		values(seq_faq_postno.nextval, #{memberid}, #{posttitle}, #{postcontent}, sysdate, #{postopened})
+	</insert>
+	
+	<!-- FAQ게시판 수정 -->
+	<update id="updateFaq" parameterType="faq">
+		update faq set(posttitle = #{posttitle}, postcontent = #{postcontent}, postopened = #{postopened})
+	</update>
+	
+	<!-- FAQ게시판 삭제 -->
+	<delete id="deleteFaq" parameterType="int">
+		delete from faq
+		where postno = #{postno}
+	</delete>
+	
+	<!-- FAQ게시판 댓글보기 -->
+	<select id="selectComment">
+		select *
+		from c_faq
+		where o_postno = #{o_postno}
+	</select>
+	
+	<!-- FAQ게시판 댓글 전체 수-->
+	<select id="selectFaqTotalComment">
+	 	select count(*)
+		from c_faq
+	</select>
+	
+	<!-- FAQ게시판 댓글쓰기 -->
+	<insert id="insertComment">
+		insert into c_faq 
+		values(seq_c_faq_c_postno.nextval, seq_c_faq_o_postno.nextval, #{c_memberid}, #{c_postwriter}, sysdate, #{c_content})
+	</insert>
+	
+	<!-- FAQ게시판 댓글수정 -->
+	<update id="updateComment">
+		update c_faq set(c_content = #{c_content})
+		where c_postno = #{c_postno}
+	</update>
+	
+	<!-- FAQ게시판 댓글삭제 -->
+	<delete id="deleteComment">
+		delete c_faq
+		where c_postno = #{c_postno}
+	</delete>
+
 </mapper>

@@ -8,14 +8,40 @@
 	<insert id="insertMember" parameterType="member">
 		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default)
 	</insert>
-	<select id="selectOneById" resultType="object">
-		select *
-		from ${flag}
-		<if test="flag=='manager'">
-			where managerId=#{userId}
-		</if>
-		<if test="flag=='member'">
-			where memberId=#{userId}
-		</if>
+	<select id="checkDup" resultType="_int">
+		select count(*) 
+		from(select memberId as userId
+     		 from(select memberId
+          	 from member
+         	 union all
+          	 select managerId 
+          	 from manager))
+		where userId=#{userId}
 	</select>
+	<select id="selectOneMember" resultType="member">
+		select *
+		from member
+		where memberId=#{userId}
+	</select>
+	<select id="selectOneManager" resultType="manager">
+		select *
+		from manager
+		where managerId=#{userId}
+	</select>
+	
+	<resultMap type="member" id="memberMap">
+		
+	</resultMap>
+	
+	<select id="selectByName" parameterType="string" resultMap="memberMap">
+		select * from member where memberId like '%'||#{memberId}||'%'
+	</select>
+	<update id="updatePwd" parameterType="map">
+		<if test="type=='member'">
+		update member set memberPassword=#{newPwd} where memberId=#{userId} 
+		</if>
+		<if test="type=='manager'">
+		update manager set managerPassword=#{newPwd} where managerId=#{userId} 
+		</if>
+	</update>
 </mapper>

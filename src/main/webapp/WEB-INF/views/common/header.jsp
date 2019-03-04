@@ -13,6 +13,9 @@
 <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/header.css" />
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+ <meta name="google-signin-client_id" content="522789660173-lpfikvtl76o0p15h09bva0v7m905jjqv.apps.googleusercontent.com">
+ <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 <script>
 $(function(){
     $("div#head-container").on("mouseenter", function(){
@@ -43,8 +46,6 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
-    $("#menu1").on("click", function(){location.href = "";});
-    $("#menu2").on("click", function(){location.href = "${pageContext.request.contextPath}/signUp.do";});
     $("#menu3").on("click", function(){location.href = "";});
 });
 </script>
@@ -53,22 +54,82 @@ $(function(){
     <div id="head-container">
         <a href="${pageContext.request.contextPath }" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
-            <li><a href="${pageContext.request.contextPath }/search/search.do">PC방 검색</a></li>
-            <li><a href="#">인기 · 추천 PC방</a></li>
+            <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">PC방 검색</a></li>
+            <li><a href="#">인기 PC방</a></li>
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
-            <li><a href="${pageContext.request.contextPath }/faq/faq.do">고객센터</a></li>
-            <li><a href="${pageContext.request.contextPath }/manager/manager.do" id="manager">사장님 메뉴</a></li>
-            <li><a href="${pageContext.request.contextPath }/chat/chat.do">채팅 참여</a></li>
+            <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">피시방 자리현황</a></li>
+            <li><a href="${pageContext.request.contextPath }/manager/manager.do">사장님 메뉴</a></li>
+            <li><a href="#">고객센터</a></li>
         </ul>
 
     </div>
     <div id="quick-menu">
-        <div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/login.png" alt="" />로그인</div>
-        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/register.png" alt="" />회원가입</div>
+    <c:if test="${loggedInUser == null }">
+        <div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/login.png" alt="" 
+        onclick="location.href='${pageContext.request.contextPath}/login.do'"/>로그인</div>
+        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/register.png" alt="" 
+        onclick="location.href='${pageContext.request.contextPath}/signUp.do'"/>회원가입</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+    </c:if>
+    <c:if test="${loggedInUser != null }">
+    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
+    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
+        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+        onclick="logout();" />로그아웃</div>
+        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
+        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
+        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>
-
+    <script>
+    function logout(){
+    	if(confirm("정말로 로그아웃하시겠습니까?")){
+	    	if("${loggedInUser.isSocial}"=="kakao"){
+	    		kakao_logout();
+	    	}else if("${loggedInUser.isSocial}"=="google"){
+		    	google_logout();
+	    	}else if("${loggedInUser.isSocial}"=="naver"){
+	    		naver_logout();
+	    	}
+	    	
+	    	location.href='${pageContext.request.contextPath}/logout.do';
+		}
+    }
+    
+    function kakao_logout(){
+	    Kakao.init('b0d1d7505f46a344dbdd4ff7a064f2f7');
+    	Kakao.Auth.logout(function(data){
+    			if(data){}
+    			else{
+    				alert("다시 시도해주세요.");
+    				return false;
+    			}
+    		
+    	});
+    }
+    
+    function google_logout(){
+    	 gapi.auth2.getAuthInstance().signOut().then(function () {
+			gapi.auth2.getAuthInstance().disconnect();
+        });
+    }
+    
+    function naver_logout(){
+    	var popup = open("http://nid.naver.com/nidlogin.logout");
+    	popup.close();
+    }
+    
+    function init() {
+   	    gapi.load('auth2', function() {
+   	    	gapi.auth2.init({
+	        	client_id: '522789660173-lpfikvtl76o0p15h09bva0v7m905jjqv.apps.googleusercontent.com'
+	     	});
+   	    });
+    }
+    
+    </script>
     <section id="main-container">
     	<div id="padding">
 	    	<h1 id="page-title">${param.pageTitle}</h1>
