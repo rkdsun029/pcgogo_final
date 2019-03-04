@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import project.go.pcgogo.pcRoom.model.service.PcService;
 import project.go.pcgogo.pcRoom.model.vo.PcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
 
 @Controller
 public class PcController {
@@ -39,4 +40,15 @@ public class PcController {
 		System.out.println(pc);
 		return pc;
 	}
+    @RequestMapping("/pcRoom/pcRoomList.do")
+    public List<PcRoomList> pcRoomList(@RequestParam(value="pcRoomName")String place_name){
+    	System.out.println("controller"+place_name);
+    	return pcService.pcRoomList(place_name);
+    	
+    }
+    @RequestMapping("/pcRoom/nowPcStatus.do")
+    public String nowPcStatus(@RequestParam(value="pcRoomName")String pcRoomName) {
+    	
+    	return pcService.nowPcStatus(pcRoomName);
+    }
 }
