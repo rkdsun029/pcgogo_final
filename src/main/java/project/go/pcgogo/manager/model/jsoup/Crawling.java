@@ -17,13 +17,14 @@ public class Crawling {
 	public static void main(String[] args) {
 		Crawling c = new Crawling();
 		
-		c.Crawling2();
+		c.Crawling_hotDeal();
+		c.Crawling_bigNews();
 		
 	}
 	
 	
 	
-	public List<Map<String, String>> Crawling2() {
+	public List<Map<String, String>> Crawling_hotDeal() {
 		List<Map<String, String>> result = new ArrayList<>();
 		try {
 			Document doc = Jsoup.connect("http://www.danawa.com").get();
@@ -54,4 +55,38 @@ public class Crawling {
 
 		return result;
 	}
+	
+	
+	public List<Map<String, String>> Crawling_bigNews() {
+		List<Map<String, String>> result = new ArrayList<>();
+		try {
+			Document doc = Jsoup.connect("http://game.donga.com/news/").get();
+			
+			Elements hotdeal = doc.select(".news newspaper ul#news");
+			
+			Elements deal = hotdeal.select("li");
+			/*
+			 * for(Element e : deal) { // System.out.println(e.getAllElements().toString());
+			 * System.out.println(e.getElementsByAttributeValue("class",
+			 * "goodds_name").text());
+			 * System.out.println("------------------------------------------"); }
+			 */
+			for(Element e : deal) {
+				String newsLine = e.getElementsByAttribute("strong").text();
+				
+				Map<String, String> map = new HashMap<>();
+				map.put("newsLine", newsLine);
+				System.out.println(map);
+				System.out.println("------------------------------------------"); 
+				result.add(map);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+
+		return result;
+	}
+	
+	
 }

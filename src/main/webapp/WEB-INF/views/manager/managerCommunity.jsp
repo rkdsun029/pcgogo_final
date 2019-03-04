@@ -31,6 +31,8 @@ table#lnfList{
 				<th>오늘의핫딜</th>
 			</tr>
 </table>
+
+
 <div class="result" id="crawling-result">
 
 </div>
