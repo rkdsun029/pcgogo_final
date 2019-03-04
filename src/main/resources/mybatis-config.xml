@@ -12,5 +12,9 @@
 				   alias="lnfMap"/>
 	   <typeAlias type="project.go.pcgogo.user.model.vo.Manager" alias="manager"/>
 	   <typeAlias type="project.go.pcgogo.user.model.vo.Member" alias="member"/>
+	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoom" alias="pcRoom"/>
+	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoomList" alias="pcRoomList"/>
+	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.NowPcStatus" alias="nowPcStatus"/>
+	   
 	</typeAliases>
 </configuration>
