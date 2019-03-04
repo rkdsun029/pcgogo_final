@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import net.sf.json.JSONArray;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.user.model.vo.Manager;
@@ -144,7 +147,7 @@ public class ManagerController {
 			switch(Integer.parseInt(seatsArr[i])) {
 			case 1 : seatMap = new HashMap<>();
 					 seatMap.put("floorNum", floorArr[i]);
-					 seatMap.put("pmRow", 20); seatMap.put("pmCol", 30);
+					 seatMap.put("pmRow", 5); seatMap.put("pmCol", 5);
 					 seatMapList.add(seatMap);
 				break;
 			case 2 : seatMap = new HashMap<>();
@@ -172,16 +175,52 @@ public class ManagerController {
 	}
 	
 	@RequestMapping("manager/pcRoomForm_step6.do")
-	public ModelAndView pcRoomFormStep6(@RequestParam (value="pmRow_") int pmRow,
-								  @RequestParam (value="pmCol_") int pmCol,
-								  @RequestParam (value="pmContent_") String pmContent,
-								  ModelAndView mav) {
+	@ResponseBody
+	public List<Map<String, Object>> pcRoomFormStep6(@RequestParam(value="objectArr") String objectArr,
+										HttpServletResponse response,
+									    ModelAndView mav) {
 		
-		mav.addObject("pmRow", pmRow);
-		mav.addObject("pmCol", pmCol);
-		mav.addObject("pmContent", pmContent);
-		mav.setViewName("manager/pcRoomForm/step6");
-		return mav;
+		Cookie cookie = new Cookie("shibal", objectArr);
+		response.addCookie(cookie);
+		
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		mapList = JSONArray.fromObject(objectArr);
+		System.out.println(mapList);
+		/*
+		 * @RequestParam (value="pmContent_") String[] pmContent_,
+		 * 
+		 * @RequestParam (value="seatCount_") String[] seatCount_,
+		 * 
+		 * @RequestParam (value="pmRow_") int[] pmRow_,
+		 * 
+		 * @RequestParam (value="pmCol_") int[] pmCol_,
+		 * 
+		 * @RequestParam (value="floorNum_") String[] floorNum_,
+		 */
+		
+		
+//		System.out.println("pmContent_ : " + pmContent_);
+//		System.out.println("seatCount_ : " + seatCount_);
+//		System.out.println("pmRow_ : " + pmRow_);
+//		System.out.println("pmCol_ : " + pmCol_);
+//		System.out.println("floorNum_ : " + floorNum_);
+//		
+//		mav.addObject("pmContent_", pmContent_);
+//		mav.addObject("seatCount_", seatCount_);
+//		mav.addObject("pmRow_", pmRow_);
+//		mav.addObject("pmCol_", pmCol_);
+//		mav.addObject("floorNum_", floorNum_);
+		/*
+		 * Map<String, String[]> map = request.getParameterMap();
+		 * 
+		 * System.out.println(map);
+		 */
+		
+		/*
+		 * mav.setViewName("manager/pcRoomForm/step6"); return mav;
+		 */
+		
+		return mapList;
 	}
 	
 	@RequestMapping("manager/pcRoomForm_end.do")
