@@ -56,6 +56,17 @@
 	<!-- DispatcherServlet이 Controller를 요청하는 중간에 interceptor가 가로채간다. -->
 	<!-- 따라서 servlet-context.xml에 등록 -->
 	<!-- 필요할 경우 이부분에 추가 -->
+	<!-- 로그인 체크 인터셉터 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/manager/*"/>
+			<mapping path="/myPage"/>
+			<mapping path="/update/*"/>
+			<mapping path="/updateEnd/*"/>
+			<beans:bean class="project.go.pcgogo.common.interceptor.LoginCheckInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	
 	<!-- #10.1 파일업로드를 처리할 Resolver클래스 빈등록(빈이름 주의) -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">   
