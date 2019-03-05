@@ -31,11 +31,12 @@ $(function(){
 	$(".wall").css("cursor", "default");
 	
 	var pmContent = $("#hiddenPmContent");
+	console.log(pmContent);
 	
 	var tableLength = $("table").length;
 	for(var i=0; i<tableLength; i++){
-		var tempArr = pmContent[i].val().split(",");
-		
+		var tempArr = pmContent.eq(i).val().split(",");
+		console.log(tempArr);
 		for(var s=0; s<tempArr.length; s++){
 			/* console.log("찍기 : ",s,":", tempArr[s]); */
 			$("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
@@ -216,7 +217,7 @@ input#currVal{
 	<button id="ctrlZ">되돌리기</button>
 	<button id="makeAutoSeatNo">자동으로 번호 생성</button>
 </div>
-<c:forEach var="seatMap" items="${seatMapList }" varStatus="cnt">
+<c:forEach var="seatMap" items="${sessionScope.seatMapList }" varStatus="cnt">
 	<input type="hidden" id="hiddenPmContent" value="${seatMap.pmContent_ }"/>
 	<input type="hidden" id="floorNum" value="${seatMap.floorNum_ }"/>
 	<h2 class="floorNum_">${seatMap.floorNum_ } 층</h2>
