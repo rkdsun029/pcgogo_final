@@ -25,9 +25,11 @@
     		<!--Widget body-->
     		<div id="demo-chat-body" class="collapse in">
     			<div class="nano has-scrollbar" style="height:700px">
-    				<div id="messageList" class="nano-content pad-all" tabindex="0" style="right: -17px;">
+    				<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
     					
-    					
+    					<ul class="list-unstyled media-block" id="messageList">
+    						
+    					</ul>
     					
     				</div>
     			<div class="nano-pane">
@@ -74,15 +76,24 @@
 			dataType: "json",
 			type: "get",
 			success: function(data) {
-				var html = "";
+				var html = "<li class='mar-btm'>";
 				
 				for(var i in data) {
 					var chat = data[i];
 					var chatTime = chat.chatTime;
 					
-					html += "<p>" + chat.fromId + "</p>";
+					/* html += "<p>" + chat.fromId + "</p>";
 					html += "<p>" + chat.chatContent + "</p>";
-					html += new Date(chat.chatTime).toISOString().slice(0, 10);
+					html += new Date(chat.chatTime).toISOString().slice(0, 10); */
+					
+					html += "<div class='media-body pad-hor'>";
+					html += "<div class='speech'>";
+					html += "<p class='media-heading'>" + chat.fromId + "</p>";
+					html += "<p>" + chat.chatContent + "</p>";
+					html += "<p class='speech-time'>";
+					html += "<i class='fa fa-clock-o fa-fw'></i>" + new Date(chat.chatTime).toISOString().slice(0, 10) + "</p>";
+					html += "</div></div></li>";
+					
 				}
 				
 				$("#messageList").html(html);
@@ -96,6 +107,7 @@
 		});
 	}
 	
+	// 상대방과 메세지를 주고 받은적이 있다면 그 내역이 먼저 출력되도록 한다.
 	getMessage();
 			
 	$(".btn-block").click(function() {
