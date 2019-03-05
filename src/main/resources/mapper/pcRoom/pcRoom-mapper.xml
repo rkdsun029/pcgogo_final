@@ -8,5 +8,9 @@
 	<select id="nowPcStatus" resultType="nowPcStatus">
 		select * from nowPcStatus where pcRoomName = #{ pcRoomName}
 	</select>
+	
+	<select id="pcRoomRsv" resultType="pcRoomRsv">
+		select * from pcRoomTest where pmPcRoomNo = #{pcRoomNo}
+	</select>
 
 </mapper>

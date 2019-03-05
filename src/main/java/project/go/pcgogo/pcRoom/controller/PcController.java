@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import project.go.pcgogo.pcRoom.model.service.PcService;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
+import project.go.pcgogo.pcRoom.model.vo.PcRoomRsv;
 
 @Controller
 public class PcController {
@@ -58,9 +60,24 @@ public class PcController {
     }
     
     @RequestMapping("/pcRoom/pcRoomRsv.do")
-    public String pcRoomRsv(@RequestParam(value="pcRoomNo")String pcRoomNo) {
+    public ModelAndView pcRoomRsv(@RequestParam(value="pcRoomNo")String pcRoomNo, ModelAndView mav) {
+    	List<PcRoomRsv> a = pcService.pcRoomRsv(pcRoomNo);
+    	String view = "";
+    	String msg="";
+    	String loc="";
     	
-    	return null;
+    	if(a==null) {
+    		msg="실패";
+    		loc="common/msg";
+    	}else {
+    		mav.addObject("rsv",a);
+    		view="pcRoom/pcRoomRsv";
+    	}
+    	mav.addObject("loc",loc);
+    	mav.addObject("msg",msg);
+    	mav.setViewName(view);
+    	
+    	return mav;
     }
     
     
