@@ -180,11 +180,8 @@ function placesSearchCB (data, status, pagination) {
     } 
 }
 
-function rsv(){
-	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do",
-			"뿌뿌링", "width=1000, height=700, left=50, top=20");
-}
 
+var pcRoomNo="";
 // 지도에 마커를 표시하는 함수입니다
 function displayMarker(place) {
     
@@ -197,15 +194,13 @@ function displayMarker(place) {
     // 마커에 클릭이벤트를 등록합니다
     daum.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        var pcRoomName = place.place_name;
         
         $.ajax({
         	url:"${pageContext.request.contextPath}/pcRoom/nowPcStatus.do",
-    	    data: {pcRoomName : pcRoomName},
+    	    data: {pcRoomName : place.place_name},
     		type: "get",
     		success : function(data){
-    			console.log(data, typeof data);
-    			console.log("@@@@@"+place.place_name);
+    			pcRoomNo=data[0].pcRoomNo;
     			if(data!=''){
     				infowindow.setContent(
     					place.place_name+'<div class="txt">피시방의 전체 좌석수 </div>'
@@ -265,6 +260,12 @@ function displayMarker(place) {
     	}); */
     });
     
+}
+function rsv(){
+	console.log(pcRoomNo);
+	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do?pcRoomNo="+pcRoomNo,
+			"뿌뿌링", "width=1000, height=700, left=50, top=20");
+
 }
 //---------------------------------보류상태--------------------------------내위치 찾기 기능 더 덧붙이기
 function suc(position){

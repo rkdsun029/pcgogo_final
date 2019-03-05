@@ -58,9 +58,9 @@ public class PcController {
     }
     
     @RequestMapping("/pcRoom/pcRoomRsv.do")
-    public String pcRoomRsv(@RequestParam(value="pcpc")String pcpc) {
-    return null;
-    
+    public String pcRoomRsv(@RequestParam(value="pcRoomNo")String pcRoomNo) {
+    	
+    	return null;
     }
     
     
