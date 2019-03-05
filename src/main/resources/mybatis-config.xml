@@ -19,6 +19,7 @@
 	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoom" alias="pcRoom"/>
        <typeAlias type="project.go.pcgogo.faq.model.vo.PostComment" alias="faqComment" />
        <typeAlias type="project.go.pcgogo.faq.model.vo.AttachFile" alias="attachFile" />
-       <typeAlias type="project.go.pcgogo.chat.model.vo.Chat" alias="chat"></typeAlias>
+       <typeAlias type="project.go.pcgogo.chat.model.vo.Chat" alias="chat"/>
+       <typeAlias type="project.go.pcgogo.chat.model.vo.InsertChat" alias="insertChat"/>
 	</typeAliases>
 </configuration>

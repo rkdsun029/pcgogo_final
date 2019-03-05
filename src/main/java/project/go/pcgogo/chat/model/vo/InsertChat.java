@@ -2,23 +2,26 @@ package project.go.pcgogo.chat.model.vo;
 
 import java.sql.Date;
 
-public class Chat {
+public class InsertChat {
 	
 	private int chatNo;
 	private String fromId;
 	private String toId;
 	private String chatContent;
-	private Date chatTime;
+	private Date chatDate;
 	
-	public Chat() {}
-	
-	public Chat(int chatNo, String fromId, String toId, String chatContent, Date chatTime) {
-		super();
+	public InsertChat(int chatNo, String fromId, String toId, String chatContent, Date chatDate) {
 		this.chatNo = chatNo;
 		this.fromId = fromId;
 		this.toId = toId;
 		this.chatContent = chatContent;
-		this.chatTime = chatTime;
+		this.chatDate = chatDate;
+	}
+	
+	public InsertChat(String fromId, String toId, String chatContent) {
+		this.fromId = fromId;
+		this.toId = toId;
+		this.chatContent = chatContent;
 	}
 
 	public int getChatNo() {
@@ -53,17 +56,17 @@ public class Chat {
 		this.chatContent = chatContent;
 	}
 
-	public Date getChatTime() {
-		return chatTime;
+	public Date getChatDate() {
+		return chatDate;
 	}
 
-	public void setChatTime(Date chatTime) {
-		this.chatTime = chatTime;
+	public void setChatDate(Date chatDate) {
+		this.chatDate = chatDate;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Chat [chatNo=" + chatNo + ", fromId=" + fromId + ", toId=" + toId + ", chatContent=" + chatContent
-				+ ", chatTime=" + chatTime + "]";
+		return "Chat [chatNo=" + chatNo + ", fromId=" + fromId + ", toId=" + toId
+				+ ", chatContent=" + chatContent + ", chatDate=" + chatDate + "]";
 	}
 }
