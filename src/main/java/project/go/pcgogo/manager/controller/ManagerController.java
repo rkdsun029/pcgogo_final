@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
@@ -26,7 +25,6 @@ import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Controller
-@SessionAttributes(value= "seatMapList")
 public class ManagerController {
 	
 	Logger logger = Logger.getLogger(getClass());
@@ -178,13 +176,13 @@ public class ManagerController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping("manager/pcRoomForm_savePlacement.do")
 	@ResponseBody
-	public void pcRoomFormSavePlacement(ModelAndView mav, HttpSession session,
+	public void pcRoomFormSavePlacement(HttpSession session,
 										@RequestBody String seatMapList_) {
 		logger.info(seatMapList_);
 		List<Map<String, Object>> seatMapList = new ArrayList<Map<String, Object>>();
 		seatMapList = JSONArray.fromObject(seatMapList_);
 		logger.info("seatMapList : " + seatMapList);
-		
+		session.removeAttribute("seatMapList");
 		session.setAttribute("seatMapList", seatMapList);
 	}
 	

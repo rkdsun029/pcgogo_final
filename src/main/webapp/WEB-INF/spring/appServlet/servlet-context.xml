@@ -65,6 +65,7 @@
 			<mapping path="/updateEnd/*"/>
 			<beans:bean class="project.go.pcgogo.common.interceptor.LoginCheckInterceptor"/>
 		</interceptor>
+		
 	</interceptors>
 	
 	
