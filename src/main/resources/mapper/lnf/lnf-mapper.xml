@@ -78,7 +78,7 @@
 				#{renamedFileName})
 	</insert>
 	
-	<update id="completeDev">
+	<update id="updateDev">
   	  update lostandfound set 
       lnfEnrollName = #{lnfEnrollName}, lnfName = #{lnfName}, lnfPcRoomName = #{lnfPcRoomName}
       where lnfNo = #{lnfNo}
@@ -87,4 +87,10 @@
 	<delete id="deleteDev">
      delete from lostandfound where lnfNo = #{lnfNo}
    </delete>
+   
+   <update id="completeDev">
+  	  update lostandfound set 
+      lnfStatus = #{lnfStatus}
+      where lnfNo = #{lnfNo}
+   </update>
 </mapper>

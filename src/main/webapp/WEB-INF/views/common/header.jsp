@@ -54,7 +54,7 @@ $(function(){
     <div id="head-container">
         <a href="${pageContext.request.contextPath }" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
-            <li><a href="${pageContext.request.contextPath }/search/search.do">PC방 검색</a></li>
+            <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">PC방 검색</a></li>
             <li><a href="#">인기 PC방</a></li>
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
             <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">피시방 자리현황</a></li>
@@ -117,8 +117,10 @@ $(function(){
     }
     
     function naver_logout(){
-    	var popup = open("http://nid.naver.com/nidlogin.logout");
-    	popup.close();
+    	var popup = open("http://nid.naver.com/nidlogin.logout", "", "width=300, height=200");
+    	setInterval(function(){
+		   	popup.close();
+    	}, 800);
     }
     
     function init() {

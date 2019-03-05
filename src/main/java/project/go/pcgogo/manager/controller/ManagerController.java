@@ -5,26 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
+import project.go.pcgogo.manager.model.jsoup.Crawling;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Controller
+@SessionAttributes(value= "seatMapList")
 public class ManagerController {
 	
 	Logger logger = Logger.getLogger(getClass());
@@ -68,10 +70,7 @@ public class ManagerController {
 		return "manager/insertPcRoom";
 	}
 	
-	@RequestMapping("manager/managerCommunity.do")
-	public String managerCommunity() {
-		return "manager/managerCommunity";
-	}
+
 	
 	@RequestMapping("manager/pcRoomForm_step1.do")
 	public ModelAndView pcRoomFormStep1(HttpServletRequest request, ModelAndView mav) {
@@ -129,6 +128,8 @@ public class ManagerController {
 		mav.addObject("floorArr", floorArr);
 		mav.addObject("seatsArr", seatsArr);
 		mav.setViewName("manager/pcRoomForm/step4");
+		
+		
 		return mav;
 	}
 	
@@ -174,53 +175,27 @@ public class ManagerController {
 		return mav;
 	}
 	
-	@RequestMapping("manager/pcRoomForm_step6.do")
+	@SuppressWarnings("unchecked")
+	@RequestMapping("manager/pcRoomForm_savePlacement.do")
 	@ResponseBody
-	public List<Map<String, Object>> pcRoomFormStep6(@RequestParam(value="objectArr") String objectArr,
-										HttpServletResponse response,
-									    ModelAndView mav) {
+	public void pcRoomFormSavePlacement(ModelAndView mav, HttpSession session,
+										@RequestBody String seatMapList) {
+		logger.info(seatMapList);
+		List<Map<String, Object>> seatMapList_ = new ArrayList<Map<String, Object>>();
+		seatMapList_ = JSONArray.fromObject(seatMapList);
+		logger.info("seatMapList_ : " + seatMapList_);
 		
-		Cookie cookie = new Cookie("shibal", objectArr);
-		response.addCookie(cookie);
-		
-		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		mapList = JSONArray.fromObject(objectArr);
-		System.out.println(mapList);
-		/*
-		 * @RequestParam (value="pmContent_") String[] pmContent_,
-		 * 
-		 * @RequestParam (value="seatCount_") String[] seatCount_,
-		 * 
-		 * @RequestParam (value="pmRow_") int[] pmRow_,
-		 * 
-		 * @RequestParam (value="pmCol_") int[] pmCol_,
-		 * 
-		 * @RequestParam (value="floorNum_") String[] floorNum_,
-		 */
-		
-		
-//		System.out.println("pmContent_ : " + pmContent_);
-//		System.out.println("seatCount_ : " + seatCount_);
-//		System.out.println("pmRow_ : " + pmRow_);
-//		System.out.println("pmCol_ : " + pmCol_);
-//		System.out.println("floorNum_ : " + floorNum_);
-//		
-//		mav.addObject("pmContent_", pmContent_);
-//		mav.addObject("seatCount_", seatCount_);
-//		mav.addObject("pmRow_", pmRow_);
-//		mav.addObject("pmCol_", pmCol_);
-//		mav.addObject("floorNum_", floorNum_);
-		/*
-		 * Map<String, String[]> map = request.getParameterMap();
-		 * 
-		 * System.out.println(map);
-		 */
-		
-		/*
-		 * mav.setViewName("manager/pcRoomForm/step6"); return mav;
-		 */
-		
-		return mapList;
+		mav.addObject("seatMapList", seatMapList_);
+	}
+	
+	@RequestMapping("manager/pcRoomForm_step6.do")
+	public String pcRoomFormStep6() {
+		return "manager/pcRoomForm/step6";
+	}
+	
+	@RequestMapping("manager/pcRoomForm_step7.do")
+	public String pcRoomFormStep7() {
+		return "manager/pcRoomForm/step7";
 	}
 	
 	@RequestMapping("manager/pcRoomForm_end.do")
@@ -232,5 +207,40 @@ public class ManagerController {
 		mav.setViewName("manager/pcRoomForm/step7");
 		return mav;
 	}
+	
+	
+	//메인 사장님커뮤니티 view단 이동
+		@RequestMapping("/manager/managerCommunity.do")
+		public ModelAndView hotDeal(ModelAndView mav) {
+			
+			mav.setViewName("manager/managerCommunity");
+			
+			return mav;
+		}
+	
+	//ajax 데이터 뿌려주는곳
+	 @RequestMapping("manager/managerCommunity123.do") 
+	 @ResponseBody
+	 public Map<String, Object> managerCommunity() { 
+		 
+		Map<String, Object> test = new HashMap<>();
+		List<Map<String, String>> list = new Crawling().Crawling_hotDeal();
+		System.out.println("list = " + list);
+		//크롤링한 list값을 우선 실행해서 긁어옴 
+
+//		ArrayList<String> arrayList = new ArrayList<String>();
+//		arrayList.addAll(list);
+		//arraylist에 긁어온 list값을 집어넣음
+		
+		
+		
+		test.put("list" , list);
+		return test; 
+	 }
+	 
+	
+	
+	
+	
 	
 }
