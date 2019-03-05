@@ -9,6 +9,7 @@ import project.go.pcgogo.pcRoom.model.dao.PcDao;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
+import project.go.pcgogo.pcRoom.model.vo.PcRoomRsv;
 
 @Service
 public class PcServiceImpl implements PcService {
@@ -32,6 +33,12 @@ public class PcServiceImpl implements PcService {
 	public List<NowPcStatus> nowPcStatus(String pcRoomName) {
 		// TODO Auto-generated method stub
 		return pcDao.nowPcStatus(pcRoomName);
+	}
+
+	@Override
+	public List<PcRoomRsv> pcRoomRsv(String pcRoomNo) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomRsv(pcRoomNo);
 	}
 
 	

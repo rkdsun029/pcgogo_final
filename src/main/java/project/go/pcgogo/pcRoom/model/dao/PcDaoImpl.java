@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoom;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
+import project.go.pcgogo.pcRoom.model.vo.PcRoomRsv;
 
 @Repository
 public class PcDaoImpl implements PcDao {
@@ -33,6 +34,12 @@ public class PcDaoImpl implements PcDao {
 	@Override
 	public List<NowPcStatus> nowPcStatus(String pcRoomName) {
 		return sqlSession.selectList("pcRoom.nowPcStatus",pcRoomName);
+	}
+
+	@Override
+	public List<PcRoomRsv> pcRoomRsv(String pcRoomNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("pcRoom.pcRoomRsv", pcRoomNo);
 	}
 	
 }
