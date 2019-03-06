@@ -15,10 +15,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <script>
 $(function(){
-
-	var pmContent_ = "";
-	var pmTd_ = $("td").length;
-	var currValNum = 0;
 	
 	$(".toilet").css("cursor", "default");
 	$(".exit").css("cursor", "default");
@@ -30,39 +26,46 @@ $(function(){
 	$(".etc").css("cursor", "default");
 	$(".wall").css("cursor", "default");
 	
-	var pmContent = $("#hiddenPmContent");
+	var pmContent = $(".hiddenPmContent");
+	console.log(pmContent);
 	
 	var tableLength = $("table").length;
+	var table = $("table");
 	for(var i=0; i<tableLength; i++){
-		var tempArr = pmContent[i].val().split(",");
-		
+		var tempArr = pmContent.eq(i).val().split(",");
+		console.log(tempArr);
 		for(var s=0; s<tempArr.length; s++){
 			/* console.log("찍기 : ",s,":", tempArr[s]); */
-			$("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
-			$("td").eq(s).find("div#seat__").removeClass("wall");
-			if(tempArr[s] == "a") {
-				$("td").eq(s).find("div#seat__").addClass("plain").css("cursor", "pointer");
-				$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+			if(tempArr[s] != ""){
+				table.eq(i).find("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
+				table.eq(i).find("td").eq(s).find("div#seat__").removeClass("wall");
+				if(tempArr[s] == "a") {
+					table.eq(i).find("td").eq(s).find("div#seat__").addClass("plain").css("cursor", "pointer");
+					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+				}
+				if(tempArr[s] == "b"){
+					table.eq(i).find("td").eq(s).find("div#seat__").addClass("special").css("cursor", "pointer");
+					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+				}
+				if(tempArr[s] == "c"){
+					table.eq(i).find("td").eq(s).find("div#seat__").addClass("couple").css("cursor", "pointer");
+					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
+				}
+				if(tempArr[s] == "d") table.eq(i).find("td").eq(s).find("div#seat__").addClass("toilet");
+				if(tempArr[s] == "e") table.eq(i).find("td").eq(s).find("div#seat__").addClass("exit");
+				if(tempArr[s] == "f") table.eq(i).find("td").eq(s).find("div#seat__").addClass("counter");
+				if(tempArr[s] == "g") table.eq(i).find("td").eq(s).find("div#seat__").addClass("kiosk");
+				if(tempArr[s] == "h") table.eq(i).find("td").eq(s).find("div#seat__").addClass("water");
+				if(tempArr[s] == "i") table.eq(i).find("td").eq(s).find("div#seat__").addClass("air");
+				if(tempArr[s] == "j") table.eq(i).find("td").eq(s).find("div#seat__").addClass("smoking");
+				if(tempArr[s] == "k") table.eq(i).find("td").eq(s).find("div#seat__").addClass("etc");
+				if(tempArr[s] == "z") table.eq(i).find("td").eq(s).find("div#seat__").addClass("wall");
 			}
-			if(tempArr[s] == "b"){
-				$("td").eq(s).find("div#seat__").addClass("special").css("cursor", "pointer");
-				$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
-			}
-			if(tempArr[s] == "c"){
-				$("td").eq(s).find("div#seat__").addClass("couple").css("cursor", "pointer");
-				$("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
-			}
-			if(tempArr[s] == "d") $("td").eq(s).find("div#seat__").addClass("toilet");
-			if(tempArr[s] == "e") $("td").eq(s).find("div#seat__").addClass("exit");
-			if(tempArr[s] == "f") $("td").eq(s).find("div#seat__").addClass("counter");
-			if(tempArr[s] == "g") $("td").eq(s).find("div#seat__").addClass("kiosk");
-			if(tempArr[s] == "h") $("td").eq(s).find("div#seat__").addClass("water");
-			if(tempArr[s] == "i") $("td").eq(s).find("div#seat__").addClass("air");
-			if(tempArr[s] == "j") $("td").eq(s).find("div#seat__").addClass("smoking");
-			if(tempArr[s] == "k") $("td").eq(s).find("div#seat__").addClass("etc");
-			if(tempArr[s] == "z") $("td").eq(s).find("div#seat__").addClass("wall");		
 		}
 	}
+	
+	var pmTd_ = $("td").length;
+	var currValNum = 0;
 	
 	/* 좌석누르면 좌석번호 생성 */
 	$(".plain, .special, .couple").on("click", function(){
@@ -197,12 +200,6 @@ input#currVal{
 <body>
 <h1 id="head-title">PCGOGO.COM</h1>
 
-<form id="main-info-result" action="${pageContext.request.contextPath }/manager/pcRoomForm_end.do">
-	<input type="hidden" name="pmRow_" value="${requestScope.pmRow }"/>
-	<input type="hidden" name="pmCol_" value="${requestScope.pmCol }"/>
-	<input type="hidden" name="pmContent_"/>
-</form>
-
 <h3 id="seatNo-help-legend">&lt; 좌석번호 입력 &gt;</h3>
 <div id="seatNo-help">
 	<h4>- 일반석, 특별석, 다인석에만 좌석번호 부여가 가능합니다.</h4>
@@ -216,9 +213,12 @@ input#currVal{
 	<button id="ctrlZ">되돌리기</button>
 	<button id="makeAutoSeatNo">자동으로 번호 생성</button>
 </div>
-<c:forEach var="seatMap" items="${seatMapList }" varStatus="cnt">
-	<input type="hidden" id="hiddenPmContent" value="${seatMap.pmContent_ }"/>
-	<input type="hidden" id="floorNum" value="${seatMap.floorNum_ }"/>
+<c:forEach var="seatMap" items="${sessionScope.seatMapList }" varStatus="cnt">
+	<input type="hidden" class="hiddenPmContent" value="${seatMap.pmContent_ }"/>
+	<input type="hidden" class="hiddenFloorNum" value="${seatMap.floorNum_ }"/>
+	<input type="hidden" class="hiddenPmRow" value="${seatMap.pmRow_ }"/>
+	<input type="hidden" class="hiddenPmCol" value="${seatMap.pmCol_ }"/>
+	<input type="hidden" class="hiddenSeatCount" value="${seatMap.seatCount_ }"/>
 	<h2 class="floorNum_">${seatMap.floorNum_ } 층</h2>
 	<table id="placement">
 		<c:forEach var="i" begin="1" end="${seatMap.pmRow_ }" step="1">
