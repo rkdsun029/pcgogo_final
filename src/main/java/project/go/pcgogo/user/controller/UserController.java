@@ -32,6 +32,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import project.go.pcgogo.admin.model.vo.Admin;
+import project.go.pcgogo.common.AdminSingletone;
 import project.go.pcgogo.common.util.Utils;
 import project.go.pcgogo.user.model.service.UserService;
 import project.go.pcgogo.user.model.vo.Manager;
@@ -87,11 +89,9 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/signUpEnd/manager")
-	public String insertManager(Manager manager, @RequestParam("address") String[] address,
+	public String insertManager(Manager manager,
 							   @RequestParam(name="managerCodeImg", required=false) MultipartFile file,
 							   HttpServletRequest request) {
-		String addr = address[0]+" "+address[1];
-		manager.setManagerAddress(addr);
 		
 		//1. 파일업로드
 		String saveDirectory = request.getSession().getServletContext().getRealPath("/resources/upload/register");
@@ -243,54 +243,72 @@ public class UserController {
 								 @RequestParam(value="saveId", defaultValue="N") String isSave,
 								 HttpServletResponse res,
 								 ModelAndView mav){
+		Admin a = AdminSingletone.getInstance().getAdmin();
+		
+		
 		String view ="common/msg";
 		String msg = "";
 		String loc = "/login.do";
-		Object obj = userService.selectOneMember(userId);
 		
-		if("Y".equals(isSave)) {
-			Cookie cook = new Cookie("saveId", userId);
-			cook.setMaxAge(60 * 60 * 24);
-			cook.setPath("/");
-			res.addCookie(cook);
-		}else {
-			Cookie cook = new Cookie("saveId", null);
-			cook.setMaxAge(0);
-			cook.setPath("/");
-			res.addCookie(cook);
-		}
-		
-		if(obj==null) {
-			obj = userService.selectOneManager(userId);
-			if(obj==null) {
-				msg = "존재하지 않는 아이디입니다.";
+		if(a.getAdminId().equals(userId)) {
+			if(a.getAdminPassword().equals(userPwd)) {
+				view = "redirect:/";
+				mav.addObject("loggedInUser", a);
+			}else {
+				msg = "ㄲㅈ세요";
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
 			}
-			else{
-				Manager m = (Manager)obj;
-				if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
+		}else {
+			Object obj = userService.selectOneMember(userId);
+			
+			if("Y".equals(isSave)) {
+				Cookie cook = new Cookie("saveId", userId);
+				cook.setMaxAge(60 * 60 * 24);
+				cook.setPath("/");
+				res.addCookie(cook);
+			}else {
+				Cookie cook = new Cookie("saveId", null);
+				cook.setMaxAge(0);
+				cook.setPath("/");
+				res.addCookie(cook);
+			}
+			
+			if(obj==null) {
+				obj = userService.selectOneManager(userId);
+				if(obj==null) {
+					msg = "존재하지 않는 아이디입니다.";
+					mav.addObject("msg", msg);
+					mav.addObject("loc", loc);
+				}
+				else{
+					Manager m = (Manager)obj;
+					if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
+						mav.addObject("loggedInUser", m);
+						view = "redirect:/";
+					}
+					else {
+						msg = "비밀번호가 일치하지 않습니다";
+						mav.addObject("msg", msg);
+						mav.addObject("loc", loc);
+					}
+				}
+			}else {
+				Member m = (Member)obj;
+				if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
 					mav.addObject("loggedInUser", m);
+					m.setIsSocial("member");
 					view = "redirect:/";
 				}
 				else {
-					logger.info(userPwd);
-					logger.info(m.getManagerPassword());
 					msg = "비밀번호가 일치하지 않습니다";
+					mav.addObject("msg", msg);
+					mav.addObject("loc", loc);
 				}
 			}
-		}else {
-			Member m = (Member)obj;
-			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
-				mav.addObject("loggedInUser", m);
-				m.setIsSocial("member");
-				view = "redirect:/";
-			}
-			else {
-				msg = "비밀번호가 일치하지 않습니다";
-			}
 		}
+
 		mav.setViewName(view);
-		mav.addObject("msg", msg);
-		mav.addObject("loc", loc);
 		return mav;
 	}
 	
