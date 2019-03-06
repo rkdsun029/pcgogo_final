@@ -40,46 +40,29 @@ $(function(){
 		if(tempArr[i] == "z") $("td").eq(i).find("div#seats").addClass("wall");	
 	}
 });
-/* $(function(){
+$(function(){
 	console.log($("#hiddenSitted").val());
 	var tempArr1 = $("#hiddenSitted").val().split(",");
 	for(var i=0; i<tempArr1.length; i++){
 		console.log(tempArr1[i]);
-		$("td").eq(i).find("input[type=hidden]").val(tempArr[i]);
+		$("td").eq(i).find("input[type=hidden]").val(tempArr1[i]);
 
 		if(tempArr1[i] == "o") $("td").eq(i).find("div#seats").addClass("sitted");
-		if(tempArr1[i] == "x") $("td").eq(i).find("div#seats").addClass("unSitted");
 
 	}
-}); */
-var max = 0;
-//예약할 사람 최대 숫자 설정
-$("#num").change(function(){
-    max = $("#num").val();
 });
 
-
-var cnt=0;
-$("#seats").click(function(){
-    if(max>cnt){	//최대치까지 눌렸는지?
-        if($(this).prop("class")=="seats"){//
-            $(this).attr("class","sitted");
-            cnt++;
-        }else if($(this).prop("class")=="sitted"){
-            $(this).attr("class","chair");
-            cnt--;}
-        }
-    else if(max<=cnt){
-        if($(this).prop("class")=="sitted"){
-            $(this).attr("class","chair");
-            cnt--;
-        }else{
-            alert("설정하신 인원수인 "+max+"명을 초과하였습니다.");}
-    }
-});
 
 </script>
 <style>
+.sitted{
+	opacity:0.3;
+
+}
+.selected{
+	border:2px solid white;
+}
+    
 div.seat {
     display: block;
     width: 30px;
@@ -145,9 +128,15 @@ input#currVal{
 </style>
 </head>
 <body>
+<label for="">
+    사람 수    
+    </label>
+    <input type="number" class="num" id="num" name="num"/>
+    <button onclick="letRsv()">예약하기</button>
+    
 <c:forEach var="rsv" items="${rsv }" varStatus="cnt">
 	<input type="hidden" id="hiddenPmContent" value="${rsv.pmContent }"/>
-	<input type="hidden" id="hiddenSeated" value="${rsv.seated }"/>
+	<input type="hidden" id="hiddenSitted" value="${rsv.sitted }"/>
 	<h2 class="floorNum_">${rsv.pmFloor } 층</h2>
 	<table id="placement">
 		<c:forEach var="i" begin="1" end="${rsv.pmRow }" step="1">
@@ -168,4 +157,49 @@ input#currVal{
 	<br><br><br>
 </c:forEach>
 </body>
+<script>
+var max = 0;
+//예약할 사람 최대 숫자 설정
+$("#num").change(function(){
+  max = $("#num").val();
+	console.log("max="+max);
+});
+
+
+var cnt=0;
+$(".seat").click(function(){
+	
+	var class_=$(this).prop("class");
+	console.log(class_);
+	if(class_.indexOf("sitted")>-1){
+		alert("현재 이용중인 좌석입니다.");
+	}else{
+  		if(max>cnt){
+	      	if(class_.indexOf("selected")<0){	
+	          $(this).addClass("selected");
+	          $(this).find("input[type=hidden]").val("s");
+	          cnt++;
+	      	}else if(class_.indexOf("selected")>-1){
+	          $(this).removeClass("selected");
+	          cnt--;
+	      	}
+  		}else if(max<=cnt){
+      		if(class_.indexOf("selected")>-1){
+          		$(this).removeClass("selected");
+          		cnt--;
+      		}else{
+          		alert("설정하신 인원수인 "+max+"명을 초과하였습니다.");}
+  		}
+	}
+});
+
+function letRsv(){
+	
+	if(confirm("예약하실 좌석이"+"(선택한 좌석 번호들)"+"이고, "+"(예약할 시간)"+"시간 예약이 맞습니까?")){
+    	
+    	location.href='${pageContext.request.contextPath}/pcRoom/pcRoomRsvEnd.do';
+	}
+	
+};
+</script>
 </html>

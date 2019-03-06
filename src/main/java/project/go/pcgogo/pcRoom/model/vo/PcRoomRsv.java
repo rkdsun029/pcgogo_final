@@ -9,7 +9,27 @@ public class PcRoomRsv {
 	private int pmCol;
 	private String pmContent;
 	private int seatCount;
-	private String seated;
+	private String sitted;
+	public PcRoomRsv() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public PcRoomRsv(int pmPcRoomNo, String pmFloor, int pmRow, int pmCol, String pmContent, int seatCount,
+			String sitted) {
+		super();
+		this.pmPcRoomNo = pmPcRoomNo;
+		this.pmFloor = pmFloor;
+		this.pmRow = pmRow;
+		this.pmCol = pmCol;
+		this.pmContent = pmContent;
+		this.seatCount = seatCount;
+		this.sitted = sitted;
+	}
+	@Override
+	public String toString() {
+		return "PcRoomRsv [pmPcRoomNo=" + pmPcRoomNo + ", pmFloor=" + pmFloor + ", pmRow=" + pmRow + ", pmCol=" + pmCol
+				+ ", pmContent=" + pmContent + ", seatCount=" + seatCount + ", sitted=" + sitted + "]";
+	}
 	public int getPmPcRoomNo() {
 		return pmPcRoomNo;
 	}
@@ -46,30 +66,11 @@ public class PcRoomRsv {
 	public void setSeatCount(int seatCount) {
 		this.seatCount = seatCount;
 	}
-	public String getSeated() {
-		return seated;
+	public String getSitted() {
+		return sitted;
 	}
-	public void setSeated(String seated) {
-		this.seated = seated;
+	public void setSitted(String sitted) {
+		this.sitted = sitted;
 	}
-	@Override
-	public String toString() {
-		return "PcRoomRsv [pmPcRoomNo=" + pmPcRoomNo + ", pmFloor=" + pmFloor + ", pmRow=" + pmRow + ", pmCol=" + pmCol
-				+ ", pmContent=" + pmContent + ", seatCount=" + seatCount + ", seated=" + seated + "]";
-	}
-	public PcRoomRsv(int pmPcRoomNo, String pmFloor, int pmRow, int pmCol, String pmContent, int seatCount,
-			String seated) {
-		super();
-		this.pmPcRoomNo = pmPcRoomNo;
-		this.pmFloor = pmFloor;
-		this.pmRow = pmRow;
-		this.pmCol = pmCol;
-		this.pmContent = pmContent;
-		this.seatCount = seatCount;
-		this.seated = seated;
-	}
-	public PcRoomRsv() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 }
