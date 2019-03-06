@@ -122,8 +122,7 @@ $("button#deleteFloor").on("click", function(){
 
 $("button[type=submit]").on("click", function(){
 	var floor_length = $("input[type=number]#floorNum").length;
-	for(var i=0; i<f
-	loor_length; i++){
+	for(var i=0; i<floor_length; i++){
 		if($("input[type=number]#floorNum").eq(i).val() == 0){
 			alert("층 수가 지정되어 있지 않습니다.");
 			return;

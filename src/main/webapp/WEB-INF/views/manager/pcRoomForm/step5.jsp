@@ -95,7 +95,7 @@ $(function(){
 			
 			var tableLength = $("table").length;
 			
-			var seatMapList = new Array();
+			var seatMapList_ = new Array();
 			
 			for(var i=0; i<tableLength; i++){
 				var object = {
@@ -106,14 +106,14 @@ $(function(){
 					seatCount_ : $("input.seat_tdCount").eq(i).val()
 				}
 				
-				seatMapList.push(object);
+				seatMapList_.push(object);
 			}
 			
-			console.log(JSON.stringify(seatMapList));
-			alert(JSON.stringify(seatMapList));
+			console.log(JSON.stringify(seatMapList_));
+
 			$.ajax({
 				url : "${pageContext.request.contextPath}/manager/pcRoomForm_savePlacement.do",
-				data : JSON.stringify(seatMapList),
+				data : JSON.stringify(seatMapList_),
 				traditional : true,
 				type : "post",
 				contentType : "application/json; charset=utf-8",
