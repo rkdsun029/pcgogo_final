@@ -46,7 +46,6 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
-    $("#menu3").on("click", function(){location.href = "";});
 });
 </script>
 </head>
@@ -72,14 +71,23 @@ $(function(){
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
     </c:if>
     <c:if test="${loggedInUser != null }">
-    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
-    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
-        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
-        onclick="logout();" />로그아웃</div>
-        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
-        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
-        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
-        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    	<c:if test="${loggedInUser.isSocial != 'admin' }">
+	    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
+	    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
+	        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+	        onclick="logout();" />로그아웃</div>
+	        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
+	        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+	        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
+	        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    	</c:if>
+        <c:if test="${loggedInUser.isSocial == 'admin' }">
+        	<div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+	        onclick="logout();" />로그아웃</div>
+        	<div class="quick"><img src="${pageContext.request.contextPath }/resources/image/header/building.png" alt="" 
+        	onclick="location.href='${pageContext.request.contextPath}/admin/permissionList.do'"/>PC방 목록</div>
+        		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+        </c:if>
     </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>

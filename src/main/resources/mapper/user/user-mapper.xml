@@ -3,7 +3,7 @@
 <mapper namespace="user">
 	<insert id="insertManager" parameterType="manager">
 		insert into manager values(#{managerId}, #{managerPassword}, #{managerCode}, #{managerCodeImgOriginal},
-		#{managerCodeImgRenamed}, #{managerName}, #{managerPhone}, #{managerEmail}, #{managerAddress}, default, default)
+		#{managerCodeImgRenamed}, #{managerName}, #{managerPhone}, #{managerEmail}, default, default)
 	</insert>
 	<insert id="insertMember" parameterType="member">
 		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default)
