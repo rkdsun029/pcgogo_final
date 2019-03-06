@@ -7,6 +7,6 @@
 	</insert>
 	
 	<select id="selectByToId" parameterType="string" resultType="chat">
-		select * from chat where toId = #{toId} order by chatNo
+		select * from chat where fromId = #{fromId} or toId = #{fromId} order by chatNo
 	</select>
 </mapper>

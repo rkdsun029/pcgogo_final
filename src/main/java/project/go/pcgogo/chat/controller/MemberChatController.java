@@ -51,11 +51,11 @@ public class MemberChatController {
 	
 	@RequestMapping("/chat/selectByToId.do")
 	@ResponseBody
-	public List<Chat> selectByToId(@RequestParam("toId") String toId, Model model) {
+	public List<Chat> selectByToId(@RequestParam("fromId") String fromId, Model model) {
 		
-		System.out.println("Controller@받는 사람 : " + toId);
+		System.out.println("Controller@보내는 사람 : " + fromId);
 		
-		List<Chat> list = chatService.selectByToId(toId);
+		List<Chat> list = chatService.selectByToId(fromId);
 		
 		System.out.println("채팅방 들어왔을 때 메세지가 있으면! : " + list);
 		
@@ -63,6 +63,22 @@ public class MemberChatController {
 		
 		return list;
 	}
+	
+//	@RequestMapping("/chat/receiveMessage.do")
+//	@ResponseBody
+//	public List<Chat> receiveMessage(@RequestParam("fromId") String fromId, Model model) {
+//		
+//		System.out.println("Controller@수신할 때 : " + fromId);
+//		
+//		List<Chat> list = chatService.receiveMessage(fromId);
+//		
+//		System.out.println("채팅방 들어왔을 때 메세지가 있으면 (receive)" + list);
+//		
+//		model.addAttribute("list", list);
+//		
+//		return list;
+//		
+//	}
 	
 //	@RequestMapping("/chat/selectByToId.do")
 //	@ResponseBody
