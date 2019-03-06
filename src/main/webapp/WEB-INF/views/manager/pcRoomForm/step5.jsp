@@ -110,7 +110,7 @@ $(function(){
 			}
 			
 			console.log(JSON.stringify(seatMapList_));
-			alert(JSON.stringify(seatMapList_));
+
 			$.ajax({
 				url : "${pageContext.request.contextPath}/manager/pcRoomForm_savePlacement.do",
 				data : JSON.stringify(seatMapList_),

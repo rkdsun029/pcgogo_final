@@ -102,9 +102,48 @@ $(function(){
 		var temp = confirm("좌석번호를 저장하시겠습니까?");
 		if(!temp) return;
 		else{
+			var hiddenPmContentWithSeatNo = $(".hiddenPmContentWithSeatNo");
+			var tempContent_ = "";
+			
+			var hiddenPmRow_ = $(".hiddenPmRow");
+			var hiddenPmCol_ = $(".hiddenPmCol");
+			
+			for(var i=0; i<tableLength; i++){
+				var thisTableTdCount = parseInt(hiddenPmRow_.eq(i).val()) * parseInt(hiddenPmCol_.eq(i).val());
+				
+				for(var j=0; j<thisTableTdCount; j++){
+					var tdList = table.eq(i).find("td");
+					console.log(tdList);
+					var tdListLength = table.eq(i).find("td").length;
+					
+					if(j == parseInt(tdListLength)-1){
+						if(tdList.eq(j).find("span#seatNo").length != 0){
+							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
+							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").val());
+						}
+						else{
+							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
+						}
+					}
+					else {
+						if(tdList.eq(j).find("span#seatNo").length != 0){
+							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
+							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").val()) + ",";
+						}
+						else{
+							tempContent_ += tdList.eq(j).find("input[type=hidden]").val() + ",";										
+						}
+					}
+				}
+				
+				console.log(tempContent_);
+				tempContent_ = "";
+			}
+			
+/* 			
 			for(var s=0; s<pmTd_; s++){
 			/* 	console.log("찍기 span : ",s,":", parseInt($("td").eq(s).find("span").val()));
-				console.log("찍기 input :",s,":", $("td").eq(s).find("input").val()); */
+				console.log("찍기 input :",s,":", $("td").eq(s).find("input").val());
 				
 				if(s == parseInt(pmTd_)-1){
 					if($("td").eq(s).find("span").length != 0){
@@ -134,7 +173,43 @@ $(function(){
 			console.log($("input[name=pmCol_]").val());
 			console.log($("input[name=pmContent_]").val());
 			
-			/* $("form#main-info-result").submit(); */
+			/* $("form#main-info-result").submit(); 
+			
+			////////////////
+			var seatMapList__ = new Array();
+			
+			for(var i=0; i<tableLength; i++){
+				var object = {
+					pmRow_ : $("table").eq(i).find("tr").length,
+					pmCol_ : $("table").eq(i).find("tr:first-of-type td").length,
+					floorNum_ : $("input#floorNum").eq(i).val(),
+					pmContent_ : $("input.table_tdContent").eq(i).val(),
+					seatCount_ : $("input.seat_tdCount").eq(i).val()
+				}
+				
+				seatMapList_.push(object);
+			}
+			
+			console.log(JSON.stringify(seatMapList_));
+
+			$.ajax({
+				url : "${pageContext.request.contextPath}/manager/pcRoomForm_savePlacement.do",
+				data : JSON.stringify(seatMapList_),
+				traditional : true,
+				type : "post",
+				contentType : "application/json; charset=utf-8",
+				success : function(){
+					console.log("AJAX SUCCEED");
+					location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
+				},
+				error : function(){
+					console.log("AJAX FAILED");
+				}
+			});
+			
+			
+			///////////////
+			*/
 		};
 	});
 });
@@ -219,6 +294,8 @@ input#currVal{
 	<input type="hidden" class="hiddenPmRow" value="${seatMap.pmRow_ }"/>
 	<input type="hidden" class="hiddenPmCol" value="${seatMap.pmCol_ }"/>
 	<input type="hidden" class="hiddenSeatCount" value="${seatMap.seatCount_ }"/>
+	
+	<input type="hidden" class="hiddenPmContentWithSeatNo"/>
 	<h2 class="floorNum_">${seatMap.floorNum_ } 층</h2>
 	<table id="placement">
 		<c:forEach var="i" begin="1" end="${seatMap.pmRow_ }" step="1">
