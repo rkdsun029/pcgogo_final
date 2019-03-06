@@ -22,6 +22,7 @@ import net.sf.json.JSONArray;
 import project.go.pcgogo.manager.model.jsoup.Crawling;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
+import project.go.pcgogo.manager.model.vo.Placement;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Controller
@@ -216,8 +217,34 @@ public class ManagerController {
 		logger.info(pcRoom);
 		logger.info(seatMapList);
 		
-		int result1 = managerService.insertPcRoom(pcRoom);
-//		int result2 = managerService.insertPlacement(seatMapList);
+		//1. pcRoom객체에서 해당 아이디의 피시방들을 불러와서 없는 거만 등록되게
+		
+		List<Placement> pList = new ArrayList<>();
+		for(int i=0; i<seatMapList.size(); i++) {
+			Map<String, Object> m = seatMapList.get(i);
+			
+			Placement p = new Placement();
+			p.setPmFloor((String)m.get("floorNum_"));
+			p.setPmRow((Integer) m.get("pmRow_"));
+			p.setPmCol((Integer) m.get("pmCol_"));
+			p.setPmSeats(Integer.parseInt((String) m.get("seatCount_")));
+			p.setPmContent((String) m.get("pmContent_"));
+			
+			pList.add(p);
+		}
+		
+		int resultCount = pList.size();
+		int temp = 0;
+		int results = 0;
+		
+		for(int j=0; j<resultCount; j++) {
+//			temp = managerService.insertPlacement(pList.get(j));
+//			
+//			if(temp != 0) results++;
+//			else throw new Exception("");
+		}
+		
+		logger.info("placement 배열 : " + pList);
 
 		mav.setViewName("manager/pcRoomForm/step7");
 		return mav;

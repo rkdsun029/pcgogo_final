@@ -6,6 +6,6 @@
 	</select>
 	
 	<insert id="insertPcRoom" parameterType="pcRoom">
-		insert into pcRoom into values(seq_pcRoom_pcRoomNo.nextVal, #{pcRoomName}, #{pcRoomAddress}, #{pcRoomManagerId}, default);
+		insert into pcRoom values(seq_pcRoom_pcRoomNo.nextval, #{pcRoomName}, #{pcRoomAddress}, #{pcRoomManagerId}, default)
 	</insert>
 </mapper>

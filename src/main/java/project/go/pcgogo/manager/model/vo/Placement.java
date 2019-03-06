@@ -7,7 +7,7 @@ public class Placement implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private int pmPcRoomNo;
-	private int pmFloor;
+	private String pmFloor;
 	private int pmRow;
 	private int pmCol;
 	private int pmSeats;
@@ -15,7 +15,7 @@ public class Placement implements Serializable{
 	
 	public Placement(){}
 	
-	public Placement(int pmPcRoomNo, int pmFloor, int pmRow, int pmCol, int pmSeats, String pmContent) {
+	public Placement(int pmPcRoomNo, String pmFloor, int pmRow, int pmCol, int pmSeats, String pmContent) {
 		super();
 		this.pmPcRoomNo = pmPcRoomNo;
 		this.pmFloor = pmFloor;
@@ -37,10 +37,10 @@ public class Placement implements Serializable{
 	public void setPmPcRoomNo(int pmPcRoomNo) {
 		this.pmPcRoomNo = pmPcRoomNo;
 	}
-	public int getPmFloor() {
+	public String getPmFloor() {
 		return pmFloor;
 	}
-	public void setPmFloor(int pmFloor) {
+	public void setPmFloor(String pmFloor) {
 		this.pmFloor = pmFloor;
 	}
 	public int getPmRow() {
