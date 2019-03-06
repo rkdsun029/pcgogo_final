@@ -27,7 +27,7 @@
     			<div class="nano has-scrollbar" style="height:700px">
     				<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
     					
-    					<ul class="list-unstyled media-block" id="messageList">
+    					<ul class="list-unstyled media-block" id="messageList" style="margin-bottom:0px;">
     						
     					</ul>
     					
@@ -63,37 +63,61 @@
 
 <script>
 
+	var fromId = $("input[name=fromId]").val();
 	var toId = $("input[name=toId]").val();
 	
-	console.log(toId);
+	console.log("처음", fromId, toId); // milkysoda506, vayne123
 	
-	function getMessage() {
+	/* var temp = fromId;
+	fromId = toId;
+	toId = temp;
+	
+	console.log(fromId, toId); */ // vayne123, milkysoda506, milkysoda506
+	
+	function sendMessage() {
+		
 		$.ajax({
 			url: "${pageContext.request.contextPath}/chat/selectByToId.do",
 			data: {
-				toId : toId
+				fromId : fromId
 			},
 			dataType: "json",
 			type: "get",
 			success: function(data) {
-				var html = "<li class='mar-btm'>";
+				var html = "<li class='mar-btm' style='margin-bottom:0px'>";
+				
+				/* console.log("ajax 성공시 : ", fromId, toId); */
 				
 				for(var i in data) {
 					var chat = data[i];
 					var chatTime = chat.chatTime;
 					
-					/* html += "<p>" + chat.fromId + "</p>";
-					html += "<p>" + chat.chatContent + "</p>";
-					html += new Date(chat.chatTime).toISOString().slice(0, 10); */
+					/* console.log("for문 안에서", chat.fromId, chat.toId); */
+					/* console.log(toId == chat.toId); */
+					/* console.log("억 왜 안되누ㅠㅠ", chat.toId); */
 					
-					html += "<div class='media-body pad-hor'>";
-					html += "<div class='speech'>";
-					html += "<p class='media-heading'>" + chat.fromId + "</p>";
-					html += "<p>" + chat.chatContent + "</p>";
-					html += "<p class='speech-time'>";
-					html += "<i class='fa fa-clock-o fa-fw'></i>" + new Date(chat.chatTime).toISOString().slice(0, 10) + "</p>";
-					html += "</div></div></li>";
+					if(fromId == chat.fromId && toId == chat.toId) {
+						// 발신메세지
+						html += "<div class='media-body pad-hor speech-right'>";
+						html += "<div class='speech'>";
+						html += "<p class='media-heading'>" + chat.fromId + "</p>";
+						html += "<p>" + chat.chatContent + "</p>";
+						html += "<p class='speech-time'>";
+						html += "<i class='fa fa-clock-o fa-fw'></i>" + new Date(chat.chatTime).toISOString().slice(0, 10) + "</p>";
+						html += "</div></div></li></br>";
+						
+					}
 					
+					if(fromId == chat.toId && toId == chat.fromId) {
+						// 수신메세지
+						html += "<div class='media-body pad-hor'>";
+						html += "<div class='speech'>";
+						html += "<p class='media-heading'>" + chat.fromId + "</p>";
+						html += "<p>" + chat.chatContent + "</p>";
+						html += "<p class='speech-time'>";
+						html += "<i class='fa fa-clock-o fa-fw'></i>" + new Date(chat.chatTime).toISOString().slice(0, 10) + "</p>";
+						html += "</div></div></li></br>";
+					}
 				}
 				
 				$("#messageList").html(html);
@@ -107,12 +131,34 @@
 		});
 	}
 	
+	/* function receiveMessage() {
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/chat/receiveMessage.do",
+			data: {
+				fromId : fromId
+			},
+			dataType: "json",
+			type: "get",
+			success: function(data) {
+				console.log("성공띠~");
+			},
+			error: function(jqxhr, textStatus, errorThrow) {
+				console.log(jqxhr);
+				console.log(textStatus);
+				console.log(errorThrow);
+				console.log("실패띠~");
+			}
+		});
+		
+	} */
+	
 	// 상대방과 메세지를 주고 받은적이 있다면 그 내역이 먼저 출력되도록 한다.
-	getMessage();
+	sendMessage();
 			
 	$(".btn-block").click(function() {
 		
-		var fromId = $("input[name=fromId]").val();
+		/* var fromId = $("input[name=fromId]").val(); */
 		
 		/* console.log(fromId, toId, chatContent); */
 		
@@ -141,7 +187,7 @@
 			type: "post",
 			success: function(data) {
 				console.log("ajax 전송 성공!");
-				getMessage();
+				sendMessage();
 			},
 			error: function(jqxhr, textStatus, errorThrow) {
 				console.log(jqxhr);
