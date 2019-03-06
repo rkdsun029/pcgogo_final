@@ -113,7 +113,7 @@ public class ManagerController {
 		
 		System.out.println("생성된 피시방 객체 : " + pcRoom);
 		
-		mav.addObject("pcRoom", pcRoom);
+		session.setAttribute("pcRoom", pcRoom);
 		mav.setViewName("manager/pcRoomForm/step3");
 		return mav;
 	}
@@ -176,8 +176,7 @@ public class ManagerController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping("manager/pcRoomForm_savePlacement.do")
 	@ResponseBody
-	public void pcRoomFormSavePlacement(HttpSession session,
-										@RequestBody String seatMapList_) {
+	public void pcRoomFormSavePlacement(HttpSession session, @RequestBody String seatMapList_) {
 		logger.info(seatMapList_);
 		List<Map<String, Object>> seatMapList = new ArrayList<Map<String, Object>>();
 		seatMapList = JSONArray.fromObject(seatMapList_);
@@ -194,17 +193,32 @@ public class ManagerController {
 		return "manager/pcRoomForm/step6";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("manager/pcRoomForm_step7.do")
-	public String pcRoomFormStep7() {
-		return "manager/pcRoomForm/step7";
+	@ResponseBody
+	public void pcRoomFormStep7(HttpSession session, @RequestBody String seatMapList_) {
+		logger.info(seatMapList_);
+		List<Map<String, Object>> seatMapList = new ArrayList<Map<String, Object>>();
+		seatMapList = JSONArray.fromObject(seatMapList_);
+		logger.info("완성 : seatMapList : " + seatMapList);
+		session.removeAttribute("seatMapList");
+		session.setAttribute("seatMapList", seatMapList);
 	}
 	
 	@RequestMapping("manager/pcRoomForm_end.do")
-	public ModelAndView pcRoomFormEnd(@RequestParam (value="pmRow_") int pmRow,
-							  @RequestParam (value="pmCol_") int pmCol,
-							  @RequestParam (value="pmContent_") String pmContent,
-							  ModelAndView mav) {
+	public ModelAndView pcRoomFormEnd(HttpSession session, ModelAndView mav) {
+		logger.info("db직전 : " + session.getAttribute("pcRoom"));
+		logger.info("db직전 : " + session.getAttribute("seatMapList"));
 		
+		PcRoom pcRoom = (PcRoom) session.getAttribute("pcRoom");
+		List<Map<String, Object>> seatMapList = (List<Map<String, Object>>) session.getAttribute("seatMapList");
+		
+		logger.info(pcRoom);
+		logger.info(seatMapList);
+		
+		int result1 = managerService.insertPcRoom(pcRoom);
+//		int result2 = managerService.insertPlacement(seatMapList);
+
 		mav.setViewName("manager/pcRoomForm/step7");
 		return mav;
 	}

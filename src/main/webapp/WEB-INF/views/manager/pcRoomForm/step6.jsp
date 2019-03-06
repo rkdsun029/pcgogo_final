@@ -113,13 +113,12 @@ $(function(){
 				
 				for(var j=0; j<thisTableTdCount; j++){
 					var tdList = table.eq(i).find("td");
-					console.log(tdList);
 					var tdListLength = table.eq(i).find("td").length;
 					
 					if(j == parseInt(tdListLength)-1){
 						if(tdList.eq(j).find("span#seatNo").length != 0){
 							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
-							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").val());
+							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").html());
 						}
 						else{
 							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
@@ -128,7 +127,7 @@ $(function(){
 					else {
 						if(tdList.eq(j).find("span#seatNo").length != 0){
 							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
-							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").val()) + ",";
+							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").html()) + ",";
 						}
 						else{
 							tempContent_ += tdList.eq(j).find("input[type=hidden]").val() + ",";										
@@ -136,54 +135,19 @@ $(function(){
 					}
 				}
 				
-				console.log(tempContent_);
+				hiddenPmContentWithSeatNo.eq(i).val(tempContent_);
 				tempContent_ = "";
 			}
 			
-/* 			
-			for(var s=0; s<pmTd_; s++){
-			/* 	console.log("찍기 span : ",s,":", parseInt($("td").eq(s).find("span").val()));
-				console.log("찍기 input :",s,":", $("td").eq(s).find("input").val());
-				
-				if(s == parseInt(pmTd_)-1){
-					if($("td").eq(s).find("span").length != 0){
-						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
-						pmContent_ += parseInt($("td").eq(s).find("span").val());
-					}
-					else{
-						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
-					}
-				}
-				else {
-					if($("td").eq(s).find("span").length != 0){
-						pmContent_ += $("td").eq(s).find("input[type=hidden]").val();										
-						pmContent_ += parseInt($("td").eq(s).find("span").val()) + ",";
-					}
-					else{
-						pmContent_ += $("td").eq(s).find("input[type=hidden]").val() + ",";										
-					}
-				}
-			}
-			
-			console.log("pmContent_:", pmContent_);
-
-			$("input[name=pmContent_]").val(pmContent_);
-			
-			console.log($("input[name=pmRow_]").val());
-			console.log($("input[name=pmCol_]").val());
-			console.log($("input[name=pmContent_]").val());
-			
-			/* $("form#main-info-result").submit(); 
-			
 			////////////////
-			var seatMapList__ = new Array();
+			var seatMapList_ = new Array();
 			
 			for(var i=0; i<tableLength; i++){
 				var object = {
 					pmRow_ : $("table").eq(i).find("tr").length,
 					pmCol_ : $("table").eq(i).find("tr:first-of-type td").length,
 					floorNum_ : $("input#floorNum").eq(i).val(),
-					pmContent_ : $("input.table_tdContent").eq(i).val(),
+					pmContent_ : $("input.hiddenPmContentWithSeatNo").eq(i).val(),
 					seatCount_ : $("input.seat_tdCount").eq(i).val()
 				}
 				
@@ -193,23 +157,21 @@ $(function(){
 			console.log(JSON.stringify(seatMapList_));
 
 			$.ajax({
-				url : "${pageContext.request.contextPath}/manager/pcRoomForm_savePlacement.do",
+				url : "${pageContext.request.contextPath}/manager/pcRoomForm_step7.do",
 				data : JSON.stringify(seatMapList_),
 				traditional : true,
 				type : "post",
 				contentType : "application/json; charset=utf-8",
 				success : function(){
 					console.log("AJAX SUCCEED");
-					location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_step6.do";
+					location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_end.do";
 				},
 				error : function(){
 					console.log("AJAX FAILED");
 				}
 			});
 			
-			
 			///////////////
-			*/
 		};
 	});
 });

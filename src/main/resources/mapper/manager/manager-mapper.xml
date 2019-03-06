@@ -4,4 +4,8 @@
 	<select id="selectOne" parameterType="string" resultType="manager">
 		select * from manager where managerId = #{managerId}
 	</select>
+	
+	<insert id="insertPcRoom" parameterType="pcRoom">
+		insert into pcRoom into values(seq_pcRoom_pcRoomNo.nextVal, #{pcRoomName}, #{pcRoomAddress}, #{pcRoomManagerId}, default);
+	</insert>
 </mapper>
