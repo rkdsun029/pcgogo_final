@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import project.go.pcgogo.manager.model.vo.PcRoom;
+import project.go.pcgogo.manager.model.vo.Placement;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Repository
@@ -21,5 +22,10 @@ public class ManagerDaoImpl implements ManagerDao{
 	@Override
 	public int insertPcRoom(PcRoom pcRoom) {
 		return sqlSession.insert("manager.insertPcRoom", pcRoom);
+	}
+
+	@Override
+	public int insertPlacement(Placement placement) {
+		return sqlSession.insert("manager.insertPlacement", placement);
 	}
 }

@@ -10,8 +10,8 @@ public class Placement implements Serializable{
 	private String pmFloor;
 	private int pmRow;
 	private int pmCol;
-	private int pmSeats;
 	private String pmContent;
+	private int pmSeats;
 	
 	public Placement(){}
 	
