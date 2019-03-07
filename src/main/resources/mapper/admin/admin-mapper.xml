@@ -17,4 +17,19 @@
 			</when>
 		</choose>		
 	</update>
+	<delete id="refuse">
+		delete from ${division}
+		where
+		<choose>
+			<when test="division=='manager'">
+				managerId=#{target}
+			</when>
+			<when test="division=='pcRoom'">
+				pcRoomName=#{target}
+			</when>
+		</choose>
+	</delete>
+	<select id="getDivisionList" resultType="hashmap">
+		select * from ${value}
+	</select>
 </mapper>
