@@ -8,7 +8,7 @@
 	<jsp:param value="사장님 메뉴" name="pageTitle"></jsp:param>
 </jsp:include>
 <jsp:include page="/WEB-INF/views/common/managerFixMenu.jsp">
-	<jsp:param value="안녕하십니까, ${loggedInManager }님. 오늘의 예약손님 통계를 활용해 보세요." name="smallTitle"></jsp:param>
+	<jsp:param value="안녕하십니까, ${loggedInManager.managerId }님. 오늘의 예약손님 통계를 활용해 보세요." name="smallTitle"></jsp:param>
 </jsp:include>
 
 <style>
