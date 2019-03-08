@@ -25,6 +25,15 @@ h1{font-size:1.5rem;}
   height:34px;  
   font-size: 15px;
 }
+.btn_delete{
+  border:dotted 0px white; 
+  background:red;
+  color:#fff;    
+  border-radius:7px 7px 7px 7px;   
+  width:115px; 
+  height:34px;  
+  font-size: 15px;
+}
 .btn_order, .btn_cancel1:hover{background:#f67001; cursor:pointer;}
 div.mb-3{padding:0px;}
 .btn-secondary{height:38px; margin:30px 0 0 10px;}
@@ -68,10 +77,11 @@ div#enroll-container>*:not(span){
   	<c:if test="${loggedInUser.isSocial!='member' }">
 		<span style="margin-left: 28px;">소셜 로그인 회원은 정보를 수정할 수 없습니다.</span>
   	</c:if>
-	<div style="text-align: center;">
+	<div style="text-align: center; width: 414px;">
 		<c:if test="${loggedInUser.isSocial == 'member' }">
 			<button type="submit" class="btn_order2" style="margin:10px;">수 정 하 기</button>
 			<button type="button" class="btn_cancel1" style="margin:10px;">취 소 하 기</button>
+			<button type="button" class="btn_delete" style="margin:10px;" onclick="deleteUser('${loggedInUser.memberId}')">탈 퇴 하 기</button>
 		</c:if>
 		<c:if test="${loggedInUser.isSocial != 'member' }">
 			<button type="button" class="btn_cancel1" style="margin:10px; background:#f67001;">메 인 으 로</button>
@@ -85,5 +95,10 @@ $("#changePwd").on('click', function(){
 	var url = '${pageContext.request.contextPath}/update/password?userId=${loggedInUser.memberId}'; 
 	open(url,"패스워드 변경","width=350, height=150");
 });
+function deleteUser(target){
+	if(confirm("탈퇴 후 복구가 불가능합니다.\n정말 탈퇴하시겠습니까?")){
+		location.href="${pageContext.request.contextPath}/deleteUser/member?target="+target;
+	}
+}
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
