@@ -26,9 +26,6 @@ table.table{
 #news_th{
 	width:300px;
 }
-/* table.table td{
-	text-align: center;
-} */
 table.table th{
 	text-align: center;
 	vertical-align: 0;
@@ -39,31 +36,83 @@ a {
 }
 td{
 	margin: 0px;
-	padding: 0px;
+	padding: 0;
+	text-align: center;
 }
 #hotdeal{
 	text-align: center;
+}
+.form-inline{
+margin-left: 150px;
 }
 
 </style>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">오늘의 핫딜</a>
+   <a class="nav-item nav-link active" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">익명 커뮤니티</a>
+    <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">오늘의 핫딜</a>
     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">오늘의 IT뉴스</a>
-   <!--  <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a> -->
   </div>
 </nav>
 
-
-
 <div class="result" id="crawling-hotdeal"></div>
 <div class="result" id="crawling-news"></div>
-<div class="result" id="crawling-gameNews"></div>
+<div class="result" id="crawling-memo">
+	<div id="memo-container">
+	<br><br>
+    <form action="${pageContext.request.contextPath}/manager/insertMemo.do" class="form-inline" method="post">
+        <input type="text" class="form-control col-sm-6" name="memo" placeholder="메모" required/>&nbsp;
+        <input type="password" class="form-control col-sm-2" name="password" maxlength="4" placeholder="비밀번호" required/>&nbsp;
+        <button class="btn btn-outline-success" type="submit" >저장</button>
+    </form>
+    <br />
+    <!-- 메모목록 -->
+	<table class="table">
+	    <tr>
+	      <th>번호</th>
+	      <th>메모</th>
+	      <th>날짜</th>
+	      <th>삭제</th>
+	    </tr>
+	    <c:forEach items="${memoList}" var="memo" varStatus="vs">
+		    <tr>
+		      <td>${memo.memoNo}</td>
+		      <td>${memo.memo}</td>
+		      <td>${memo.memoDate}</td>
+		      <td>
+		      <button type="button" class="btn btn-outline-danger" onclick="deleteMemo('${memo.memoNo}')">삭제</button>
+		      </td>
+ 			</tr>
+	    </c:forEach>
+	</table>
+</div>
+<form name="memoDelFrm" action="deleteMemo.do" method="post">
+	<input type="hidden" name="no" />
+	<input type="hidden" name="password" />
+</form>
+<% 
+		//int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
+		//int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
+		int totalContents = (int)request.getAttribute("totalContents");
+		int numPerPage = (int)request.getAttribute("numPerPage");
+		
+		//파라미터 cPage가 null이거나 "", "가나다"일때는 기본값 1로 세팅함.  
+		String cPageTemp = request.getParameter("cPage");
+		int cPage = 1;
+		try{
+			cPage = Integer.parseInt(cPageTemp);
+		} catch(NumberFormatException e){
+			
+		}
+		
+	%>
+	<%= project.go.pcgogo.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "managerCommunity.do") %>
+</div>
 
 <script>
-
-
  $("#nav-home-tab").on("click", function(){
+	 
+	    $("#crawling-memo").hide(1000);
 	    $("#crawling-hotdeal").hide(1000);
 		$("#crawling-news").hide(1000);
 		$("#crawling-hotdeal").show(1000);
@@ -91,6 +140,8 @@ td{
 
 
 $("#nav-profile-tab").on("click", function(){
+	
+	$("#crawling-memo").hide(1000);
 	$("#crawling-hotdeal").hide(1000);
 	$("#crawling-news").hide(1000);
 	$("#crawling-news").show(1000);
@@ -114,6 +165,25 @@ $("#nav-profile-tab").on("click", function(){
 	});
 });
 
+$("#nav-contact-tab").on("click", function(){
+	$("#crawling-memo").hide(1000);
+	$("#crawling-hotdeal").hide(1000);
+	$("#crawling-news").hide(1000);
+	$("#crawling-memo").show(1000);
+});
+
+
+
+function deleteMemo(no){
+    var frm = document.memoDelFrm;
+    frm.no.value = no;
+    
+    var password = prompt("비밀번호를 입력하세요.");
+   // if(password.trim().length == 0) return;
+    console.log(1111)
+    frm.password.value = password;
+    frm.submit();
+}
 </script>
 
 <jsp:include page="/WEB-INF/views/common/managerFixMenu_foot.jsp"></jsp:include>

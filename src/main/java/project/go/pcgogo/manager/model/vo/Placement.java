@@ -2,31 +2,33 @@ package project.go.pcgogo.manager.model.vo;
 
 import java.io.Serializable;
 
-public class PcRoomPlacement implements Serializable{
+public class Placement implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private int pmPcRoomNo;
-	private int pmFloor;
+	private String pmFloor;
 	private int pmRow;
 	private int pmCol;
 	private String pmContent;
+	private int pmSeats;
 	
-	public PcRoomPlacement(){}
+	public Placement(){}
 	
-	public PcRoomPlacement(int pmPcRoomNo, int pmFloor, int pmRow, int pmCol, String pmContent) {
+	public Placement(int pmPcRoomNo, String pmFloor, int pmRow, int pmCol, int pmSeats, String pmContent) {
 		super();
 		this.pmPcRoomNo = pmPcRoomNo;
 		this.pmFloor = pmFloor;
 		this.pmRow = pmRow;
 		this.pmCol = pmCol;
+		this.pmSeats = pmSeats;
 		this.pmContent = pmContent;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "PcRoomPlacement [pmPcRoomNo=" + pmPcRoomNo + ", pmFloor=" + pmFloor + ", pmRow=" + pmRow + ", pmCol="
-				+ pmCol + ", pmContent=" + pmContent + "]";
+		return "Placement [pmPcRoomNo=" + pmPcRoomNo + ", pmFloor=" + pmFloor + ", pmRow=" + pmRow + ", pmCol=" + pmCol
+				+ ", pmSeats=" + pmSeats + ", pmContent=" + pmContent + "]";
 	}
 
 	public int getPmPcRoomNo() {
@@ -35,10 +37,10 @@ public class PcRoomPlacement implements Serializable{
 	public void setPmPcRoomNo(int pmPcRoomNo) {
 		this.pmPcRoomNo = pmPcRoomNo;
 	}
-	public int getPmFloor() {
+	public String getPmFloor() {
 		return pmFloor;
 	}
-	public void setPmFloor(int pmFloor) {
+	public void setPmFloor(String pmFloor) {
 		this.pmFloor = pmFloor;
 	}
 	public int getPmRow() {
@@ -58,5 +60,11 @@ public class PcRoomPlacement implements Serializable{
 	}
 	public void setPmContent(String pmContent) {
 		this.pmContent = pmContent;
+	}
+	public int getPmSeats() {
+		return pmSeats;
+	}
+	public void setPmSeats(int pmSeats) {
+		this.pmSeats = pmSeats;
 	}
 }

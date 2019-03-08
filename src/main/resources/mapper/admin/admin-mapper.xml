@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="admin">
+	<select id="getPermissionList" resultType="hashmap">
+		select * from ${division}
+		where ${division}Permitted=#{permitted}
+	</select>
+	<update id="permit">
+		update ${division} set ${division}Permitted='Y'
+		where 
+		<choose>
+			<when test="division=='manager'">
+				managerId=#{target}
+			</when>
+			<when test="division=='pcRoom'">
+				pcRoomName=#{target}
+			</when>
+		</choose>		
+	</update>
+</mapper>

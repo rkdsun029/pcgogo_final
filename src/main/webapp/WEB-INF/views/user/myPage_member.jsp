@@ -45,8 +45,14 @@ div#enroll-container>*:not(span){
 	</div>
     <div class="col-md-5 mb-3">
       <label for="changePwd">패스워드</label>
+      <c:if test="${loggedInUser.isSocial != 'member' }">
+      <input type="button" class="btn btn-secondary" id="changePwd" value="변경하기"
+      style="margin: 0;" disabled>
+      </c:if>
+      <c:if test="${loggedInUser.isSocial == 'member' }">
       <input type="button" class="btn btn-secondary" id="changePwd" value="변경하기"
       style="margin: 0;">
+      </c:if>
   	</div>
 	<div class="col-md-5 mb-3">
       <label for="checkRealName">본인인증</label>
@@ -68,7 +74,7 @@ div#enroll-container>*:not(span){
 			<button type="button" class="btn_cancel1" style="margin:10px;">취 소 하 기</button>
 		</c:if>
 		<c:if test="${loggedInUser.isSocial != 'member' }">
-			<button type="button" class="btn_cancel1" style="margin:10px;">메 인 으 로</button>
+			<button type="button" class="btn_cancel1" style="margin:10px; background:#f67001;">메 인 으 로</button>
 		</c:if>
 	</div>
 </div>

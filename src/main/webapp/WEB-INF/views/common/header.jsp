@@ -46,7 +46,6 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
-    $("#menu3").on("click", function(){location.href = "";});
 });
 </script>
 </head>
@@ -54,7 +53,7 @@ $(function(){
     <div id="head-container">
         <a href="${pageContext.request.contextPath }" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
-            <li><a href="${pageContext.request.contextPath }/search/search.do">PC방 검색</a></li>
+            <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">PC방 검색</a></li>
             <li><a href="#">인기 PC방</a></li>
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
             <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">피시방 자리현황</a></li>
@@ -72,14 +71,23 @@ $(function(){
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
     </c:if>
     <c:if test="${loggedInUser != null }">
-    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
-    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
-        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
-        onclick="logout();" />로그아웃</div>
-        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
-        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
-        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
-        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    	<c:if test="${loggedInUser.isSocial != 'admin' }">
+	    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
+	    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
+	        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+	        onclick="logout();" />로그아웃</div>
+	        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
+	        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+	        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
+	        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    	</c:if>
+        <c:if test="${loggedInUser.isSocial == 'admin' }">
+        	<div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+	        onclick="logout();" />로그아웃</div>
+        	<div class="quick"><img src="${pageContext.request.contextPath }/resources/image/header/building.png" alt="" 
+        	onclick="location.href='${pageContext.request.contextPath}/admin/permissionList.do'"/>PC방 목록</div>
+        		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+        </c:if>
     </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>
@@ -117,8 +125,10 @@ $(function(){
     }
     
     function naver_logout(){
-    	var popup = open("http://nid.naver.com/nidlogin.logout");
-    	popup.close();
+    	var popup = open("http://nid.naver.com/nidlogin.logout", "", "width=300, height=200");
+    	setInterval(function(){
+		   	popup.close();
+    	}, 800);
     }
     
     function init() {

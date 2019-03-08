@@ -217,7 +217,7 @@ fieldset input{width: 220px !important;}
 	  		var today = new Date()
 	  		var y = today.getFullYear();
 	  		var M = (today.getMonth()+1)<10?"0"+(today.getMonth()+1):(today.getMonth()+1);
-	  		var d = today.getDate();
+	  		var d = today.getDate()<10?"0"+today.getDate():today.getDate();
 	  		var h = today.getHours()<10?"0"+today.getHours():today.getHours();
 	  		var m = today.getMinutes()<10?"0"+today.getMinutes():today.getMinutes();
 	  		var s = today.getSeconds()<10?"0"+today.getSeconds():today.getSeconds();
@@ -312,23 +312,6 @@ fieldset input{width: 220px !important;}
 	  		<input type="email" class="form-control" name="managerEmail" id="managerEmail_" placeholder="email@example.com"/>
 	  	</div>
   	</div>
-  	<div class="form-row">
-  		<div class="col-md-5 mb-3">
-  			<label for="search-addr">pc방 우편번호 *</label>
-	  		<input type="text" id="search-addr" class="postcodify_postcode5 form-control" required/>
-  		</div>
-		<button id="postcodify_search_button" class="btn btn-secondary">검색</button>
-  	</div>
-  	<div class="form-row">
-  		<div class="col-md-5 mb-4">
-  			<label for="address">도로명주소</label>
-			<input type="text" id="address" name="address" class="postcodify_address form-control" readonly/>
-  		</div>
-  		<div class="col-md-5 mb-4">
-  			<label for="details">상세주소 *</label>
-			<input type="text" id="details" name="address" class="postcodify_details form-control" required/>
-  		</div>
-  	</div>
   	<span>* 표시 항목은 필수 입력입니다.</span>
 	<div style="width:276px; margin:0 auto;">
 		<button type="submit" class="btn_order2" style="margin:10px;" onclick="return validate();">가 입 하 기</button>
@@ -336,8 +319,6 @@ fieldset input{width: 220px !important;}
 	</div>
 </div>
 </form>
-<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 <script>
 $(".btn_cancel1").on('click', function(){location.href="${pageContext.request.contextPath}"});
 function validate(){
