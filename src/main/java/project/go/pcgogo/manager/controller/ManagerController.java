@@ -206,8 +206,9 @@ public class ManagerController {
 		session.setAttribute("seatMapList", seatMapList);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("manager/pcRoomForm_end.do")
-	public ModelAndView pcRoomFormEnd(HttpSession session, ModelAndView mav) {
+	public ModelAndView pcRoomFormEnd(HttpSession session, ModelAndView mav) throws Exception {
 		logger.info("db직전 : " + session.getAttribute("pcRoom"));
 		logger.info("db직전 : " + session.getAttribute("seatMapList"));
 		
@@ -235,14 +236,18 @@ public class ManagerController {
 		
 		int resultCount = pList.size();
 		int temp = 0;
-		int results = 0;
 		
-		for(int j=0; j<resultCount; j++) {
-//			temp = managerService.insertPlacement(pList.get(j));
-//			
-//			if(temp != 0) results++;
-//			else throw new Exception("");
+		int firstResult = managerService.insertPcRoom(pcRoom);
+		
+		if(firstResult != 0) {
+			for(int j=0; j<resultCount; j++) {
+				temp = managerService.insertPlacement(pList.get(j));
+				
+				if(temp == 0) throw new Exception("층 정보 등록 오류입니다.");
+				else temp = 0;
+			}
 		}
+		else throw new Exception("기본정보 등록 오류입니다.");
 		
 		logger.info("placement 배열 : " + pList);
 

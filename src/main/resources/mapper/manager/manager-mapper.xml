@@ -8,4 +8,8 @@
 	<insert id="insertPcRoom" parameterType="pcRoom">
 		insert into pcRoom values(seq_pcRoom_pcRoomNo.nextval, #{pcRoomName}, #{pcRoomAddress}, #{pcRoomManagerId}, default)
 	</insert>
+	
+	<insert id="insertPlacement" parameterType="placement">
+		insert into placement values(seq_pcRoom_pcRoomNo.currval, #{pmFloor}, #{pmRow}, #{pmCol}, #{pmContent}, #{pmSeats})
+	</insert>
 </mapper>

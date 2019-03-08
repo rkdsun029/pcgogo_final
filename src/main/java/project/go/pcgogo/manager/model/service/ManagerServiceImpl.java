@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.manager.model.dao.ManagerDao;
 import project.go.pcgogo.manager.model.vo.PcRoom;
+import project.go.pcgogo.manager.model.vo.Placement;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Service
@@ -22,6 +23,12 @@ public class ManagerServiceImpl implements ManagerService{
 	@Override
 	public int insertPcRoom(PcRoom pcRoom) {
 		int result = managerDao.insertPcRoom(pcRoom);
+		return result;
+	}
+
+	@Override
+	public int insertPlacement(Placement placement) {
+		int result = managerDao.insertPlacement(placement);
 		return result;
 	}
 	
