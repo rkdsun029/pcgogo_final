@@ -284,8 +284,14 @@ public class UserController {
 				else{
 					Manager m = (Manager)obj;
 					if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
-						mav.addObject("loggedInUser", m);
-						view = "redirect:/";
+						if("Y".equals(m.getManagerPermitted())) {
+							mav.addObject("loggedInUser", m);
+							view = "redirect:/";
+						}else {
+							msg = "승인되지 않은 계정입니다. 승인 후 이용가능합니다.";
+							mav.addObject("msg", msg);
+							mav.addObject("loc", loc);	
+						}
 					}
 					else {
 						msg = "비밀번호가 일치하지 않습니다";
@@ -357,10 +363,18 @@ public class UserController {
 	@RequestMapping(value="/myPage")
 	public ModelAndView goMyPage(ModelAndView mav, HttpSession session) {
 		Object o = session.getAttribute("loggedInUser");
-		if(o instanceof Manager) {mav.setViewName("user/myPage_manager");}
-		else if(o instanceof Member) {mav.setViewName("user/myPage_member");}
+		if(o instanceof Manager) {
+			mav.setViewName("user/myPage_manager");
+			o = userService.selectOneManager(((Manager) o).getManagerId());
+		}
+		else if(o instanceof Member) {
+			mav.setViewName("user/myPage_member");
+			o = userService.selectOneMember(((Member) o).getMemberId());
+			((Member) o).setIsSocial("member");
+		}
 		logger.info(o);
-		
+		session.invalidate();
+		mav.addObject("loggedInUser", o);
 		return mav;
 	}
 	
@@ -403,6 +417,50 @@ public class UserController {
 		int result = userService.updatePwd(map);
 		mav.addObject("msg","비밀번호 수정 성공!");
 		mav.addObject("popup", "self.close();");
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/deleteUser/{division}")
+	public ModelAndView deleteUser(@RequestParam("target") String target, ModelAndView mav,
+									@PathVariable String division) {
+		Map<String, String> options = new HashMap<>();
+		options.put("division", division);
+		options.put("target", target);
+		int result = userService.deleteUser(options);
+		String msg = result>0?"서비스를 이용해주셔서 감사합니다.":"탈퇴에 실패하셨습니다. 다시 시도해주세요.";
+		String loc = result>0?"/logout.do":"/myPage";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/update/member")
+	public ModelAndView updateMember(ModelAndView mav, @RequestParam("memberEmail") String memberEmail,
+									 @RequestParam("memberId") String memberId) {
+		Map<String, String> values = new HashMap<>();
+		values.put("memberId", memberId);
+		values.put("memberEmail", memberEmail);
+		int result = userService.updateMember(values);
+		String msg = result>0?"수정이 완료되었습니다.":"수정에 실패하였습니다.";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", "/myPage");
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/update/manager")
+	public ModelAndView updateManager(ModelAndView mav, @RequestParam("managerPhone") String managerPhone, 
+										@RequestParam("managerEmail") String managerEmail, @RequestParam("managerId") String managerId) {
+		Map<String, String> values = new HashMap<>();
+		values.put("managerId", managerId);
+		values.put("managerPhone", managerPhone);
+		values.put("managerEmail", managerEmail);
+		int result = userService.updateManager(values);
+		String msg = result>0?"수정이 완료되었습니다.":"수정에 실패하였습니다.";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", "/myPage");
 		mav.setViewName("common/msg");
 		return mav;
 	}
