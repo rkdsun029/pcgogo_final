@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,9 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
 import project.go.pcgogo.manager.model.jsoup.Crawling;
+import project.go.pcgogo.manager.model.jsoup.CrawlingTest;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
-import project.go.pcgogo.manager.model.vo.Placement;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Controller
@@ -114,7 +115,7 @@ public class ManagerController {
 		
 		System.out.println("생성된 피시방 객체 : " + pcRoom);
 		
-		session.setAttribute("pcRoom", pcRoom);
+		mav.addObject("pcRoom", pcRoom);
 		mav.setViewName("manager/pcRoomForm/step3");
 		return mav;
 	}
@@ -174,88 +175,65 @@ public class ManagerController {
 		return mav;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@RequestMapping("manager/pcRoomForm_savePlacement.do")
-	@ResponseBody
-	public void pcRoomFormSavePlacement(HttpSession session, @RequestBody String seatMapList_) {
-		logger.info(seatMapList_);
-		List<Map<String, Object>> seatMapList = new ArrayList<Map<String, Object>>();
-		seatMapList = JSONArray.fromObject(seatMapList_);
-		logger.info("seatMapList : " + seatMapList);
-		session.removeAttribute("seatMapList");
-		session.setAttribute("seatMapList", seatMapList);
-	}
-	
 	@RequestMapping("manager/pcRoomForm_step6.do")
-	public String pcRoomFormStep6(HttpSession session) {
-		
-		List<Map<String, Object>> seatMapList = (List<Map<String, Object>>) session.getAttribute("seatMapList");
-		logger.info("step6에서 " + seatMapList);
-		return "manager/pcRoomForm/step6";
-	}
-	
-	@SuppressWarnings("unchecked")
-	@RequestMapping("manager/pcRoomForm_step7.do")
 	@ResponseBody
-	public void pcRoomFormStep7(HttpSession session, @RequestBody String seatMapList_) {
-		logger.info(seatMapList_);
-		List<Map<String, Object>> seatMapList = new ArrayList<Map<String, Object>>();
-		seatMapList = JSONArray.fromObject(seatMapList_);
-		logger.info("완성 : seatMapList : " + seatMapList);
-		session.removeAttribute("seatMapList");
-		session.setAttribute("seatMapList", seatMapList);
+	public List<Map<String, Object>> pcRoomFormStep6(@RequestParam(value="objectArr") String objectArr,
+										HttpServletResponse response,
+									    ModelAndView mav) {
+		
+		Cookie cookie = new Cookie("shibal", objectArr);
+		response.addCookie(cookie);
+		
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		mapList = JSONArray.fromObject(objectArr);
+		System.out.println(mapList);
+		/*
+		 * @RequestParam (value="pmContent_") String[] pmContent_,
+		 * 
+		 * @RequestParam (value="seatCount_") String[] seatCount_,
+		 * 
+		 * @RequestParam (value="pmRow_") int[] pmRow_,
+		 * 
+		 * @RequestParam (value="pmCol_") int[] pmCol_,
+		 * 
+		 * @RequestParam (value="floorNum_") String[] floorNum_,
+		 */
+		
+		
+//		System.out.println("pmContent_ : " + pmContent_);
+//		System.out.println("seatCount_ : " + seatCount_);
+//		System.out.println("pmRow_ : " + pmRow_);
+//		System.out.println("pmCol_ : " + pmCol_);
+//		System.out.println("floorNum_ : " + floorNum_);
+//		
+//		mav.addObject("pmContent_", pmContent_);
+//		mav.addObject("seatCount_", seatCount_);
+//		mav.addObject("pmRow_", pmRow_);
+//		mav.addObject("pmCol_", pmCol_);
+//		mav.addObject("floorNum_", floorNum_);
+		/*
+		 * Map<String, String[]> map = request.getParameterMap();
+		 * 
+		 * System.out.println(map);
+		 */
+		
+		/*
+		 * mav.setViewName("manager/pcRoomForm/step6"); return mav;
+		 */
+		
+		return mapList;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping("manager/pcRoomForm_end.do")
-	public ModelAndView pcRoomFormEnd(HttpSession session, ModelAndView mav) throws Exception {
-		logger.info("db직전 : " + session.getAttribute("pcRoom"));
-		logger.info("db직전 : " + session.getAttribute("seatMapList"));
+	public ModelAndView pcRoomFormEnd(@RequestParam (value="pmRow_") int pmRow,
+							  @RequestParam (value="pmCol_") int pmCol,
+							  @RequestParam (value="pmContent_") String pmContent,
+							  ModelAndView mav) {
 		
-		PcRoom pcRoom = (PcRoom) session.getAttribute("pcRoom");
-		List<Map<String, Object>> seatMapList = (List<Map<String, Object>>) session.getAttribute("seatMapList");
-		
-		logger.info(pcRoom);
-		logger.info(seatMapList);
-		
-		//1. pcRoom객체에서 해당 아이디의 피시방들을 불러와서 없는 거만 등록되게
-		
-		List<Placement> pList = new ArrayList<>();
-		for(int i=0; i<seatMapList.size(); i++) {
-			Map<String, Object> m = seatMapList.get(i);
-			
-			Placement p = new Placement();
-			p.setPmFloor((String)m.get("floorNum_"));
-			p.setPmRow((Integer) m.get("pmRow_"));
-			p.setPmCol((Integer) m.get("pmCol_"));
-			p.setPmSeats(Integer.parseInt((String) m.get("seatCount_")));
-			p.setPmContent((String) m.get("pmContent_"));
-			
-			pList.add(p);
-		}
-		
-		int resultCount = pList.size();
-		int temp = 0;
-		
-		int firstResult = managerService.insertPcRoom(pcRoom);
-		
-		if(firstResult != 0) {
-			for(int j=0; j<resultCount; j++) {
-				temp = managerService.insertPlacement(pList.get(j));
-				
-				if(temp == 0) throw new Exception("층 정보 등록 오류입니다.");
-				else temp = 0;
-			}
-		}
-		else throw new Exception("기본정보 등록 오류입니다.");
-		
-		logger.info("placement 배열 : " + pList);
-
 		mav.setViewName("manager/pcRoomForm/step7");
 		return mav;
 	}
 	
-	///////////////////////////////////////////////////////////////////////////////
 	
 	//메인 사장님커뮤니티 view단 이동
 		@RequestMapping("/manager/managerCommunity.do")
@@ -267,22 +245,32 @@ public class ManagerController {
 		}
 	
 	//ajax 데이터 뿌려주는곳
-	 @RequestMapping("manager/managerCommunity123.do") 
+	 @RequestMapping("manager/managerCommunityHotDeal.do") 
 	 @ResponseBody
-	 public Map<String, Object> managerCommunity() { 
+	 public Map<String, Object> managerCommunity_hotDeal() { 
 		 
 		Map<String, Object> test = new HashMap<>();
 		List<Map<String, String>> list = new Crawling().Crawling_hotDeal();
 		System.out.println("list = " + list);
-		//크롤링한 list값을 우선 실행해서 긁어옴 
-
-//		ArrayList<String> arrayList = new ArrayList<String>();
-//		arrayList.addAll(list);
-		//arraylist에 긁어온 list값을 집어넣음
-		
-		
-		
+	
 		test.put("list" , list);
 		return test; 
 	 }
+	 
+	 
+	 @RequestMapping("manager/managerCommunityBigNews.do") 
+	 @ResponseBody
+	 public Map<String, Object> managerCommunity_bignews() { 
+		 
+			Map<String, Object> test = new HashMap<>();
+			List<Map<String, String>> list = new Crawling().Crawling_bigNews();
+			List<Map<String, String>> listGameNews = new Crawling().Crawling_gameNews();
+			System.out.println("list = " + list);
+			System.out.println("listGameNews = " + listGameNews);
+			
+			test.put("list" , list);
+			test.put("listGameNews" , listGameNews);
+			return test; 
+		 }
+	
 }
