@@ -279,24 +279,20 @@ public class ManagerController {
 		test.put("list" , list);
 		return test; 
 	 }
-<<<<<<< HEAD
-=======
-	 
-	 
+	  
 	 @RequestMapping("manager/managerCommunityBigNews.do") 
 	 @ResponseBody
 	 public Map<String, Object> managerCommunity_bignews() { 
 		 
-			Map<String, Object> test = new HashMap<>();
-			List<Map<String, String>> list = new Crawling().Crawling_bigNews();
-			List<Map<String, String>> listGameNews = new Crawling().Crawling_gameNews();
-			System.out.println("list = " + list);
-			System.out.println("listGameNews = " + listGameNews);
-			
-			test.put("list" , list);
-			test.put("listGameNews" , listGameNews);
-			return test; 
-		 }
-	
->>>>>>> origin/byungsun
+		Map<String, Object> test = new HashMap<>();
+		List<Map<String, String>> list = new Crawling().Crawling_bigNews();
+		List<Map<String, String>> listGameNews = new Crawling().Crawling_gameNews();
+		System.out.println("list = " + list);
+		System.out.println("listGameNews = " + listGameNews);
+		
+		test.put("list" , list);
+		test.put("listGameNews" , listGameNews);
+		return test; 
+	 }
+
 }
