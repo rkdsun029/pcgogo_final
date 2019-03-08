@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
 import project.go.pcgogo.manager.model.jsoup.Crawling;
+import project.go.pcgogo.manager.model.jsoup.CrawlingTest;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;
@@ -267,22 +268,35 @@ public class ManagerController {
 		}
 	
 	//ajax 데이터 뿌려주는곳
-	 @RequestMapping("manager/managerCommunity123.do") 
+	 @RequestMapping("manager/managerCommunityHotDeal.do") 
 	 @ResponseBody
-	 public Map<String, Object> managerCommunity() { 
+	 public Map<String, Object> managerCommunity_hotDeal() { 
 		 
 		Map<String, Object> test = new HashMap<>();
 		List<Map<String, String>> list = new Crawling().Crawling_hotDeal();
 		System.out.println("list = " + list);
-		//크롤링한 list값을 우선 실행해서 긁어옴 
-
-//		ArrayList<String> arrayList = new ArrayList<String>();
-//		arrayList.addAll(list);
-		//arraylist에 긁어온 list값을 집어넣음
-		
-		
-		
+	
 		test.put("list" , list);
 		return test; 
 	 }
+<<<<<<< HEAD
+=======
+	 
+	 
+	 @RequestMapping("manager/managerCommunityBigNews.do") 
+	 @ResponseBody
+	 public Map<String, Object> managerCommunity_bignews() { 
+		 
+			Map<String, Object> test = new HashMap<>();
+			List<Map<String, String>> list = new Crawling().Crawling_bigNews();
+			List<Map<String, String>> listGameNews = new Crawling().Crawling_gameNews();
+			System.out.println("list = " + list);
+			System.out.println("listGameNews = " + listGameNews);
+			
+			test.put("list" , list);
+			test.put("listGameNews" , listGameNews);
+			return test; 
+		 }
+	
+>>>>>>> origin/byungsun
 }
