@@ -49,6 +49,32 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 	$("#divisionBar div").on("click", function(){
 		location.href='${pageContext.request.contextPath}/admin/permissionList.do?division='+$(this).prop("id");
 	});
+	
+	function permit(value){
+		if("${division}" == 'manager'){
+			$(".modal-body").text(value+"님을 정말로 승인하시겠습니까?");
+		}
+		else{
+			$(".modal-body").text(value+"을 정말로 승인하시겠습니까?");
+		}
+ 		
+		$("#accept").on("click", function(){
+			location.href='${pageContext.request.contextPath}/admin/permit/${division}?target='+value;
+		});
+	}
+	
+	function refuse(value){
+		if("${division}" == 'manager'){
+			$(".modal-body").text(value+"님을 정말로 승인거절하시겠습니까?");
+		}
+		else{
+			$(".modal-body").text(value+"을 정말로 승인거절하시겠습니까?");
+		}
+		
+ 		$("#accept").on("click", function(){
+			location.href="${pageContext.request.contextPath}/admin/refuse/${division}?target="+value;
+		});
+	}
 	</script>
 	
 	<table id="list-tbl" class="table">
@@ -75,32 +101,29 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 				<td>${var.count}</td>
 				<td>${item.MANAGERID}</td>
 				<td>${item.MANAGERNAME}</td>
-				<td>${item.MANAGERCODE}</td>
+				<td>${item.MANAGERCODE==null?'-':item.MANAGERCODE}</td>
 				<td><button class="btn btn-secondary" onclick="showManagerCodeImg('${item.MANAGERCODEIMGRENAMED}');">보기</button></td>
-				<td>${item.MANAGERPHONE}</td>
-				<td>${item.MANAGEREMAIL}</td>
-				<td>${item.MANAGERENROLLDATE}</td>
+				<td>${item.MANAGERPHONE==null?'-':item.MANAGERPHONE}</td>
+				<td>${item.MANAGEREMAIL==null?'-':item.MANAGEREMAIL}</td>
+				<td>
+					<fmt:formatDate value="${item.MANAGERENROLLDATE}" pattern="yyyy-MM-dd"/>
+				</td>
 				<td>
 					<div class="btn-group">
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-						onclick="saveValue('${item.MANAGERID}');">승인</button>
-						<button class="btn btn-danger">취소</button>
+						onclick="permit('${item.MANAGERID}');">승인</button>
+						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" 
+						onclick="refuse('${item.MANAGERID}');">취소</button>
 					</div>
 				</td>
 			</tr>
 			</c:forEach>
-			<script>
-			function saveValue(value){
-				$("#temp").val(value);
-				$(".modal-body").text(value+"님을 정말로 승인하시겠습니까?");
-			}
-			</script>
+
 		</c:if>
 	</c:if>
 	<c:if test="${division == 'pcRoom' }">
 		<tr style="text-align: center;">
 			<th>구 분</th>
-			<th>아이디</th>
 			<th>PC방 이름</th>
 			<th>PC방 주소</th>
 			<th>PC방 사장님</th>
@@ -120,8 +143,9 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 				<td>${item.PCROOMMANAGERID}</td>
 				<td>
 					<div class="btn-group">
-						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">승인</button>
-						<button class="btn btn-danger">취소</button>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+						onclick="permit('${item.PCROOMNAME}');">승인</button>
+						<button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="refuse('${item.PCROOMNAME}');">취소</button>
 					</div>
 				</td>
 			</tr>
@@ -130,7 +154,7 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 	</c:if>
 	</table>
 </div>
-<input type="hidden" value="" id="temp"/>
+<hr />
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -143,8 +167,8 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" onclick="permit();">승인하기</button>
+        <button type="button" class="btn btn-secondary" id="cancel" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="accept">확인</button>
       </div>
     </div>
   </div>
@@ -155,11 +179,6 @@ function showManagerCodeImg(fileName){
 		open("${pageContext.request.contextPath}/resources/upload/register/"+fileName, "", "width=400px, height=600px");
 	else
 		alert("사업자등록증 사본이 없습니다.");
-}
-
-function permit(){
-	var value = $("#temp").val();
-	location.href='${pageContext.request.contextPath}/admin/permit/${division}?target='+value;
 }
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

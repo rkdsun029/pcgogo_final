@@ -85,8 +85,10 @@ $(function(){
         	<div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
 	        onclick="logout();" />로그아웃</div>
         	<div class="quick"><img src="${pageContext.request.contextPath }/resources/image/header/building.png" alt="" 
-        	onclick="location.href='${pageContext.request.contextPath}/admin/permissionList.do'"/>PC방 목록</div>
-        		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+        	onclick="location.href='${pageContext.request.contextPath}/admin/permissionList.do'"/>승인대기 목록</div>
+        	<div class="quick"><img src="${pageContext.request.contextPath }/resources/image/header/building.png" alt="" 
+        	onclick="location.href='${pageContext.request.contextPath}/admin/pcRoomList.do'"/>업체 목록</div>
+        	<div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
         </c:if>
     </c:if>
         <div id="goToTop">▲ TOP</div>

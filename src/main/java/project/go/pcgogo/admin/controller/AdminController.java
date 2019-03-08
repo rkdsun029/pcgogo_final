@@ -36,6 +36,16 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping("/admin/pcRoomList.do")
+	public ModelAndView goPcRoomList(ModelAndView mav, @RequestParam(value="division", defaultValue="manager") String division) {
+		List<Object> divisionList = adminService.getDivisionList(division);
+		logger.info(divisionList);
+		mav.addObject("divisionList", divisionList);
+		mav.addObject("division", division);
+		mav.setViewName("admin/pcRoomList");
+		return mav;
+	}
+	
 	@RequestMapping("/admin/permit/{division}")
 	public ModelAndView permit(ModelAndView mav, @RequestParam("target") String target,
 								@PathVariable String division) {
@@ -45,6 +55,23 @@ public class AdminController {
 		int result = adminService.permit(options);
 		
 		String msg = result>0?"승인이 완료되었습니다.":"승인에 실패하였습니다.";
+		logger.info(msg);
+		
+		mav.addObject("msg", msg);
+		mav.addObject("loc", "/admin/permissionList.do");
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/admin/refuse/{division}")
+	public ModelAndView refuse(ModelAndView mav, @RequestParam("target") String target,
+								@PathVariable String division) {
+		Map<String, String> options = new HashMap();
+		options.put("division", division);
+		options.put("target", target);
+		int result = adminService.refuse(options);
+		
+		String msg = result>0?"승인거절이 완료되었습니다.":"승인거절에 실패하였습니다.";
 		logger.info(msg);
 		
 		mav.addObject("msg", msg);

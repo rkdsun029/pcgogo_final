@@ -7,8 +7,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import project.go.pcgogo.user.model.vo.Manager;
-
 @Repository
 public class AdminDaoImpl implements AdminDao {
 	
@@ -22,6 +20,16 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int permit(Map<String, String> options) {
 		return sqlSession.update("admin.permit", options);
+	}
+
+	@Override
+	public int refuse(Map<String, String> options) {
+		return sqlSession.delete("admin.refuse", options);
+	}
+
+	@Override
+	public List<Object> getDivisionList(String division) {
+		return sqlSession.selectList("admin.getDivisionList", division);
 	}
 
 }
