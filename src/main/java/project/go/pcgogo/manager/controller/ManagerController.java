@@ -36,7 +36,7 @@ public class ManagerController {
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 	
-	@RequestMapping("/manager/manager.do")
+	@RequestMapping("manager/manager.do")
 	public String managerMain(HttpServletRequest request, ModelAndView mav) {
 		HttpSession session = request.getSession(false);
 		logger.info("로그인한 사장님 : " + session.getAttribute("loggedInUser").toString());
@@ -44,33 +44,56 @@ public class ManagerController {
 		return "manager/managerMain";
 	}
 	
-	@RequestMapping("/manager/pcRoomView_manager.do")
-	public String pcRoomView_manager() {
+	@RequestMapping("manager/getPcRoomList.do")
+	@ResponseBody
+	public PcRoom getPcRooms(HttpSession session) {
+		Manager manager = (Manager) session.getAttribute("loggedInUser");
+
+		List<PcRoom> pList = managerService.getPcRoomList(manager.getManagerId());
+		session.setAttribute("pcRoomList", pList);
+		session.setAttribute("selectedPcRoom", pList.get(0));
+		logger.info("pList : " + pList);
+		logger.info("selectedPcRoom : " + pList.get(0));
+		return pList.get(0);
+	}
+	
+	@RequestMapping("manager/convertPcRoom.do")
+	public ModelAndView convertPcRoom(ModelAndView mav, HttpSession session) {
+		logger.info("pcRoomList : " + session.getAttribute("pcRoomList"));
+		mav.addObject("pcRoomList", session.getAttribute("pcRoomList"));
+		mav.setViewName("manager/convertPcRoom");
+		return mav;
+	}
+	
+	@RequestMapping("manager/pcRoomView_manager.do")
+	public String selectedPcRoomView_manager(PcRoom pcRoom, HttpSession session) {
+		logger.info("aop : " + pcRoom);
 		return "manager/pcRoomView_manager";
 	}
 	
-	@RequestMapping("/manager/placement.do")
-	public String placement() {
+	@RequestMapping("manager/placement.do")
+	public String selectedPlacement(PcRoom pcRoom, HttpSession session) {
+		logger.info("aop : " + pcRoom);
 		return "manager/placement";
 	}
 	
-	@RequestMapping("/manager/priceList.do")
-	public String priceList() {
+	@RequestMapping("manager/priceList.do")
+	public String selectedPriceList(PcRoom pcRoom, HttpSession session) {
+		logger.info("aop : " + pcRoom);
 		return "manager/priceList";
 	}
 	
-	@RequestMapping("/manager/reservationList.do")
-	public String reservationList() {
+	@RequestMapping("manager/reservationList.do")
+	public String selectedReservationList(PcRoom pcRoom, HttpSession session) {
+		logger.info("aop : " + pcRoom);
 		return "manager/reservationList";
 	}
 	
-	@RequestMapping("/manager/insertPcRoom.do")
+	@RequestMapping("manager/insertPcRoom.do")
 	public String insertPcRoom() {
 		return "manager/insertPcRoom";
 	}
-	
 
-	
 	@RequestMapping("manager/pcRoomForm_step1.do")
 	public ModelAndView pcRoomFormStep1(HttpServletRequest request, ModelAndView mav) {
 		HttpSession session = request.getSession(false);

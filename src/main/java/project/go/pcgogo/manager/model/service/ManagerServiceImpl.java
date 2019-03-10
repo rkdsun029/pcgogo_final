@@ -35,7 +35,11 @@ public class ManagerServiceImpl implements ManagerService{
 		return result;
 	}
 	
-	
+	@Override
+	public List<PcRoom> getPcRoomList(String managerId) {
+		List<PcRoom> pList = managerDao.getPcRoomList(managerId);
+		return pList;
+	}
 	
 	
 	
@@ -59,5 +63,6 @@ public class ManagerServiceImpl implements ManagerService{
 	public int deleteMemo(Map<String, String> map) {
 		return managerDao.deleteMemo(map);
 	}
+
 	
 }

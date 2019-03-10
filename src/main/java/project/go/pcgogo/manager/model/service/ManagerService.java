@@ -15,18 +15,13 @@ public interface ManagerService {
 
 	int insertPlacement(Placement placement);
 
+	List<PcRoom> getPcRoomList(String managerId);
 	
+/////////////////////////////////////////////////////////////
 	
-	
-	
-	
-	/*
-	 * =============================================================================
-	 */
 	List<Map<String, String>> selectMemoList();
-
+	
 	int insertMemo(Map<String, String> map);
-
+	
 	int deleteMemo(Map<String, String> map);
-
 }

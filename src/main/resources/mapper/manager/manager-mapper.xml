@@ -13,6 +13,10 @@
 		insert into placement values(seq_pcRoom_pcRoomNo.currval, #{pmFloor}, #{pmRow}, #{pmCol}, #{pmContent}, #{pmSeats})
 	</insert>
 	
+	<select id="getPcRoomList" parameterType="string" resultType="pcRoom">
+		select * from pcRoom where pcRoomManagerId = #{managerId} and pcRoomPermitted = 'Y'
+	</select>
+	
 	<select id="selectMemoList" resultType="memo">
 		select * from memo order by memono desc
 	</select>

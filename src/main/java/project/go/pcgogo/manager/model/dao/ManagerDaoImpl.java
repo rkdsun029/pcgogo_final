@@ -32,6 +32,11 @@ public class ManagerDaoImpl implements ManagerDao{
 		return sqlSession.insert("manager.insertPlacement", placement);
 	}
 	
+	@Override
+	public List<PcRoom> getPcRoomList(String managerId) {
+		return sqlSession.selectList("manager.getPcRoomList", managerId);
+	}
+	
 	
 	
 	
