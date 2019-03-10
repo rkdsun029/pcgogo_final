@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.sf.json.JSONArray;
 import project.go.pcgogo.manager.model.jsoup.Crawling;
-import project.go.pcgogo.manager.model.jsoup.CrawlingTest;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;

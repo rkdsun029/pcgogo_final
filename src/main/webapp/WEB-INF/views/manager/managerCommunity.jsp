@@ -90,7 +90,7 @@ margin-left: 150px;
 	<input type="hidden" name="no" />
 	<input type="hidden" name="password" />
 </form>
-<% 
+<%-- <% 
 		//int totalContents = Integer.parseInt(String.valueOf(request.getAttribute("totalContents")));
 		//int numPerPage = Integer.parseInt(String.valueOf(request.getAttribute("numPerPage")));
 		int totalContents = (int)request.getAttribute("totalContents");
@@ -106,7 +106,7 @@ margin-left: 150px;
 		}
 		
 	%>
-	<%= project.go.pcgogo.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "managerCommunity.do") %>
+	<%= project.go.pcgogo.common.util.Utils.getPageBar(totalContents, cPage, numPerPage, "lnfList.do") %> --%>
 </div>
 
 <script>
