@@ -16,6 +16,8 @@ public interface ManagerDao {
 	int insertPlacement(Placement placement);
 	
 	List<PcRoom> getPcRoomList(String managerId);
+	
+	List<Placement> getPlacementList(int pcRoomNo);
 
 	
 	

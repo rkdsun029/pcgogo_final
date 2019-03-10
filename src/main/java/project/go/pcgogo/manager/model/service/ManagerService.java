@@ -17,6 +17,8 @@ public interface ManagerService {
 
 	List<PcRoom> getPcRoomList(String managerId);
 	
+	List<Placement> getPlacementList(int pcRoomNo);
+	
 /////////////////////////////////////////////////////////////
 	
 	List<Map<String, String>> selectMemoList();

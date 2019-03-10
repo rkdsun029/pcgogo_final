@@ -41,6 +41,12 @@ public class ManagerServiceImpl implements ManagerService{
 		return pList;
 	}
 	
+	@Override
+	public List<Placement> getPlacementList(int pcRoomNo) {
+		List<Placement> pList = managerDao.getPlacementList(pcRoomNo);
+		return pList;
+	}
+	
 	
 	
 	

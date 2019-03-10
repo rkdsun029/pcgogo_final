@@ -59,7 +59,6 @@ public class ManagerController {
 	
 	@RequestMapping("manager/convertPcRoom.do")
 	public ModelAndView convertPcRoom(ModelAndView mav, HttpSession session) {
-		logger.info("pcRoomList : " + session.getAttribute("pcRoomList"));
 		mav.addObject("pcRoomList", session.getAttribute("pcRoomList"));
 		mav.setViewName("manager/convertPcRoom");
 		return mav;
@@ -67,25 +66,39 @@ public class ManagerController {
 	
 	@RequestMapping("manager/pcRoomView_manager.do")
 	public String selectedPcRoomView_manager(PcRoom pcRoom, HttpSession session) {
-		logger.info("aop : " + pcRoom);
 		return "manager/pcRoomView_manager";
 	}
 	
 	@RequestMapping("manager/placement.do")
-	public String selectedPlacement(PcRoom pcRoom, HttpSession session) {
-		logger.info("aop : " + pcRoom);
-		return "manager/placement";
+	public ModelAndView selectedPlacement(PcRoom pcRoom, HttpSession session, ModelAndView mav) {
+		pcRoom = (PcRoom) session.getAttribute("selectedPcRoom");
+		List<Placement> pList = managerService.getPlacementList(pcRoom.getPcRoomNo());
+		logger.info("이 피시방 번호 배치도 리스트 : " + pList);
+		
+		mav.addObject("selectedPlacementList", pList);
+		mav.setViewName("manager/placement");
+		return mav;
 	}
 	
 	@RequestMapping("manager/priceList.do")
 	public String selectedPriceList(PcRoom pcRoom, HttpSession session) {
-		logger.info("aop : " + pcRoom);
 		return "manager/priceList";
+	}
+	
+	@RequestMapping("manager/insertOrUpdatePrice.do")
+	@ResponseBody
+	public void insertOrUpdatePrice() {
+		//리스트에 없으면 insert 있으면 update
+	}
+	
+	@RequestMapping("manager/deletePrice.do")
+	public void deletePrice() {
+		//초기화버튼 누를시 잇으면 삭제 없으면 그대로
 	}
 	
 	@RequestMapping("manager/reservationList.do")
 	public String selectedReservationList(PcRoom pcRoom, HttpSession session) {
-		logger.info("aop : " + pcRoom);
+		//이거도 pc방 번호로 검색
 		return "manager/reservationList";
 	}
 	

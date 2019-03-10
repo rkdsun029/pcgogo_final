@@ -17,6 +17,10 @@
 		select * from pcRoom where pcRoomManagerId = #{managerId} and pcRoomPermitted = 'Y'
 	</select>
 	
+	<select id="getPlacementList" parameterType="_int" resultType="placement">
+		select * from placement where pmPcRoomNo = #{pcRoomNo}
+	</select>
+	
 	<select id="selectMemoList" resultType="memo">
 		select * from memo order by memono desc
 	</select>
