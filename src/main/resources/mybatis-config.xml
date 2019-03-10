@@ -25,7 +25,7 @@
        
        <typeAlias type="project.go.pcgogo.manager.model.vo.PcRoom" alias="pcRoom"/>
        <typeAlias type="project.go.pcgogo.manager.model.vo.Placement" alias="placement"/>
-       
+
        <typeAlias type="project.go.pcgogo.manager.model.vo.Memo" alias="memo"/>
 	</typeAliases>
 </configuration>

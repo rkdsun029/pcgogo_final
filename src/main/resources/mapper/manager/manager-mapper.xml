@@ -12,4 +12,18 @@
 	<insert id="insertPlacement" parameterType="placement">
 		insert into placement values(seq_pcRoom_pcRoomNo.currval, #{pmFloor}, #{pmRow}, #{pmCol}, #{pmContent}, #{pmSeats})
 	</insert>
+	
+	<select id="selectMemoList" resultType="memo">
+		select * from memo order by memono desc
+	</select>
+	
+	<insert id="insertMemo">
+		insert into memo values(seq_memo_memono.nextval, #{memo}, #{password}, default)
+	</insert>
+	<resultMap type="map" id="memo"></resultMap>
+	
+	<delete id="deleteMemo">
+     delete from memo where memono = #{no} and password = #{password}
+	</delete>
+  
 </mapper>

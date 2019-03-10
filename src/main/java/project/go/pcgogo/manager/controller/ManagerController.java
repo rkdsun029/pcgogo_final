@@ -257,33 +257,38 @@ public class ManagerController {
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////
-	
+		   
 	//메인 사장님커뮤니티 view단 이동
-		@RequestMapping("/manager/managerCommunity.do")
-		public ModelAndView hotDeal(ModelAndView mav) {
-			
-			mav.setViewName("manager/managerCommunity");
-			
-			return mav;
-		}
+	@RequestMapping("/manager/managerCommunity.do")
+	public ModelAndView hotDeal(ModelAndView mav) {
+		logger.debug("메모페이지 요청");
+		logger.debug(managerService.getClass().toString());
+		
+		List<Map<String,String>> memoList = managerService.selectMemoList();
+		mav.addObject("memoList",memoList);
+		
+		mav.setViewName("manager/managerCommunity");
+		
+		return mav;
+	}
 	
 	//ajax 데이터 뿌려주는곳
-	 @RequestMapping("manager/managerCommunityHotDeal.do") 
-	 @ResponseBody
-	 public Map<String, Object> managerCommunity_hotDeal() { 
-		 
+	@RequestMapping("manager/managerCommunityHotDeal.do") 
+	@ResponseBody
+	public Map<String, Object> managerCommunity_hotDeal() { 
+	
 		Map<String, Object> test = new HashMap<>();
 		List<Map<String, String>> list = new Crawling().Crawling_hotDeal();
 		System.out.println("list = " + list);
-	
+		
 		test.put("list" , list);
 		return test; 
-	 }
-	  
-	 @RequestMapping("manager/managerCommunityBigNews.do") 
-	 @ResponseBody
-	 public Map<String, Object> managerCommunity_bignews() { 
-		 
+	}
+	
+	@RequestMapping("manager/managerCommunityBigNews.do") 
+	@ResponseBody
+	public Map<String, Object> managerCommunity_bignews() { 
+		
 		Map<String, Object> test = new HashMap<>();
 		List<Map<String, String>> list = new Crawling().Crawling_bigNews();
 		List<Map<String, String>> listGameNews = new Crawling().Crawling_gameNews();
@@ -293,6 +298,28 @@ public class ManagerController {
 		test.put("list" , list);
 		test.put("listGameNews" , listGameNews);
 		return test; 
-	 }
-
+	}
+	
+	@RequestMapping("/manager/insertMemo.do")
+	public String insertMemo(@RequestParam String memo, @RequestParam String password){
+		logger.debug("메모 저장");
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memo", memo);
+		map.put("password", password);
+		managerService.insertMemo(map);
+		
+		return "redirect:/manager/managerCommunity.do";
+	}
+	
+	@RequestMapping("/manager/deleteMemo.do")
+	public String deleteMemo(@RequestParam String no, 
+	@RequestParam String password){
+		logger.debug("메모 삭제");
+		Map<String, String> map = new HashMap<>();
+		map.put("no", no);
+		map.put("password", password);
+		managerService.deleteMemo(map);
+		
+		return "redirect:/manager/managerCommunity.do";
+	}
 }
