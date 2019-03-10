@@ -54,11 +54,9 @@ $(function(){
         <a href="${pageContext.request.contextPath }" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
             <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">PC방 검색</a></li>
-            <li><a href="#">인기 PC방</a></li>
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
-            <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">피시방 자리현황</a></li>
             <li><a href="${pageContext.request.contextPath }/manager/manager.do">사장님 메뉴</a></li>
-            <li><a href="#">고객센터</a></li>
+            <li><a href="${pageContext.request.contextPath }/faq/faq.do">고객센터</a></li>
         </ul>
 
     </div>

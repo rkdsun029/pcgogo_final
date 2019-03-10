@@ -3,23 +3,23 @@ package project.go.pcgogo.faq.model.vo;
 import java.sql.Date;
 
 public class AttachFile {
-	private int attachNo; // 
-	private int a_postNo; // 
-	private String originalFileName;  // 
-	private String renamedFileName; // 
-	private Date uploadDate; // 
-	private int downloadCount; // 
-	private String status; // "y" 파일 있음, "n" 파일 없음
+	private int attachNo; // 첨부파일번호
+	private int postNo; // 첨부파일 첨부된 게시글번호
+	private String originalFileName;  // 원래파일명
+	private String renamedFileName; // 수정된파일명
+	private Date uploadDate; // 올라온날짜
+	private int downloadCount; // 다운로드수
+	private String status; // "y", "n"
 	
 	public AttachFile() {
 		super();
 	}
 
-	public AttachFile(int attachNo, int a_postNo, String originalFileName, String renamedFileName, Date uploadDate,
+	public AttachFile(int attachNo, int postNo, String originalFileName, String renamedFileName, Date uploadDate,
 			int downloadCount, String status) {
 		super();
 		this.attachNo = attachNo;
-		this.a_postNo = a_postNo;
+		this.postNo = postNo;
 		this.originalFileName = originalFileName;
 		this.renamedFileName = renamedFileName;
 		this.uploadDate = uploadDate;
@@ -35,12 +35,12 @@ public class AttachFile {
 		this.attachNo = attachNo;
 	}
 
-	public int getA_PostNo() {
-		return a_postNo;
+	public int getPostNo() {
+		return postNo;
 	}
 
-	public void setA_PostNo(int a_postNo) {
-		this.a_postNo = a_postNo;
+	public void setPostNo(int postNo) {
+		this.postNo = postNo;
 	}
 
 	public String getOriginalFileName() {
@@ -85,7 +85,7 @@ public class AttachFile {
 
 	@Override
 	public String toString() {
-		return "Attach [attachNo=" + attachNo + ", a_postNo=" + a_postNo + ", originalFileName=" + originalFileName
+		return "Attach [attachNo=" + attachNo + ", postNo=" + postNo + ", originalFileName=" + originalFileName
 				+ ", renamedFileName=" + renamedFileName + ", uploadDate=" + uploadDate + ", downloadCount="
 				+ downloadCount + ", status=" + status + "]";
 	}

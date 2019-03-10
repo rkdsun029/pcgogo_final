@@ -1,13 +1,17 @@
 package project.go.pcgogo.faq.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project.go.pcgogo.faq.model.vo.AttachFile;
 import project.go.pcgogo.faq.model.vo.Post;
 import project.go.pcgogo.faq.model.vo.PostComment;
 
@@ -29,58 +33,91 @@ public class FAQDaoImpl implements FAQDao {
 	}
 
 	@Override
-	public List<Map<String, String>> selectSearchFaqList(String searchKeyword) {
-		return sqlSession.selectList("faq.selectSearchList", searchKeyword);
+	public List<Map<String, String>> selectSearchFaqList(String searchOption, String searchKeyword) {
+		// 검색 옵션, 키워드를 맵에 저장
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("searchOption", searchOption);
+		searchMap.put("searchKeyword", searchKeyword);
+		return sqlSession.selectList("faq.selectSearchFaqList", searchMap);
 	}
 
 	@Override
-	public int selectSearchFaqtotalContents(String searchKeyword) {
-		return sqlSession.selectOne("faq.selectSearchFaqTotalContents", searchKeyword);
+	public int selectSearchFaqTotalContents(String searchOption, String searchKeyword) {
+		// 검색 옵션, 키워드를 맵에 저장
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("searchOption", searchOption);
+		searchMap.put("searchKeyword", searchKeyword);
+		return sqlSession.selectOne("faq.selectSearchFaqTotalContents", searchMap);
 	}
 
 	@Override
-	public Map<String, String> selectFaqView(int postNo) {
-		return sqlSession.selectOne("faq.selectFaqView", postNo);
+	public List<Map<String, String>> selectFaqView(int postNo) {
+		return sqlSession.selectList("faq.selectFaqView", postNo);
 	}
 	
 	@Override
-	public int increaseReadCount(int postReadCount) {
-		return sqlSession.update("faq.increaseReadCount", postReadCount);
+	public List<Map<String, Object>> selectFaqAttachView(int postNo) {
+		return sqlSession.selectList("faq.selecctFaqAttachView", postNo);
+	}
+	
+	@Override
+	public int increaseReadCount(int postNo) {
+		return sqlSession.update("faq.increaseReadCount", postNo);
 	}
 
 	@Override
-	public int insertFaq(Post post) {
-		return sqlSession.insert("faq.insertFaq");
+	public int insertFaq(Post post, List<AttachFile> attachList) {
+		return sqlSession.insert("faq.insertFaq", post);
 	}
 
 	@Override
 	public int updateFaq(Post post) {
-		return sqlSession.update("faq.updateFaq");
+		return sqlSession.update("faq.updateFaq", post);
+	}
+	
+	@Override
+	public int updateFaqFile(int attachNo) {
+		return sqlSession.update("attachFile.updateFaqFile", attachNo);
+	}
+	
+	@Override
+	public int deleteFaqFile(int attachNo) {
+		return sqlSession.delete("attachFile.deleteFaqFile", attachNo);
 	}
 
 	@Override
 	public int deleteFaq(int postNo) {
 		return sqlSession.delete("faq.deleteFaq", postNo);
 	}
+	
+	@Override
+	public int faqCommentNum(int commentNum) {
+		return sqlSession.selectOne("faq.faqCommentNum", commentNum);
+	}
 
 	@Override
-	public List<Map<String, String>> selectComment(int o_postNo) {
-		return sqlSession.selectList("faq.selectComment", o_postNo);
+	public List<Map<String, String>> selectFaqCommentList(int postNo) {
+		return sqlSession.selectList("faqComment.selectFaqCommentList", postNo);
+	}
+	
+	@Override
+	public int selectFaqCommentTotalContents(int postNo) {
+		return sqlSession.selectOne("faqComment.selectFaqCommentTotalContents", postNo);
 	}
 
 	@Override
 	public int insertComment(PostComment pc) {
-		return 0;
+		return sqlSession.insert("faqComment.insertComment", pc);
 	}
 
 	@Override
-	public int updateComment(PostComment pc) {
-		return 0;
+	public int updateComment(int c_postNo) {
+		return sqlSession.update("faqComment.updateComment", c_postNo);
 	}
 
 	@Override
 	public int deleteComment(int c_postNo) {
-		return 0;
+		return sqlSession.delete("faqComment.deleteComment", c_postNo);
 	}
 
 }
