@@ -50,12 +50,12 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 		location.href='${pageContext.request.contextPath}/admin/permissionList.do?division='+$(this).prop("id");
 	});
 	
-	function permit(value){
+	function permit(value, target){
 		if("${division}" == 'manager'){
 			$(".modal-body").text(value+"님을 정말로 승인하시겠습니까?");
 		}
 		else{
-			$(".modal-body").text(value+"을 정말로 승인하시겠습니까?");
+			$(".modal-body").text(target+"을 정말로 승인하시겠습니까?");
 		}
  		
 		$("#accept").on("click", function(){
@@ -63,12 +63,12 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 		});
 	}
 	
-	function refuse(value){
+	function refuse(value, target){
 		if("${division}" == 'manager'){
 			$(".modal-body").text(value+"님을 정말로 승인거절하시겠습니까?");
 		}
 		else{
-			$(".modal-body").text(value+"을 정말로 승인거절하시겠습니까?");
+			$(".modal-body").text(target+"을 정말로 승인거절하시겠습니까?");
 		}
 		
  		$("#accept").on("click", function(){
@@ -144,8 +144,8 @@ table.table tr>th, table.table tr>td{text-align: center; white-space: nowrap;}
 				<td>
 					<div class="btn-group">
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-						onclick="permit('${item.PCROOMNAME}');">승인</button>
-						<button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="refuse('${item.PCROOMNAME}');">취소</button>
+						onclick="permit('${item.PCROOMNO}', '${item.PCROOMNAME }');">승인</button>
+						<button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="refuse('${item.PCROOMNO }', '${item.PCROOMNAME}');">취소</button>
 					</div>
 				</td>
 			</tr>

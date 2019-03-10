@@ -13,7 +13,7 @@
 				managerId=#{target}
 			</when>
 			<when test="division=='pcRoom'">
-				pcRoomName=#{target}
+				pcRoomNo=#{target}
 			</when>
 		</choose>		
 	</update>
@@ -25,7 +25,7 @@
 				managerId=#{target}
 			</when>
 			<when test="division=='pcRoom'">
-				pcRoomName=#{target}
+				pcRoomNo=#{target}
 			</when>
 		</choose>
 	</delete>
