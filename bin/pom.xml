@@ -56,7 +56,8 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
+			<!-- <version>${org.slf4j-version}</version> -->
+			<version>1.7.6</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -210,7 +211,22 @@
 	        <groupId>com.fasterxml.jackson.core</groupId>
 	        <artifactId>jackson-databind</artifactId>
 	        <version>2.9.5</version>
-	    </dependency>       
+	    </dependency>  
+	    
+	    <!-- 웹 소켓 -->
+
+		<dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-websocket</artifactId>
+        	<version>4.2.4.RELEASE</version>
+		</dependency>
+	         
+		<dependency>
+        	<groupId>ch.qos.logback</groupId>
+        	<artifactId>logback-classic</artifactId>
+        	<version>1.1.1</version>
+		</dependency>
+	    
 	</dependencies>
     <build>
         <plugins>
