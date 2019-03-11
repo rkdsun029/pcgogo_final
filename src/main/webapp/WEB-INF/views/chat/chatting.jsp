@@ -178,7 +178,7 @@
 			html += "</div></div></li></br>";
 		} */
 		
-		var rename = "채팅방에서의 " + fromId + "님의 아이디는 [" + sessionId + "]입니다.</br>";
+		var rename = "채팅은 임시 아이디로 이루어진다는 점 고려해주시길 바랍니다.";
 		var html = "";
 		console.log("세션 아이디, 리플레이스, 커렌트", sessionId, replacefromId, currentUser_session);
 		
