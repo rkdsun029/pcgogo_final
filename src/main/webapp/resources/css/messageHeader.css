@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+#headertitle {
+	margin-top : 55px;
+}
+
+img {
+	margin-top : -120px;
+	margin-left : 353px;
+}
+
+h2 {
+	font-family: 'Fredoka One', cursive;
+	font-size : 45px;
+	color : rgb(255, 40, 40, .7);
+	text-align : center;
+}
+
+pre {
+	font-family: 'Nanum Gothic', sans-serif;
+	font-weight : bold;
+	font-size : 12px;
+	text-align : center;
+	margin-top : 5px;
+}
+
+#selectChatRoom {
+	width : 500px;
+	height : 38px;
+	background : skyblue;
+	margin : 0 auto;
+	margin-top : 35px;
+}
+
+button#memberMessage {
+	width : 100px;
+	font-family: 'Black Han Sans', sans-serif;
+	margin-left : 150px;
+	border : 1px solid skyblue;
+	background : skyblue;
+}
+
+button#memberMessage:hover {
+	border : 1px solid #FF2828;
+	background : #FF2828;
+}
+
+button#managerMessage {
+	width : 100px;
+	font-family: 'Black Han Sans', sans-serif;
+	border : 1px solid skyblue;
+	background : skyblue;
+}
+
+button#managerMessage:hover {
+	border : 1px solid #FF2828;
+	background : #FF2828;
+}
+
+button#btn-search {
+	width : 100px;
+	font-family: 'Black Han Sans', sans-serif;
+	border : 1px solid skyblue;
+	background : skyblue;
+}
+
+button#btn-chatting {
+	width : 100px;
+	font-family : 'Black Han Sans', sans-serif;
+	border : 1px solid skyblue;
+	background : skyblue;
+	margin-top : -7px;
+	margin-right : -6px;
+}
+
+button#search:hover {
+	border : 1px solid #FF2828;
+	background : #FF2828;
+}
+
+.form-inline {
+	margin : auto;
+}
+
+div.input-group-prepend span {
+	font-family: 'Nanum Gothic', sans-serif;
+	font-weight : bold;
+}
