@@ -130,7 +130,7 @@ img#clockImg{
 <form id="hiddenDeleteForm" action="${pageContext.request.contextPath }/manager/deletePrice.do">
 	<input type="hidden" name="pcRoomNo" id="pcRoomNo" value="${selectedPcRoom.pcRoomNo }"/>
 </form>
-<form id="hiddenInsertOrUpdateForm" action="${pageContext.request.contextPath }/manager/InsertOrUpdatePrice.do">
+<form id="hiddenInsertOrUpdateForm" action="${pageContext.request.contextPath }/manager/insertOrUpdatePrice.do">
 	<input type="hidden" name="pcRoomNo" id="pcRoomNo" value="${selectedPcRoom.pcRoomNo }"/>
 	<input type="hidden" name="priceArr" id="priceArr"/>
 </form>
