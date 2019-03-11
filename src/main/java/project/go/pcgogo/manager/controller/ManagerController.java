@@ -439,4 +439,18 @@ public class ManagerController {
 		
 		return "redirect:/manager/managerCommunity.do";
 	}
+	
+	@RequestMapping("/index")
+	@ResponseBody
+	public Map<String, Object> index_ranking() { 		
+		Map<String, Object> test = new HashMap<>();
+		List<Map<String, String>> listOnline = new Crawling().Crawling_marketShareOnlineGame();
+		List<Map<String, String>> listWeb = new Crawling().Crawling_marketShareWebGame();
+		System.out.println("listOnline = " + listOnline);
+		System.out.println("listWeb = " + listWeb);
+		test.put("listOnline" , listOnline);
+		test.put("listWeb" , listWeb);
+		return test; 
+	}
+	
 }

@@ -21,6 +21,8 @@ public class Crawling {
 		
 		c.Crawling_hotDeal();
 		c.Crawling_bigNews();
+		c.Crawling_marketShareOnlineGame();
+		c.Crawling_marketShareWebGame();
 		
 		
 	}
@@ -163,6 +165,85 @@ public class Crawling {
 			news.add(map);
 		}
 		return news;
+    }
+	
+	public List<Map<String, String>> Crawling_marketShareOnlineGame() {
+		List<Map<String, String>> marketShare = new ArrayList<>();
+		
+		String url = "https://www.gamemeca.com/ranking.php?scode=O";
+		
+		Document doc = null;
+		
+		try {
+			doc = Jsoup.connect(url).get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		//주요 뉴스로 나오는 태그를 찾아서 가져오도록 한다.
+		Elements element = doc.select(".ranking_list");
+		Elements element2 = element.select(".ranking-table"); 
+		
+	
+		
+		/*제목 top10 포문*/
+		for(Element el : element2.select(".ranking-table-rows")) {
+			String hotTitle = el.getElementsByAttributeValue("class", "game-name").text();
+			String img = el.getElementsByTag("img").attr("abs:src");
+			String Tag = el.getElementsByTag("a").attr("href");
+			Map<String, String> map = new HashMap<>();
+			//찍어보기
+			map.put("hotTitle", hotTitle);
+			map.put("img", img);
+			map.put("Tag", Tag);
+//			map.put("rankingRed", rankingRed);
+//			map.put("ranking", ranking);
+			System.out.println(map);
+			System.out.println("------------------------------------------"); 
+			marketShare.add(map);
+		}
+		return marketShare;
+    }
+	
+	public List<Map<String, String>> Crawling_marketShareWebGame() {
+		List<Map<String, String>> marketShare = new ArrayList<>();
+		
+		String url = "https://www.gamemeca.com/ranking.php?scode=W";
+		
+		Document doc = null;
+		
+		try {
+			doc = Jsoup.connect(url).get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		//주요 뉴스로 나오는 태그를 찾아서 가져오도록 한다.
+		Elements element = doc.select(".ranking_list");
+		Elements element2 = element.select(".ranking-table"); 
+		
+	
+		
+		/*제목 top10 포문*/
+		for(Element el : element2.select(".ranking-table-rows")) {
+			String webHotTitle = el.getElementsByAttributeValue("class", "game-name").text();
+			String imgWebGame = el.getElementsByTag("img").attr("abs:src");
+			String webTag = el.getElementsByTag("a").attr("href");
+			
+			Map<String, String> map = new HashMap<>();
+			//찍어보기
+			map.put("webHotTitle", webHotTitle);
+			map.put("imgWebGame", imgWebGame);
+			map.put("webTag", webTag);
+//			map.put("rankingRed", rankingRed);
+//			map.put("ranking", ranking);
+			System.out.println(map);
+			System.out.println("------------------------------------------"); 
+			marketShare.add(map);
+		}
+		return marketShare;
     }
 
 }
