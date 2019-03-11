@@ -39,10 +39,12 @@ ul#pcRoomList_ li{
 </ul>
 <script>
 $("ul#pcRoomList_ li").on("click", function(){
+	var pcRoomNo = $(this).find(":first").val();
 	var temp = confirm("해당 피시방으로 전환하시겠습니까?");
 	if(!temp) return;
 	else{
-		
+ 		location.href="${pageContext.request.contextPath}/manager/convertPcRoomEnd.do?pcRoomNo="+pcRoomNo;
+ 		opener.location.reload();
 	}
 });
 </script>
