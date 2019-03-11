@@ -81,6 +81,8 @@ $(function(){
 	        <c:if test="${loggedInUser.isSocial != 'manager'}">
 	        	<div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" 
 	        	onclick="location.href='${pageContext.request.contextPath}/reservationLog.do'"/>예약내역</div>
+	        	<div class="quick" id="menu5"><img src="${pageContext.request.contextPath }/resources/image/header/buyCash.png" alt="" 
+	        	onclick="buyCash()" />케쉬충전</div>
 	        </c:if>
 	        <c:if test="${loggedInUser.isSocial == 'manager'}">
 		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/user/register/manager.png" alt="" 
@@ -102,6 +104,10 @@ $(function(){
         <div id="goToTop">▲ TOP</div>
     </div>
     <script>
+    function buyCash(){
+    		window.open("${pageContext.request.contextPath}/pcRoom/buyCash.do",//+"&memberId="+,
+    				"?", "width=1000, height=700, left=50, top=20");
+    }
     function logout(){
     	if(confirm("정말로 로그아웃하시겠습니까?")){
 	    	if("${loggedInUser.isSocial}"=="kakao"){

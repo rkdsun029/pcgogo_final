@@ -1,14 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="pcRoom">
-	<!-- 지도에 핑 찍기 위한 mapper [보류] -->
-	<select id="pcRoomList" parameterType="String" resultType="pcRoomList">
-		select * from pcRoomList where placename like '%'||#{place_name}||'%'
-	</select>
 	
 	<!-- 지도에 핑 클릭했을 때 나오는 현재좌석, 빈좌석, 계산하고 띄우기위한 mapper [수정해야함] -->
 	<select id="nowPcStatus" resultType="pcRoomRsv">
-		select * from placement
+		select pmPcRoomNo , sitted , pmSeats from placement A join pcRoom B on A.pmpcroomno = B.pcroomno where B.pcRoomName=#{pcRoomName}
 	</select>
 	
 	<!-- 예약을 위한 테이블을 만들기위해 목록을 가져오는 mapper  -->
@@ -45,6 +41,7 @@
 	</update>
 	
 	
+	<!-- 지도에 핑 찍기 위한 mapper -->
 	<select id="pcRoomDetail" resultType = "pcRoomDetail">
 		select * from pcRoomDetail
 	</select>

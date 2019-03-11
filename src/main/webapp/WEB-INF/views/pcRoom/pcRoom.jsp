@@ -128,7 +128,7 @@ t
                 	</select>
                 	<input type="text" id="map-pcSrc" name="mapSrc" placeholder="피씨방 이름" />
                 	<input type="button" value="피씨방 검색" id="btn-pcSrc" onclick = "mapSrc()"/>
-                	<button onclick="test()">test</button>
+                	<button onclick="location.href='${pageContext.request.contextPath}/pcRoom/mapTest.do'">test</button>
                 </div>
                 <div id="listTable">
                 
@@ -281,22 +281,23 @@ function displayMarker(place) {
     // 마커에 클릭이벤트를 등록합니다
     daum.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        data = null;
         $.ajax({
         	url:"${pageContext.request.contextPath}/pcRoom/nowPcStatus.do",
     	    data: {pcRoomName : place.place_name},
     		type: "get",
     		success : function(data){
     			if(data!=''){
-    			pcRoomNo=data[0].pmPcRoomNo;
-    			var a = data[0].sitted;
-                var b = new Array();
-                b = a.split(",");
-                var usingSeat = 0;
-                for(var i=0; i<b.length;i++){
-                    if(b[i]=="o" || b[i]=="s") usingSeat++;
+    				pcRoomNo=data[0].pmPcRoomNo;
+    				var a = data[0].sitted;
+                	var b = new Array();
+                	b = a.split(",");
+                	var usingSeat = 0;
+                	for(var i=0; i<b.length;i++){
+                    	if(b[i]=="o" || b[i]=="s") usingSeat++;
                     
-                }
-    			var unUsingSeat = data[0].pmSeats-usingSeat;
+                	}
+    				var unUsingSeat = data[0].pmSeats-usingSeat;
     				infowindow.setContent(
     					place.place_name+'<div class="txt">피시방의 전체 좌석수 </div>'
     					+data[0].pmSeats+'<div class="txt">중 </div>'
@@ -376,12 +377,6 @@ function suc(position){
 function err(){
     	alert('현재 위치를 가져올 수 없습니다.');
 };
-function test(){
-	get
-	console.log("asd");
-	alert(loggedInUser);
-};
-
 
 //목록 뽑기 보류
 function getListItem(index, places) {

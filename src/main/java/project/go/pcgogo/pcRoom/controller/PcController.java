@@ -216,5 +216,11 @@ public class PcController {
         
     	return b;
     }
+    @RequestMapping("/pcRoom/mapTest.do")
+    public String mapTest() {
+    	
+    	return "/pcRoom/mapTest";
+    	
+    }
     
 }
