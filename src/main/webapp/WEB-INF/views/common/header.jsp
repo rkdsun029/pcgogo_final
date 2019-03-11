@@ -46,9 +46,9 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
-    $("img#goToTalk").on("click", function(){
+    /* $("img#goToTalk").on("click", function(){
     	location.href = "${pageContext.request.contextPath}/chat/chatting.do";
-    });
+    }); */
 });
 </script>
 </head>
@@ -85,8 +85,8 @@ $(function(){
 		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/user/register/manager.png" alt="" 
 		        onclick="location.href='${pageContext.request.contextPath}/manager/manager.do'"/>사장님메뉴</div>
 	        </c:if>
-	        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
-	        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+	        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt=""
+	        id="letterSend"/>쪽지</div>
     	</c:if>
         <c:if test="${loggedInUser.isSocial == 'admin' }">
         	<div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
@@ -147,6 +147,18 @@ $(function(){
 	     	});
    	    });
     }
+    
+    $("#goToTalk").on('click', function() {
+    	var url = "${pageContext.request.contextPath}/chat/chatting.do";
+    	var popOption = "width=500, height=900, status=no;";
+    	window.open(url, "", popOption);
+    });
+    
+    $("#letterSend").on('click', function() {
+    	var url = "${pageContext.request.contextPath}/common/messageHeader.do";
+    	var popOption = "width=500, height=900, status=no;";
+    	window.open(url, "", popOption);
+    });
     
     </script>
     <section id="main-container">
