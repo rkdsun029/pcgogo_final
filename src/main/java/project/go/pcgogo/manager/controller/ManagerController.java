@@ -46,12 +46,24 @@ public class ManagerController {
 	
 	@RequestMapping("manager/getPcRoomList.do")
 	@ResponseBody
-	public PcRoom getPcRooms(HttpSession session) {
+	public PcRoom getPcRooms(HttpSession session, @RequestParam(value="pcRoomNo", defaultValue="0") int pcRoomNo) {
 		Manager manager = (Manager) session.getAttribute("loggedInUser");
-
+		
 		List<PcRoom> pList = managerService.getPcRoomList(manager.getManagerId());
+		if(pList.isEmpty()) {
+			return null;
+		}
+			
 		session.setAttribute("pcRoomList", pList);
 		session.setAttribute("selectedPcRoom", pList.get(0));
+		if(pcRoomNo != 0) {
+			for(PcRoom pc : pList) {
+				if(pc.getPcRoomNo() == pcRoomNo) {
+					return pc;
+				}
+			}
+		}
+		
 		logger.info("pList : " + pList);
 		logger.info("selectedPcRoom : " + pList.get(0));
 		return pList.get(0);
@@ -61,6 +73,22 @@ public class ManagerController {
 	public ModelAndView convertPcRoom(ModelAndView mav, HttpSession session) {
 		mav.addObject("pcRoomList", session.getAttribute("pcRoomList"));
 		mav.setViewName("manager/convertPcRoom");
+		return mav;
+	}
+	
+	@RequestMapping("manager/convertPcRoomEnd.do")
+	public ModelAndView convertPcRoomEnd(ModelAndView mav, HttpSession session, @RequestParam("pcRoomNo") int pcRoomNo) {
+		List<PcRoom> pList = (List<PcRoom>) session.getAttribute("pcRoomList");
+		mav.addObject("pcRoomList", session.getAttribute("pcRoomList"));
+		
+		for(PcRoom pc : pList) {
+			if(pc.getPcRoomNo() == pcRoomNo) {
+				session.removeAttribute("selectedPcRoom");
+				session.setAttribute("selectedPcRoom", pc);
+			}
+		}
+		mav.addObject("popup", "self.close();");
+		mav.setViewName("common/msg");
 		return mav;
 	}
 	

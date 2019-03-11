@@ -13,10 +13,17 @@ $(function(){
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/manager/getPcRoomList.do",
-		dataType : "json",
+		data : {pcRoomNo : "${selectedPcRoom!=null?selectedPcRoom.pcRoomNo:'0'}"},
 		success : function(data){
 			console.log(data);
-			if(data == null) $("span#pcRoomName").html("등록한 피시방이 없습니다.");
+			if(!data) {
+				$("span#pcRoomName").html("등록한 피시방이 없습니다.");
+				$("#sub-card-list *").not("#pcRoomName, :first").hide();
+				$("#pcRoomName").css({
+					"font-weight" : "normal",
+					"opacity": ".8"
+				});
+			}
 			else $("span#pcRoomName").html(data.pcRoomName);
 			console.log("AJAX SUCCEED");
 		},

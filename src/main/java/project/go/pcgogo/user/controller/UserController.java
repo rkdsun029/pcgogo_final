@@ -36,6 +36,7 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import project.go.pcgogo.admin.model.vo.Admin;
 import project.go.pcgogo.common.AdminSingletone;
 import project.go.pcgogo.common.util.Utils;
+import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.user.model.service.UserService;
 import project.go.pcgogo.user.model.vo.Manager;
 import project.go.pcgogo.user.model.vo.Member;
@@ -468,19 +469,21 @@ public class UserController {
 	
 	@RequestMapping("/reservationLog.do")
 	public ModelAndView goReservedLog(ModelAndView mav, HttpSession session) {
-		String target;
-		String division;
-		String view;
+		String target = "";
+		String division = "";
+		String view = "";
 		
 		Object o = session.getAttribute("loggedInUser");
 		if(o instanceof Member) {
 			target = ((Member) o).getMemberId();
 			division = "member";
-			view = "manager/reservationList";
-		} else {
-			target = ((Manager) o).getManagerId();
-			division = "manager";
 			view = "user/reservationLog";
+		} else if(o instanceof Manager){
+			if(session.getAttribute("selectedPcRoom") != null) {
+				target = String.valueOf(((PcRoom)session.getAttribute("selectedPcRoom")).getPcRoomNo());
+			}
+			division = "manager";
+			view = "manager/reservationList";
 		}
 		
 		Map<String, String> options = new HashMap<>();

@@ -6,7 +6,11 @@
 <fmt:requestEncoding value="UTF-8" />
 
 <script>
+if("${popup}"!="") {
+	${popup}
+}
+else{
 alert("${msg}");
-if("${popup}"!=null) ${popup}
 location.href = "${pageContext.request.contextPath}${loc}";
+}
 </script>
