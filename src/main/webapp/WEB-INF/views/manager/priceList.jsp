@@ -127,21 +127,54 @@ img#clockImg{
 	</tr>
 </table>
 
+<form id="hiddenDeleteForm" action="${pageContext.request.contextPath }/manager/deletePrice.do">
+	<input type="hidden" name="pcRoomNo" id="pcRoomNo" value="${selectedPcRoom.pcRoomNo }"/>
+</form>
+<form id="hiddenInsertOrUpdateForm" action="${pageContext.request.contextPath }/manager/InsertOrUpdatePrice.do">
+	<input type="hidden" name="pcRoomNo" id="pcRoomNo" value="${selectedPcRoom.pcRoomNo }"/>
+	<input type="hidden" name="priceArr" id="priceArr"/>
+</form>
+
 <script>
 	$(function(){
 		$("button#defaultPrice").on("click", function(){
 			var temp = confirm("기본값으로 변경하시겠습니까?");
 			if(!temp) return;
-			else window.location.reload(true);
+			else $("form#hiddenDeleteForm").submit();
 		});
 		
 		$("button#submitPrice").on("click", function(){
 			var temp = confirm("해당 가격표를 등록하시겠습니까?");
 			if(!temp) return;
 			else {
-				/* $.ajax({
-					
-				}); */
+				var timeArr = new Array();
+				var defaultTime = [60, 120, 180, 300, 600, 1200, 1800, 3000];
+				
+				var length = $("input.hour").length;
+				var hourArr = $("input.hour");
+				var minuteArr = $("input.minute");
+				
+				for(var i=0; i<length; i++){
+					var time = parseInt(hourArr.eq(i).val()) * 60 + parseInt(minuteArr.eq(i).val());
+					timeArr.push(time);
+				}
+				
+				var tempNum = 0;
+				for(var j=0; j<length; j++){
+					if(timeArr[j] != defaultTime[j]) {
+						break;
+					}
+					tempNum++;
+				}
+				
+				if(tempNum == 8){
+					alert("변경할 내용이 없습니다.");
+					return;
+				}
+				else{
+					$("input#priceArr").val(timeArr.toString());
+					$("form#hiddenInsertOrUpdateForm").submit();
+				}				
 			}
 		});
 	});

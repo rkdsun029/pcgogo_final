@@ -23,6 +23,7 @@ import project.go.pcgogo.manager.model.jsoup.Crawling;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Controller
@@ -86,14 +87,67 @@ public class ManagerController {
 	}
 	
 	@RequestMapping("manager/insertOrUpdatePrice.do")
-	@ResponseBody
-	public void insertOrUpdatePrice() {
-		//리스트에 없으면 insert 있으면 update
+	public ModelAndView insertOrUpdatePrice(@RequestParam(value="pcRoomNo") int pcRoomNo,
+											@RequestParam(value="priceArr") String priceArr,
+											ModelAndView mav) {
+		
+		String[] tempArr = priceArr.split(",");
+		PriceList newPriceList = new PriceList();
+		
+		newPriceList.setPl1000(Integer.parseInt(tempArr[0]));
+		newPriceList.setPl2000(Integer.parseInt(tempArr[1]));
+		newPriceList.setPl3000(Integer.parseInt(tempArr[2]));
+		newPriceList.setPl5000(Integer.parseInt(tempArr[3]));
+		newPriceList.setPl10000(Integer.parseInt(tempArr[4]));
+		newPriceList.setPl20000(Integer.parseInt(tempArr[5]));
+		newPriceList.setPl30000(Integer.parseInt(tempArr[6]));
+		newPriceList.setPl50000(Integer.parseInt(tempArr[7]));
+		newPriceList.setPlPcRoomNo(pcRoomNo);
+		
+		logger.info("입력된 가격표 : " + newPriceList);
+		
+		PriceList pl = managerService.getPriceList(pcRoomNo);
+		logger.info("호출된 가격표 : " + pl);
+		
+		int result = 0;
+		
+		if(pl == null) result = managerService.insertPriceList(newPriceList);
+		else result = managerService.updatePriceList(newPriceList);
+		
+		if(result != 1) {
+			mav.addObject("msg", "가격표 등록 중 오류가 발생하였습니다.");
+			mav.addObject("loc", "/manager/priceList.do");
+			mav.setViewName("common/msg");
+		}
+		else {
+			mav.addObject("msg", "가격표가 변경되었습니다.");
+			mav.addObject("loc", "/manager/priceList.do");
+			mav.setViewName("common/msg");
+		}
+		return mav;
 	}
 	
 	@RequestMapping("manager/deletePrice.do")
-	public void deletePrice() {
-		//초기화버튼 누를시 잇으면 삭제 없으면 그대로
+	public ModelAndView deletePrice(@RequestParam(value="pcRoomNo") int pcRoomNo,
+									ModelAndView mav) throws Exception {
+		PriceList pl = managerService.getPriceList(pcRoomNo);
+		logger.info("호출된 가격표 : " + pl);
+		
+		if(pl == null) {
+			mav.addObject("msg", "초기화가 완료되었습니다.");
+			mav.addObject("loc", "/manager/priceList.do");
+			mav.setViewName("common/msg");
+		}
+		else {
+			int result = managerService.deletePriceList(pcRoomNo);
+			if(result == 1) {
+				mav.addObject("msg", "초기화가 완료되었습니다.");
+				mav.addObject("loc", "/manager/priceList.do");
+				mav.setViewName("common/msg");
+			}
+			else throw new Exception("삭제 과정에서 문제가 발생하였습니다.");
+		}
+		return mav;
 	}
 	
 	@RequestMapping("manager/reservationList.do")

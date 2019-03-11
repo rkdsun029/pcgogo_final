@@ -116,10 +116,10 @@ function closeErrorCode(){
 }
 
 function goHome(){
-    location.href="#";
+    location.href="${pageContext.request.contextPath}";
 }    
 function goFAQ(){
-    location.href="#";
+    location.href="${pageContext.request.contextPath}/faq/faq.do";
 }
 </script>
 </body>

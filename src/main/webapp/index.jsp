@@ -50,7 +50,7 @@ table#marketShare th, table#marketShare td{
 	<img id="main_home" src="${pageContext.request.contextPath }/resources/image/main/temphome.png" alt="" />
 	<br>
 	<h1>인기게임 PC방 점유율 순위</h1>
-	<h4>오늘날짜</h4>
+	<h4 id="todayDate"></h4>
 	<br>
 	<div id="marketShare-container">
 		<table id="marketShare">
@@ -69,4 +69,18 @@ table#marketShare th, table#marketShare td{
 	<br /><br />
 	<img id="messenger_banner" src="${pageContext.request.contextPath }/resources/image/main/banner.png" alt="" />
 </div>
+<script>
+$(function(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	if(dd < 10) dd = '0'+dd;
+	if(mm < 10) mm = '0'+mm;
+
+	today = yyyy + '년 ' + mm + '월 '+ dd + '일 기준';
+	$("h4#todayDate").html("- " + today + " -");
+});
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

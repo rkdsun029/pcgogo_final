@@ -10,7 +10,9 @@ public class PcRoom implements Serializable{
 	private String pcRoomName;
 	private String pcRoomAddress;
 	private String pcRoomManagerId;
-	private String pcRoomPermitted; 
+	private String pcRoomPermitted;
+	private String xLoc;
+	private String yLoc;
 	
 	public PcRoom(){}
 	
@@ -31,10 +33,23 @@ public class PcRoom implements Serializable{
 		this.pcRoomPermitted = pcRoomPermitted;
 	}
 
+	public PcRoom(int pcRoomNo, String pcRoomName, String pcRoomAddress, String pcRoomManagerId, String pcRoomPermitted,
+			String xLoc, String yLoc) {
+		super();
+		this.pcRoomNo = pcRoomNo;
+		this.pcRoomName = pcRoomName;
+		this.pcRoomAddress = pcRoomAddress;
+		this.pcRoomManagerId = pcRoomManagerId;
+		this.pcRoomPermitted = pcRoomPermitted;
+		this.xLoc = xLoc;
+		this.yLoc = yLoc;
+	}
+
 	@Override
 	public String toString() {
 		return "PcRoom [pcRoomNo=" + pcRoomNo + ", pcRoomName=" + pcRoomName + ", pcRoomAddress=" + pcRoomAddress
-				+ ", pcRoomManagerId=" + pcRoomManagerId + ", pcRoomPermitted=" + pcRoomPermitted + "]";
+				+ ", pcRoomManagerId=" + pcRoomManagerId + ", pcRoomPermitted=" + pcRoomPermitted + ", xLoc=" + xLoc
+				+ ", yLoc=" + yLoc + "]";
 	}
 
 	public int getPcRoomNo() {
@@ -66,5 +81,21 @@ public class PcRoom implements Serializable{
 	}
 	public void setPcRoomPermitted(String pcRoomPermitted) {
 		this.pcRoomPermitted = pcRoomPermitted;
+	}
+
+	public String getxLoc() {
+		return xLoc;
+	}
+
+	public void setxLoc(String xLoc) {
+		this.xLoc = xLoc;
+	}
+
+	public String getyLoc() {
+		return yLoc;
+	}
+
+	public void setyLoc(String yLoc) {
+		this.yLoc = yLoc;
 	}
 }

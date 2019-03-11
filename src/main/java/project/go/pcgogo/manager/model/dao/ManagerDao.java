@@ -5,6 +5,7 @@ import java.util.Map;
 
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.user.model.vo.Manager;
 
 public interface ManagerDao {
@@ -18,6 +19,14 @@ public interface ManagerDao {
 	List<PcRoom> getPcRoomList(String managerId);
 	
 	List<Placement> getPlacementList(int pcRoomNo);
+	
+	PriceList getPriceList(int pcRoomNo);
+	
+	int deletePriceList(int pcRoomNo);
+	
+	int insertPriceList(PriceList newPriceList);
+	
+	int updatePriceList(PriceList newPriceList);
 
 	
 	
