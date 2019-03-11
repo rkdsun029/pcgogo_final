@@ -76,6 +76,8 @@ $(function(){
     	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
         <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
         onclick="logout();" />로그아웃</div>
+        <div class="quick" id="menu5"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" 
+        onclick="buyCash()"/>케쉬충전</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
         <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
@@ -84,6 +86,10 @@ $(function(){
         <div id="goToTop">▲ TOP</div>
     </div>
     <script>
+    function buyCash(){
+		   window.open("${pageContext.request.contextPath}/pcRoom/buyCash.do?memberId=${loggedInUser.memberId}",
+		   		"뿌뿌링", "width=1000, height=700, left=50, top=20");
+    }
     function logout(){
     	if(confirm("정말로 로그아웃하시겠습니까?")){
 	    	if("${loggedInUser.isSocial}"=="kakao"){
