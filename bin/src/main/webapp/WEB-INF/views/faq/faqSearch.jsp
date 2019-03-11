@@ -68,7 +68,7 @@
 				
 			}
 		%>
-		<%=project.go.pcgogo.faq.Utils.getPageBar(totalContents, cPage, numPerPage, "boardList.do")%>
+		<%=project.go.pcgogo.common.Util.getPageBar(totalContents, cPage, numPerPage, "boardList.do")%>
 	</div>
 </section>
 

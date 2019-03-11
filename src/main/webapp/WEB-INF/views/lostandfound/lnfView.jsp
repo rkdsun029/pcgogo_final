@@ -118,13 +118,13 @@ text-align:center;
 			</c:forEach>
 		</c:forEach>
 		<br><br>
-		<%-- <c:if test="${loggedInUser.isSocial == 'admin' }"> --%>
-		<div id="button" style="margin-left:100px;">
-		<input type="button" id="btn-add" class="completeDev" value="처리완료">
-		<input type="button" id="btn-add" class="updateDev" value="수정">
-		<input type="button" id="btn-add" class="deleteDev" value="삭제"> 
-		</div>
-		<%-- </c:if> --%>
+		<c:if test="${(loggedInUser.isSocial == 'admin') or (loggedInUser.isSocial == 'manager') }">
+				<div id="button" style="margin-left:100px;">
+					<input type="button" id="btn-add" class="completeDev" value="처리완료">
+					<input type="button" id="btn-add" class="updateDev" value="수정">
+					<input type="button" id="btn-add" class="deleteDev" value="삭제"> 
+				</div>
+		</c:if>
 	</form>
 </div>
 <script>
