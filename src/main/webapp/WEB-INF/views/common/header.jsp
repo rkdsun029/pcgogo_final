@@ -46,6 +46,9 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
+    $("img#goToTalk").on("click", function(){
+    	location.href = "${pageContext.request.contextPath}/chat/chatting.do";
+    });
 });
 </script>
 </head>
@@ -57,6 +60,7 @@ $(function(){
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
             <li><a href="${pageContext.request.contextPath }/manager/manager.do">사장님 메뉴</a></li>
             <li><a href="${pageContext.request.contextPath }/faq/faq.do">고객센터</a></li>
+            <li><img id="goToTalk" src="${pageContext.request.contextPath }/resources/image/header/gogotalk_logo.png" alt="" /></li>
         </ul>
 
     </div>
