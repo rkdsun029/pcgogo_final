@@ -65,4 +65,9 @@ public class UserDaoImpl implements UserDao {
 	public int updateManager(Map<String, String> values) {
 		return sqlSession.update("user.updateManager", values);
 	}
+
+	@Override
+	public List<Object> getReservationLog(Map<String, String> options) {
+		return sqlSession.selectList("user.getReservationList", options);
+	}
 }

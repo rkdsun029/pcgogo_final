@@ -63,4 +63,16 @@
 		update manager set managerPhone=#{managerPhone}, managerEmail=#{managerEmail}
 		where managerId = #{managerId}
 	</update>
+	<select id="getReservationList" resultType="hashmap">
+		select * 
+		from reserved R join pcRoom P on R.reservedPcRoomNo=P.pcRoomNo
+		<where>
+			<if test="division == 'manager'">
+			pcRoomManagerId = #{target}	
+			</if>
+			<if test="division == 'member'">
+			memberId = #{target}
+			</if>
+		</where>
+	</select>
 </mapper>

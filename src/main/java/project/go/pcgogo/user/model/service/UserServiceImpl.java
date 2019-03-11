@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateManager(values);
 	}
 
+	@Override
+	public List<Object> getReservationLog(Map<String, String> options) {
+		return userDao.getReservationLog(options);
+	}
+
 }
