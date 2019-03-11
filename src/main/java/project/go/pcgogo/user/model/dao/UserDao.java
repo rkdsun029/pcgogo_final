@@ -30,4 +30,6 @@ public interface UserDao {
 
 	int updateManager(Map<String, String> values);
 
+	List<Object> getReservationLog(Map<String, String> options);
+
 }

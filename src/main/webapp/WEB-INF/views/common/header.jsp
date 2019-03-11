@@ -78,8 +78,14 @@ $(function(){
 	    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
 	        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
 	        onclick="logout();" />로그아웃</div>
-	        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
-	        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+	        <c:if test="${loggedInUser.isSocial != 'manager'}">
+	        	<div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" 
+	        	onclick="location.href='${pageContext.request.contextPath}/reservationLog.do'"/>예약내역</div>
+	        </c:if>
+	        <c:if test="${loggedInUser.isSocial == 'manager'}">
+		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/user/register/manager.png" alt="" 
+		        onclick="location.href='${pageContext.request.contextPath}/manager/manager.do'"/>사장님메뉴</div>
+	        </c:if>
 	        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
 	        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
     	</c:if>

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -462,6 +463,34 @@ public class UserController {
 		mav.addObject("msg", msg);
 		mav.addObject("loc", "/myPage");
 		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/reservationLog.do")
+	public ModelAndView goReservedLog(ModelAndView mav, HttpSession session) {
+		String target;
+		String division;
+		String view;
+		
+		Object o = session.getAttribute("loggedInUser");
+		if(o instanceof Member) {
+			target = ((Member) o).getMemberId();
+			division = "member";
+			view = "manager/reservationList";
+		} else {
+			target = ((Manager) o).getManagerId();
+			division = "manager";
+			view = "user/reservationLog";
+		}
+		
+		Map<String, String> options = new HashMap<>();
+		options.put("target", target);
+		options.put("division", division);
+		
+		List<Object> reservationLog = userService.getReservationLog(options);
+		logger.info(reservationLog);
+		mav.addObject("reservationLog", reservationLog);
+		mav.setViewName(view);
 		return mav;
 	}
 }
