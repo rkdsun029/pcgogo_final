@@ -7,6 +7,7 @@
 <!-- 맨 앞의 '/'는 webapp을 가리킨다. -->
 <fmt:requestEncoding value="UTF-8"/>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
+<script src="http://cdn.sockjs.org.sockjs-0.3.4.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Sunflower:300|Anton|Black+Han+Sans|Do+Hyeon|Fredoka+One|Nanum+Gothic|Noto+Serif+KR" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chatRoom.css" />
 <title>PCGOGO 채팅</title>
