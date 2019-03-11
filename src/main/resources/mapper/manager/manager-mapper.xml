@@ -21,6 +21,26 @@
 		select * from placement where pmPcRoomNo = #{pcRoomNo}
 	</select>
 	
+	<select id="getPriceList" parameterType="_int" resultType="priceList">
+		select * from priceList where plPcRoomNo = #{pcRoomNo}
+	</select>
+	
+	<delete id="deletePriceList" parameterType="_int">
+		delete from priceList where plPcRoomNo = #{pcRoomNo}
+	</delete>
+	
+	<insert id="insertPriceList" parameterType="priceList">
+		insert into priceList values(#{plPcRoomNo}, #{pl1000}, #{pl2000}, #{pl3000}, #{pl5000},
+													#{pl10000}, #{pl20000}, #{pl30000}, #{pl50000});
+	</insert>
+	
+	<update id="updatePriceList" parameterType="priceList">
+		update priceList set pl1000 = #{pl1000}, pl2000 = #{pl2000}, pl3000 = #{pl3000}, , pl5000 = #{pl5000}, 
+							, pl10000 = #{pl10000}, , pl2000 = #{pl20000}, , pl2000 = #{pl30000}, , pl2000 = #{pl50000}
+							where plPcRoomNo = #{plPcRoomNo} 
+	</update>
+	
+	
 	<select id="selectMemoList" resultType="memo">
 		select * from memo order by memono desc
 	</select>
