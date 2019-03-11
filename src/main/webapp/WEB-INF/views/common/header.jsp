@@ -60,7 +60,9 @@ $(function(){
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
             <li><a href="${pageContext.request.contextPath }/manager/manager.do">사장님 메뉴</a></li>
             <li><a href="${pageContext.request.contextPath }/faq/faq.do">고객센터</a></li>
-            <li><img id="goToTalk" src="${pageContext.request.contextPath }/resources/image/header/gogotalk_logo.png" alt="" /></li>
+            <c:if test="${loggedInUser != null }">
+            	<li><img id="goToTalk" src="${pageContext.request.contextPath }/resources/image/header/gogotalk_logo.png" alt="" /></li>
+            </c:if>
         </ul>
 
     </div>
@@ -150,9 +152,10 @@ $(function(){
     }
     
     $("#goToTalk").on('click', function() {
+    	
     	var url = "${pageContext.request.contextPath}/chat/chatting.do";
-    	var popOption = "width=500, height=900, status=no;";
-    	window.open(url, "", popOption);
+        var popOption = "width=500, height=900, status=no;";
+        window.open(url, "", popOption);
     });
     
     $("#letterSend").on('click', function() {
