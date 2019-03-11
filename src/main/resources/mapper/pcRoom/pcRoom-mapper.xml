@@ -1,16 +1,48 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="pcRoom">
-	<select id="pcRoomList" parameterType="String" resultType="pcRoomList">
-		select * from pcRoomList where placename like '%'||#{place_name}||'%'
+	
+	<!-- 지도에 핑 클릭했을 때 나오는 현재좌석, 빈좌석, 계산하고 띄우기위한 mapper [수정해야함] -->
+	<select id="nowPcStatus" resultType="pcRoomRsv">
+		select pmPcRoomNo , sitted , pmSeats from placement A join pcRoom B on A.pmpcroomno = B.pcroomno where B.pcRoomName=#{pcRoomName}
 	</select>
 	
-	<select id="nowPcStatus" resultType="nowPcStatus">
-		select * from nowPcStatus where pcRoomName = #{ pcRoomName}
-	</select>
-	
+	<!-- 예약을 위한 테이블을 만들기위해 목록을 가져오는 mapper  -->
 	<select id="pcRoomRsv" resultType="pcRoomRsv">
-		select * from pcRoomTest where pmPcRoomNo = #{pcRoomNo}
+		select * from placement where pmPcRoomNo = #{pcRoomNo}
 	</select>
+	
+	<select id="pcRoomProduct" resultType="pcRoomRsv">
+		select plproductname, plproductprice from priceList where plpcroomno = #{pcRoomNo}
+	</select>
+	<!-- 예약정보를 업데이트하는 mapper -->
+	<update id="pcRoomRsvGo" parameterType="pcRoomRsv">
+		update placement set pmcontent =#{pmContent}, sitted = #{sitted} where pmPcRoomNo = #{pmPcRoomNo}
+	</update>
+	
+	<!-- 예약정보를 업데이트하는 mapper -->
+	<update id="pcRoomRsvSet">
+		update placement set sitted=#{sitted} where pmPcRoomNo=#{pcRoomNo}
+	</update>
 
+	<!-- 예약 세부사항을 저장하는 mapper -->
+	<insert id="pcRoomRsvDetail" parameterType="pcRoomRsvDetail">
+	insert into reserved values(seq_reservedNo.nextval,#{memberId},#{pcRoomNo},#{seatNo},default,sysdate+1/24*#{timeSet})
+	</insert>
+	
+	<!-- 예약한 시간을 넘었을 때 삭제시키는 mapper -->
+	<delete id="pcRoomDelete">
+		delete from reserved where reservedEndtime <![CDATA[<=]]> sysdate
+	</delete>
+	
+	<!-- 케쉬 구매하는 mapper -->
+	<update id="buyCashEnd">
+		update member set memberCash = memberCash+#{cash} where memberId = #{memberId}
+	</update>
+	
+	
+	<!-- 지도에 핑 찍기 위한 mapper -->
+	<select id="pcRoomDetail" resultType = "pcRoomDetail">
+		select * from pcRoomDetail
+	</select>
 </mapper>

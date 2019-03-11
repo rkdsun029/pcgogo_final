@@ -5,7 +5,7 @@
 <configuration>
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL"></setting>
-		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
+		<setting name="mapUnderscoreToCamelCase" value="false"></setting>
 	</settings>
 	<typeAliases>
 	   <typeAlias type="project.go.pcgogo.lostandfound.model.vo.LostAndFound" alias="lnfMap"/>
@@ -14,6 +14,9 @@
 	   <typeAlias type="project.go.pcgogo.user.model.vo.Manager" alias="manager"/>
 	   <typeAlias type="project.go.pcgogo.user.model.vo.Member" alias="member"/>
 	   
+	   
+	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoomDetail" alias="pcRoomDetail"/>
+	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoomRsvDetail" alias="pcRoomRsvDetail"/>
 	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoomRsv" alias="pcRoomRsv"/>
 	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.NowPcStatus" alias="nowPcStatus"/>
 	   <typeAlias type="project.go.pcgogo.pcRoom.model.vo.PcRoomList" alias="pcRoomList"/>
