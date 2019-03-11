@@ -51,4 +51,24 @@ public class UserServiceImpl implements UserService {
 		return userDao.updatePwd(map);
 	}
 
+	@Override
+	public int deleteUser(Map<String, String> options) {
+		return userDao.deleteUser(options);
+	}
+
+	@Override
+	public int updateMember(Map<String, String> values) {
+		return userDao.updateMember(values);
+	}
+
+	@Override
+	public int updateManager(Map<String, String> values) {
+		return userDao.updateManager(values);
+	}
+
+	@Override
+	public List<Object> getReservationLog(Map<String, String> options) {
+		return userDao.getReservationLog(options);
+	}
+
 }

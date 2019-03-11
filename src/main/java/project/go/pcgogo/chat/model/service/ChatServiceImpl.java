@@ -21,8 +21,8 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<Chat> selectByToId(String toId) {
-		return chatDao.selectByToId(toId);
+	public List<Chat> selectByToId(String fromId) {
+		return chatDao.selectByToId(fromId);
 	}
 
 //	@Override

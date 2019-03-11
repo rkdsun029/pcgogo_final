@@ -10,21 +10,31 @@ public class PcRoom implements Serializable{
 	private String pcRoomName;
 	private String pcRoomAddress;
 	private String pcRoomManagerId;
+	private String pcRoomPermitted; 
 	
 	public PcRoom(){}
 	
-	public PcRoom(int pcRoomNo, String pcRoomName, String pcRoomAddress, String pcRoomManagerId) {
+	public PcRoom(String pcRoomName, String pcRoomAddress, String pcRoomManagerId) {
+		super();
+		this.pcRoomName = pcRoomName;
+		this.pcRoomAddress = pcRoomAddress;
+		this.pcRoomManagerId = pcRoomManagerId;
+	}
+
+	public PcRoom(int pcRoomNo, String pcRoomName, String pcRoomAddress, String pcRoomManagerId,
+			String pcRoomPermitted) {
 		super();
 		this.pcRoomNo = pcRoomNo;
 		this.pcRoomName = pcRoomName;
 		this.pcRoomAddress = pcRoomAddress;
 		this.pcRoomManagerId = pcRoomManagerId;
+		this.pcRoomPermitted = pcRoomPermitted;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "PcRoom [pcRoomNo=" + pcRoomNo + ", pcRoomName=" + pcRoomName + ", pcRoomAddress=" + pcRoomAddress
-				+ ", pcRoomManagerId=" + pcRoomManagerId + "]";
+				+ ", pcRoomManagerId=" + pcRoomManagerId + ", pcRoomPermitted=" + pcRoomPermitted + "]";
 	}
 
 	public int getPcRoomNo() {
@@ -50,5 +60,11 @@ public class PcRoom implements Serializable{
 	}
 	public void setPcRoomManagerId(String pcRoomManagerId) {
 		this.pcRoomManagerId = pcRoomManagerId;
+	}
+	public String getPcRoomPermitted() {
+		return pcRoomPermitted;
+	}
+	public void setPcRoomPermitted(String pcRoomPermitted) {
+		this.pcRoomPermitted = pcRoomPermitted;
 	}
 }

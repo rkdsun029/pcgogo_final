@@ -6,30 +6,31 @@ import java.util.List;
 
 public class Post implements Serializable{
 	private static final long serialVersionUID = 1L;
+	private String category; // 게시글 카테고리
 	private int postNo; // FAQ번호
-	private String memberId; // 회원아이디
-	private String postTitle; // FAQ제목
-	private String postWriter; // FAQ작성자
-	private String postContent; // FAQ내용
-	private String postOriginalFile; // FAQ첨부파일(오리지널)
-	private String postRenamedFile; // FAQ첨부파일(바뀐이름)
-	private Date postDate; // FAQ등록일
-	private int postReadCount; // FAQ조회수
-	private String postOpened; // FAQ비공개여부
+	private String postTitle; // 게시글제목
+	private String postWriter; // 작성자
+	private String postContent; // 게시글내용
+	private String postOriginalFile; // 첨부파일 original
+	private String postRenamedFile; // 첨부파일 renamed
+	private Date postDate; // 게시글등록일
+	private int postReadCount; // 조회수
+	private String postOpened; // 공개유무 (기본: 공개('Y'))
 	private int attachNo; // 첨부파일개수
 	private int commentNum; // 댓글개수
-	private List<AttachFile> files;
+	private List<AttachFile> files; // 등록된 첨부파일
+
 	
 	public Post() {
 		super();
 	}
 
-	public Post(int postNo, String memberId, String postTitle, String postWriter, String postContent, 
+	public Post(String category, int postNo, String postTitle, String postWriter, String postContent, 
 			String postOriginalFile, String postRenamedFile, Date postDate, int postReadCount, String postOpened, 
 			int attachNo, int commentNum, List<AttachFile> files) {
 		super();
+		this.category = category;
 		this.postNo = postNo;
-		this.memberId = memberId;
 		this.postTitle = postTitle;
 		this.postWriter = postWriter;
 		this.postContent = postContent;
@@ -42,6 +43,14 @@ public class Post implements Serializable{
 		this.commentNum = commentNum;
 		this.files = files;
 	}
+	
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	public int getPostNo() {
 		return postNo;
@@ -49,14 +58,6 @@ public class Post implements Serializable{
 
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
-	}
-
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
 	}
 
 	public String getPostTitle() {
@@ -148,7 +149,7 @@ public class Post implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Post [postNo=" + postNo + ", memberId=" + memberId + ", postTitle=" + postTitle + ", postWriter="
+		return "Post [category=" + category + ", postNo=" + postNo + ", postTitle=" + postTitle + ", postWriter="
 				+ postWriter + ", postContent" + postContent + ", postOriginalFile=" + postOriginalFile 
 				+ ", postRenamedFile=" + postRenamedFile + ", postDate=" + postDate + ", postReadCount=" 
 				+ postReadCount + ", postOpened=" + postOpened + ", attachNo=" + attachNo + 

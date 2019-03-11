@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="UTF-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="인기 · 추천  PC방" name="pageTitle"></jsp:param>
+	<jsp:param value="" name="pageTitle"></jsp:param>
 </jsp:include>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

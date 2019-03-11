@@ -13,19 +13,39 @@
 
 <style>
 table#pc-info{
+	width:550px;
+	border-collapse:collapse;
+	text-align:center;
+	margin:0 auto;
 	font-family:'Nanum Gothic', sans-serif;
+	font-size:17px;
+}
+table#pc-info tr{
+	padding-bottom:30px;
+}
+div#map{
+	border:1px solid;
+	width:500px;
+	height:500px;
+	margin:0 auto;
 }
 </style>
 <table id="pc-info">
 	<tr>
 		<th>상호명</th>
-		<td>ROMARU PC CAFE</td>
+		<td><input type="text" id="PcRoomName" value="${selectedPcRoom.pcRoomName }" readonly/></td>
+		<td><button id="changePcRoomName">수정</button></td>
 	</tr>
 	<tr>
 		<th>주소</th>
-		<td>서울시 서초구 강남대로 531 삼영빌딩</td>
+		<td>${selectedPcRoom.pcRoomAddress }</td>
+		<td><button id="changePcRoomAddress">주소 변경</button></td>
 	</tr>
 </table>
+<br><br>
+<div id="map">
+	
+</div>
 
 <jsp:include page="/WEB-INF/views/common/managerFixMenu_foot.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

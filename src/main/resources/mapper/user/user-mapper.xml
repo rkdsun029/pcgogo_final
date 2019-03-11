@@ -3,7 +3,7 @@
 <mapper namespace="user">
 	<insert id="insertManager" parameterType="manager">
 		insert into manager values(#{managerId}, #{managerPassword}, #{managerCode}, #{managerCodeImgOriginal},
-		#{managerCodeImgRenamed}, #{managerName}, #{managerPhone}, #{managerEmail}, #{managerAddress}, default, default)
+		#{managerCodeImgRenamed}, #{managerName}, #{managerPhone}, #{managerEmail}, default, default)
 	</insert>
 	<insert id="insertMember" parameterType="member">
 		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default)
@@ -44,4 +44,35 @@
 		update manager set managerPassword=#{newPwd} where managerId=#{userId} 
 		</if>
 	</update>
+	<delete id="deleteUser">
+		delete from ${division}
+		<where>
+			<if test="division == 'manager'">
+				managerId = #{target}
+			</if>
+			<if test="division == 'member'">
+				memberId = #{target}
+			</if>
+		</where>
+	</delete>
+	<update id="updateMember">
+		update member set memberEmail=#{memberEmail}
+		where memberId = #{memberId}
+	</update>
+	<update id="updateManager">
+		update manager set managerPhone=#{managerPhone}, managerEmail=#{managerEmail}
+		where managerId = #{managerId}
+	</update>
+	<select id="getReservationList" resultType="hashmap">
+		select * 
+		from reserved R join pcRoom P on R.reservedPcRoomNo=P.pcRoomNo
+		<where>
+			<if test="division == 'manager'">
+			pcRoomManagerId = #{target}	
+			</if>
+			<if test="division == 'member'">
+			memberId = #{target}
+			</if>
+		</where>
+	</select>
 </mapper>

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -32,6 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import project.go.pcgogo.admin.model.vo.Admin;
+import project.go.pcgogo.common.AdminSingletone;
 import project.go.pcgogo.common.util.Utils;
 import project.go.pcgogo.user.model.service.UserService;
 import project.go.pcgogo.user.model.vo.Manager;
@@ -87,11 +90,9 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/signUpEnd/manager")
-	public String insertManager(Manager manager, @RequestParam("address") String[] address,
+	public String insertManager(Manager manager,
 							   @RequestParam(name="managerCodeImg", required=false) MultipartFile file,
 							   HttpServletRequest request) {
-		String addr = address[0]+" "+address[1];
-		manager.setManagerAddress(addr);
 		
 		//1. 파일업로드
 		String saveDirectory = request.getSession().getServletContext().getRealPath("/resources/upload/register");
@@ -243,54 +244,78 @@ public class UserController {
 								 @RequestParam(value="saveId", defaultValue="N") String isSave,
 								 HttpServletResponse res,
 								 ModelAndView mav){
+		Admin a = AdminSingletone.getInstance().getAdmin();
+		
+		
 		String view ="common/msg";
 		String msg = "";
 		String loc = "/login.do";
-		Object obj = userService.selectOneMember(userId);
 		
-		if("Y".equals(isSave)) {
-			Cookie cook = new Cookie("saveId", userId);
-			cook.setMaxAge(60 * 60 * 24);
-			cook.setPath("/");
-			res.addCookie(cook);
-		}else {
-			Cookie cook = new Cookie("saveId", null);
-			cook.setMaxAge(0);
-			cook.setPath("/");
-			res.addCookie(cook);
-		}
-		
-		if(obj==null) {
-			obj = userService.selectOneManager(userId);
-			if(obj==null) {
-				msg = "존재하지 않는 아이디입니다.";
+		if(a.getAdminId().equals(userId)) {
+			if(a.getAdminPassword().equals(userPwd)) {
+				view = "redirect:/";
+				mav.addObject("loggedInUser", a);
+			}else {
+				msg = "ㄲㅈ세요";
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
 			}
-			else{
-				Manager m = (Manager)obj;
-				if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
+		}else {
+			Object obj = userService.selectOneMember(userId);
+			
+			if("Y".equals(isSave)) {
+				Cookie cook = new Cookie("saveId", userId);
+				cook.setMaxAge(60 * 60 * 24);
+				cook.setPath("/");
+				res.addCookie(cook);
+			}else {
+				Cookie cook = new Cookie("saveId", null);
+				cook.setMaxAge(0);
+				cook.setPath("/");
+				res.addCookie(cook);
+			}
+			
+			if(obj==null) {
+				obj = userService.selectOneManager(userId);
+				if(obj==null) {
+					msg = "존재하지 않는 아이디입니다.";
+					mav.addObject("msg", msg);
+					mav.addObject("loc", loc);
+				}
+				else{
+					Manager m = (Manager)obj;
+					if(pwdEncoder.matches(userPwd, m.getManagerPassword())) {
+						if("Y".equals(m.getManagerPermitted())) {
+							mav.addObject("loggedInUser", m);
+							view = "redirect:/";
+						}else {
+							msg = "승인되지 않은 계정입니다. 승인 후 이용가능합니다.";
+							mav.addObject("msg", msg);
+							mav.addObject("loc", loc);	
+						}
+					}
+					else {
+						msg = "비밀번호가 일치하지 않습니다";
+						mav.addObject("msg", msg);
+						mav.addObject("loc", loc);
+					}
+				}
+			}else {
+				Member m = (Member)obj;
+				if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
 					mav.addObject("loggedInUser", m);
+					m.setIsSocial("member");
 					view = "redirect:/";
 				}
 				else {
-					logger.info(userPwd);
-					logger.info(m.getManagerPassword());
 					msg = "비밀번호가 일치하지 않습니다";
+					mav.addObject("msg", msg);
+					mav.addObject("loc", loc);
 				}
 			}
-		}else {
-			Member m = (Member)obj;
-			if(pwdEncoder.matches(userPwd, m.getMemberPassword())) { 
-				mav.addObject("loggedInUser", m);
-				m.setIsSocial("member");
-				view = "redirect:/";
-			}
-			else {
-				msg = "비밀번호가 일치하지 않습니다";
-			}
 		}
+
 		mav.setViewName(view);
-		mav.addObject("msg", msg);
-		mav.addObject("loc", loc);
 		return mav;
 	}
 	
@@ -339,10 +364,18 @@ public class UserController {
 	@RequestMapping(value="/myPage")
 	public ModelAndView goMyPage(ModelAndView mav, HttpSession session) {
 		Object o = session.getAttribute("loggedInUser");
-		if(o instanceof Manager) {mav.setViewName("user/myPage_manager");}
-		else if(o instanceof Member) {mav.setViewName("user/myPage_member");}
+		if(o instanceof Manager) {
+			mav.setViewName("user/myPage_manager");
+			o = userService.selectOneManager(((Manager) o).getManagerId());
+		}
+		else if(o instanceof Member) {
+			mav.setViewName("user/myPage_member");
+			o = userService.selectOneMember(((Member) o).getMemberId());
+			((Member) o).setIsSocial("member");
+		}
 		logger.info(o);
-		
+		session.invalidate();
+		mav.addObject("loggedInUser", o);
 		return mav;
 	}
 	
@@ -386,6 +419,78 @@ public class UserController {
 		mav.addObject("msg","비밀번호 수정 성공!");
 		mav.addObject("popup", "self.close();");
 		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/deleteUser/{division}")
+	public ModelAndView deleteUser(@RequestParam("target") String target, ModelAndView mav,
+									@PathVariable String division) {
+		Map<String, String> options = new HashMap<>();
+		options.put("division", division);
+		options.put("target", target);
+		int result = userService.deleteUser(options);
+		String msg = result>0?"서비스를 이용해주셔서 감사합니다.":"탈퇴에 실패하셨습니다. 다시 시도해주세요.";
+		String loc = result>0?"/logout.do":"/myPage";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/update/member")
+	public ModelAndView updateMember(ModelAndView mav, @RequestParam("memberEmail") String memberEmail,
+									 @RequestParam("memberId") String memberId) {
+		Map<String, String> values = new HashMap<>();
+		values.put("memberId", memberId);
+		values.put("memberEmail", memberEmail);
+		int result = userService.updateMember(values);
+		String msg = result>0?"수정이 완료되었습니다.":"수정에 실패하였습니다.";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", "/myPage");
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/update/manager")
+	public ModelAndView updateManager(ModelAndView mav, @RequestParam("managerPhone") String managerPhone, 
+										@RequestParam("managerEmail") String managerEmail, @RequestParam("managerId") String managerId) {
+		Map<String, String> values = new HashMap<>();
+		values.put("managerId", managerId);
+		values.put("managerPhone", managerPhone);
+		values.put("managerEmail", managerEmail);
+		int result = userService.updateManager(values);
+		String msg = result>0?"수정이 완료되었습니다.":"수정에 실패하였습니다.";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", "/myPage");
+		mav.setViewName("common/msg");
+		return mav;
+	}
+	
+	@RequestMapping("/reservationLog.do")
+	public ModelAndView goReservedLog(ModelAndView mav, HttpSession session) {
+		String target;
+		String division;
+		String view;
+		
+		Object o = session.getAttribute("loggedInUser");
+		if(o instanceof Member) {
+			target = ((Member) o).getMemberId();
+			division = "member";
+			view = "manager/reservationList";
+		} else {
+			target = ((Manager) o).getManagerId();
+			division = "manager";
+			view = "user/reservationLog";
+		}
+		
+		Map<String, String> options = new HashMap<>();
+		options.put("target", target);
+		options.put("division", division);
+		
+		List<Object> reservationLog = userService.getReservationLog(options);
+		logger.info(reservationLog);
+		mav.addObject("reservationLog", reservationLog);
+		mav.setViewName(view);
 		return mav;
 	}
 }

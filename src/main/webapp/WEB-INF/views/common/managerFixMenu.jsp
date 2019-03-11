@@ -10,6 +10,25 @@ $(function(){
 	$("div#managerCommunity").on("click", function(){
 		location.href = "${pageContext.request.contextPath}/manager/managerCommunity.do";
 	});
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/manager/getPcRoomList.do",
+		dataType : "json",
+		success : function(data){
+			console.log(data);
+			if(data == null) $("span#pcRoomName").html("등록한 피시방이 없습니다.");
+			else $("span#pcRoomName").html(data.pcRoomName);
+			console.log("AJAX SUCCEED");
+		},
+		error : function(data){
+			console.log("AJAX FAILED");
+		}
+	});
+	
+	$("span#change").on("click", function(){
+		window.open("${pageContext.request.contextPath}/manager/convertPcRoom.do",
+				"pc방 전환", "width=700, height=500, left=50, top=50");
+	});
 });
 </script>
 <div id="outer-container">
@@ -17,11 +36,11 @@ $(function(){
 		<div class="card"><span>내 점포 관리하기</span></div>
 		<div class="sub-card">
 			<ul id="sub-card-list">
-				<li>ROMARU PC CAFE&nbsp;&nbsp;&nbsp;<span id="change">전환 &gt;</span></li>
+				<li><span id="pcRoomName"></span>&nbsp;&nbsp;&nbsp;<span id="change">전환 &gt;</span></li>
 				<li><a href="${pageContext.request.contextPath }/manager/pcRoomView_manager.do">- 기본정보</a></li>
 				<li><a href="${pageContext.request.contextPath }/manager/placement.do">- 자리배치도</a></li>
 				<li><a href="${pageContext.request.contextPath }/manager/priceList.do">- 가격표</a></li>
-				<li><a href="${pageContext.request.contextPath }/manager/reservationList.do">- 예약현황</a></li>
+				<li><a href="${pageContext.request.contextPath }/reservationLog.do">- 예약현황</a></li>
 				<li><a href="#">- 광고문의</a></li>
 			</ul>
 		</div>

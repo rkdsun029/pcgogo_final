@@ -47,7 +47,7 @@ ul#main-menu{
     font-weight:bold;
     position:relative;
     top:-5px;
-    margin-left:100px;
+    margin-left:400px;
 }
 ul#main-menu li{
     display:inline-block;
@@ -147,4 +147,11 @@ hr{
 }
 a#manager{
 	margin-left:360px;
+}
+img#goToTalk{
+	width:100px;
+	height:25px;
+	position:relative;
+	top:7px;
+	cursor:pointer;
 }

@@ -24,4 +24,12 @@ public interface UserDao {
 
 	int updatePwd(Map<String, String> map);
 
+	int deleteUser(Map<String, String> options);
+
+	int updateMember(Map<String, String> values);
+
+	int updateManager(Map<String, String> values);
+
+	List<Object> getReservationLog(Map<String, String> options);
+
 }

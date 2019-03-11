@@ -9,7 +9,7 @@ public interface ChatService {
 
 	int insertChat(InsertChat chat);
 
-	List<Chat> selectByToId(String toId);
+	List<Chat> selectByToId(String fromId);
 
 //	Chat messageView(String toId);
 

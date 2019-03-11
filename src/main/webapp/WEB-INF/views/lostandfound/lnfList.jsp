@@ -21,6 +21,8 @@ table#lostandfound-help{
 	font-size:17px;
 	text-align:center;
 	margin-top:20px;
+	float: left;
+	margin-left: 140px;
 }
 table#lostandfound-help th, table#lostandfound-help td{
 	height:30px;
@@ -36,6 +38,7 @@ div#search-bar{
 	margin:0 auto;
 	margin-top:30px;
 	margin-bottom:30px;
+	padding-top: 70px;
 }
 div#search-bar h3{
 	display:inline-block;
@@ -81,6 +84,7 @@ table#lnfList{
 input#btn-add{
 	float:right; 
 	margin: 0 0 15px;
+	margin-right:70px;
 	display:inline-block;
 	width:100px;
 	height:35px;
@@ -92,6 +96,10 @@ input#btn-add{
 	font-family:'Nanum Gothic', sans-serif;
 	cursor:pointer;
 }
+p{
+margin-left:70px;
+}
+
 </style>
 
 <div id="lostandfound-container">
@@ -115,6 +123,7 @@ input#btn-add{
 			<option value="L5" id="value5">분류5 : 기타</option>
 		</select>
 		&nbsp;&nbsp;&nbsp;
+		<br><br>
 		<form name="lofSearchNameFrm" id="lofSearchNameFrm" onsubmit="return false;">
 		<input type="text" id="lnfName" name="lnfName" placeholder="물품을 입력해주세요."/>
 		&nbsp;&nbsp;&nbsp;
@@ -128,13 +137,16 @@ input#btn-add{
 
 		</script>
 	</div>   
-	<div>
+	<div><br><br><br><br>
+	<%-- <c:if test="${loggedInUser.isSocial == 'admin' }"> --%>
 	<input type="button" value="분실물 등록" id="btn-add" class="btn btn-outline-success" onclick="fn_golnfForm();"/>
+	<%-- </c:if> --%>
 	</div>
 	<div id="lnfList-container">
-	<p>총 ${totalContents }건의 분실물이 있습니다.</p>
 	
-		<table id="lnfList">
+	<p>총 <strong>${totalContents }</strong>건의 분실물이 있습니다.</p>
+	
+		<table id="lnfList" class="table table-hover">
 			<tr>
 				<th>번호</th>
 				<th>분류</th>
@@ -148,7 +160,7 @@ input#btn-add{
 			<tr no="${lnf.LNFNO}">
 				<td>${lnf.LNFNO}</td>
 				<td>${lnf.LNFTYPE}</td>
-				<td>${lnf.LNFNAME}</td>
+				<td><strong>${lnf.LNFNAME}</strong></td>
 				<td>${lnf.LNFPCROOMNAME}</td>		
 				<td><fmt:formatDate value="${lnf.LNFGETDATE}" 
 							 	type="date"/></td>
@@ -199,12 +211,12 @@ input#btn-add{
 		  			type: "get",
 		  			success: function(data){
 		  				console.log(data);
-		                var html = "<p>총 "+data.selectContents+"건의 분실물이 있습니다.</p><table id='lnfList'>";
+		                var html = "<p>총 <strong>"+data.selectContents+"</strong>건의 분실물이 있습니다.</p><table id='lnfList' class='table table-hover'>";
 		                html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>보관중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
 		                for(var i in data.list){
 		                	html += "<tr no='" + data.list[i].lnfNo + "'><td>"+data.list[i].lnfNo+"</td>";
 		                    html += "<td>"+data.list[i].lnfType+"</td>";
-		                    html += "<td>"+data.list[i].lnfName+"</td>";
+		                    html += "<td><strong>"+data.list[i].lnfName+"</strong></td>";
 		                    html += "<td>"+data.list[i].lnfPcRoomName+"</td>";
 		                    html += "<td>"+new Date(data.list[i].lnfGetDate).toISOString().slice(0,10)+"</td>";
 		                    html += "<td>"+data.list[i].lnfStatus+"</td></tr>";
@@ -235,12 +247,12 @@ input#btn-add{
 	            success:function(data){
 	                console.log(data);
 	                //리턴데이터가 null인 경우, json으로 변환불가. 빈 Menu객체를 전달함.
-	        		var html = "<p>총 "+data.selectLnfNameCount+"건의 분실물이 있습니다.</p><table id='lnfList'>";	        		
+	        		var html = "<p>총 <strong>"+data.selectLnfNameCount+"</strong>건의 분실물이 있습니다.</p><table id='lnfList' class='table table-hover'>";	        		
 		                html+="<tr><th>번호</th><th>분류</th><th>물품명</th><th>보관중인 pc방</th><th>습득날짜</th><th>상태</th></tr>";
 		                for(var i in data.selectList){
 		                    html += "<tr ><td>"+data.selectList[i].lnfNo+"</td>";
 		                    html += "<td>"+data.selectList[i].lnfType+"</td>";
-		                    html += "<td>"+data.selectList[i].lnfName+"</td>";
+		                    html += "<td><strong>"+data.selectList[i].lnfName+"</strong></td>";
 		                    html += "<td>"+data.selectList[i].lnfPcRoomName+"</td>";
 		                    html += "<td>"+new Date(data.selectList[i].lnfGetDate).toISOString().slice(0,10)+"</td>";
 		                    html += "<td>"+data.selectList[i].lnfStatus+"</td></tr>";

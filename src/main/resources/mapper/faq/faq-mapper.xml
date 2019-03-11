@@ -3,11 +3,14 @@
 <mapper namespace="faq">
 
 	<!-- FAQ게시판 전체보기 쿼리 -->
- 	<select id="selectFaqList" resultMap="faqMap">
-		select A.*,
-			(select count(*) from faqattach where a_postno = a.postno) attachno
-			from faq A
+ 	<select id="selectFaqList" parameterType="faq" resultMap="faqMap"> 	
+		select *
+		from faq
 		order by postno desc
+		<!-- select A.*,
+			(select count(*) from faqattach where a_postno = A.postno) attachno
+			from faq A
+		order by postno desc -->
 	</select>
 	<resultMap type="map" id="faqMap">
 	
@@ -15,75 +18,173 @@
 	
 	<!-- FAQ게시판 전체 컨텐츠 수 -->
  	<select id="selectFaqTotalContents" resultType="_int">
-	    select count(*) from faq
+	    select count(*) 
+	    from faq
 	</select>
 
 	<!-- FAQ게시판 검색된 리스트보기 쿼리 -->
- 	<select id="selectSearchList" resultType="faq">
+ 	<select id="selectSearchFaqList" parameterType="faq" resultMap="faqMap">
 	 	select *
 	 	from faq
-	 	<if test="searchKeyword != null">
-	 	where posttititle like '%${searchKeyword}%' or postcontent like '%${searchKeyword}%' 
-	 	</if>
+	 	<choose>
+	 		<when test="searchOption == 'title'">
+	 			where posttitle like '%'||#{searchKeyword}||'%'
+	 		</when>
+	 		<when test="searchOption == 'content'">
+	 			where postcontent like '%'||#{searchKeyword}||'%'
+	 		</when>
+	 		<when test="searchOption == 'titleAndContent'">
+	 			where posttitle like '%'||#{searchKeyword}||'%' 
+	 			and postcontent like '%'||#{searchKeyword}||'%'
+	 		</when>
+	 		<when test="searchOption == 'writer'">
+	 			where postwriter like '%'||#{searchKeyword}||'%'
+			</when>
+			<otherwise>
+	 		</otherwise>
+	 	</choose>
 		order by postno desc
 	</select>
-	
-	<!-- FAQ게시판 검색된 컨텐츠 수	 -->
+	<!-- FAQ게시판 검색된 컨텐츠 수 -->
 	<select id="selectSearchFaqTotalContents" resultType="_int">
 		select count(*)
 		from faq
-		<if test="searchKeyword != null">
-	 	where posttititle like '%${searchKeyword}%' or postcontent like '%${searchKeyword}%'
-	 	</if>
+		<choose>
+	 		<when test="searchOption == 'title'">
+	 			where posttitle like '%'||#{searchKeyword}||'%'
+	 		</when>
+	 		<when test="searchOption == 'content'">
+	 			where postcontent like '%'||#{searchKeyword}||'%'
+	 		</when>
+	 		<when test="searchOption == 'titleAndContent'">
+	 			where posttitle like '%'||#{searchKeyword}||'%' 
+	 			and postcontent like '%'||#{searchKeyword}||'%'
+	 		</when>
+	 		<when test="searchOption == 'writer'">
+	 			where postwriter like '%'||#{searchKeyword}||'%'
+			</when>
+			<otherwise>
+				
+	 		</otherwise>
+	 	</choose>
 	</select>
 	
 	<!-- FAQ게시판 상세보기 -->
  	<select id="selectFaqView" parameterType="faq">
-		select postno, posttitle, postwriter, postcontent, postdate, postreadcount, postopened
+		select *
 		from faq
 		where postno = #{postno}
 	</select>
 	
+	<!-- FAQ게시판 상세보기 첨부파일 -->
+	<select id="selectFaqAttachView" resultType="attachFile">
+		select *
+		from faqattach B 
+		where #{postno} = postno 
+		order by postno desc
+	</select>
+	
 	<!-- FAQ게시판 게시글 조회수 올리기 -->
 	<update id="increaseReadCount">
-		update faq set postreadcount = postreadcount + 1 where postno = #{postno}
+		update faq 
+		set postreadcount = postreadcount + 1 
+		where postno = #{postno}
+	</update>
+	
+	<!-- FAQ게시판 첨부파일 다운로드수 올리기 -->
+	<!-- faq join -->
+	<update id="increaseDownloadCount">
+		updaate faqattach
+		set downloadcount = downloadcount + 1 
+		where postno = #{postno}
 	</update>
 	
 	<!-- FAQ게시판 글쓰기 -->
- 	<insert id="insertFaq" parameterType="faq">	
-		insert into faq
-		values(seq_faq_postno.nextval, #{memberid}, #{posttitle}, #{postcontent}, sysdate, #{postopened})
+	<!-- faqattach join -->
+ 	<insert id="insertFaq">	
+		insert into faq (category, postno, posttitle, postwriter, postcontent, 
+		postoriginalfilename, postrenamedfile, 
+		postdate, postopened, attachno)
+		values(#{category}, seq_faq_postno.nextval, #{posttitle}, #{postwriter}, #{postcontent}, 
+		#{postoriginalfilename}, #{postrenamedfile}, 
+		sysdate, #{postopened}, #{attachno})
+	</insert>
+	
+	<!-- FAQ게시판 첨부파일 올리기 -->
+	<insert id="insertFaqAttach">
+		insert into faqattach (attachno, postno, postoriginalfilename, 
+		postrenamedfilename, uploaddate, status)
+		values(seq_faqattach_attachno.nextval, seq_faqattach_postno.nextval, 
+		#{postoriginalfilename}, #{postrenamedfilename}, sysdate, #{status})
 	</insert>
 	
 	<!-- FAQ게시판 수정 -->
-	<update id="updateFaq" parameterType="faq">
-		update faq set(posttitle = #{posttitle}, postcontent = #{postcontent}, postopened = #{postopened})
+	<update id="updateFaq">
+		update faq 
+		set posttitle = #{posttitle}, postcontent = #{postcontent}, postopened = #{postopened}
+		where postno = #{postno}
 	</update>
 	
+	<!-- FAQ게시판 첨부파일 수정 -->
+	<update id="updateFaqFile">
+		update faqattach
+		set postoriginalfilename = #{postoriginalfilename}, postrenamedfile = #{postrenamedfile}, 
+		uploaddate = sysdate, downloadcount = 0
+		where attachno = #{attachno}
+	</update>
+	
+		
+	<!-- FAQ게시판 첨부파일 삭제 -->
+	<delete id="deleteFaqFile">
+		delete from faqattach
+		where attachno = #{attachno}
+	</delete>
+	
 	<!-- FAQ게시판 삭제 -->
-	<delete id="deleteFaq" parameterType="int">
+	<delete id="deleteFaq">
 		delete from faq
 		where postno = #{postno}
 	</delete>
 	
-	<!-- FAQ게시판 댓글보기 -->
-	<select id="selectComment">
+	<!-- FAQ게시판 게시글에 달린 댓글 수 세기 -->
+	<select id="faqCommentNum" resultType="_int">
+		select *
+		from faq
+		where commentnum = #{commentnum}
+	</select>
+	
+	<!-- FAQ게시판 게시글의 댓글보기 -->
+	<select id="selectFaqCommentList" parameterType="faqComment">
 		select *
 		from c_faq
 		where o_postno = #{o_postno}
+		order by c_postno desc
 	</select>
 	
-	<!-- FAQ게시판 댓글 전체 수-->
-	<select id="selectFaqTotalComment">
+	<!-- FAQ게시판 전체 댓글 수-->
+	<select id="selectFaqTotalComment" resultType="_int">
 	 	select count(*)
 		from c_faq
 	</select>
 	
 	<!-- FAQ게시판 댓글쓰기 -->
 	<insert id="insertComment">
-		insert into c_faq 
-		values(seq_c_faq_c_postno.nextval, seq_c_faq_o_postno.nextval, #{c_memberid}, #{c_postwriter}, sysdate, #{c_content})
+		insert into c_faq (c_postno, o_postno, c_postwriter, c_postenrolldate, c_content)
+		values(seq_c_faq_c_postno.nextval, seq_c_faq_o_postno.nextval, #{c_postwriter}, sysdate, #{c_content})
 	</insert>
+	
+	<!-- FAQ게시판 댓글쓰면 해당게시글 댓글 수 올리기 -->
+	<update id="increaseCommentNumCount">
+		update faq 
+		set commentnum = commentnum + 1 where postno = #{o_postno}
+	</update>
+	
+	<!-- FAQ게시판 게시글에 달린 댓글 수 -->
+	<select id="selectFaqCommentTotalContents" resultType="_int">
+		select count(*)
+		from c_faq
+		where o_postno = #{o_postno}
+	</select>
 	
 	<!-- FAQ게시판 댓글수정 -->
 	<update id="updateComment">

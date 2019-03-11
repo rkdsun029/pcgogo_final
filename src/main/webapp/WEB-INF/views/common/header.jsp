@@ -46,7 +46,9 @@ $(function(){
         $("#quick-menu").animate({"top": (top+100)}, 50);
     });
     
-    $("#menu3").on("click", function(){location.href = "";});
+    $("img#goToTalk").on("click", function(){
+    	location.href = "${pageContext.request.contextPath}/chat/chatting.do";
+    });
 });
 </script>
 </head>
@@ -55,11 +57,10 @@ $(function(){
         <a href="${pageContext.request.contextPath }" id="main-title"><h1 id="head-title">PCGOGO.COM</h1></a>
         <ul id="main-menu">
             <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">PC방 검색</a></li>
-            <li><a href="#">인기 PC방</a></li>
             <li><a href="${pageContext.request.contextPath }/lostandfound/lnfList.do">분실물 찾기</a></li>
-            <li><a href="${pageContext.request.contextPath }/pcRoom/pcRoom.do">피시방 자리현황</a></li>
             <li><a href="${pageContext.request.contextPath }/manager/manager.do">사장님 메뉴</a></li>
-            <li><a href="#">고객센터</a></li>
+            <li><a href="${pageContext.request.contextPath }/faq/faq.do">고객센터</a></li>
+            <li><img id="goToTalk" src="${pageContext.request.contextPath }/resources/image/header/gogotalk_logo.png" alt="" /></li>
         </ul>
 
     </div>
@@ -72,24 +73,35 @@ $(function(){
         <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
     </c:if>
     <c:if test="${loggedInUser != null }">
-    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
-    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
-        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
-        onclick="logout();" />로그아웃</div>
-        <div class="quick" id="menu5"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" 
-        onclick="buyCash()"/>케쉬충전</div>
-        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" />예약내역</div>
-        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
-        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
-        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    	<c:if test="${loggedInUser.isSocial != 'admin' }">
+	    	<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
+	    	onclick="location.href='${pageContext.request.contextPath}/myPage'"/>내 정보</div>
+	        <div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+	        onclick="logout();" />로그아웃</div>
+	        <c:if test="${loggedInUser.isSocial != 'manager'}">
+	        	<div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/order.png" alt="" 
+	        	onclick="location.href='${pageContext.request.contextPath}/reservationLog.do'"/>예약내역</div>
+	        </c:if>
+	        <c:if test="${loggedInUser.isSocial == 'manager'}">
+		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/user/register/manager.png" alt="" 
+		        onclick="location.href='${pageContext.request.contextPath}/manager/manager.do'"/>사장님메뉴</div>
+	        </c:if>
+	        <div class="quick" id="menu4"><img src="${pageContext.request.contextPath }/resources/image/header/chat2.png" alt="" 
+	        onclick="location.href='${pageContext.request.contextPath}/chat/chatting.do'"/>채팅</div>
+    	</c:if>
+        <c:if test="${loggedInUser.isSocial == 'admin' }">
+        	<div class="quick" id="menu2"><img src="${pageContext.request.contextPath }/resources/image/header/logout.png" alt="" 
+	        onclick="logout();" />로그아웃</div>
+        	<div class="quick"><img src="${pageContext.request.contextPath }/resources/image/header/building.png" alt="" 
+        	onclick="location.href='${pageContext.request.contextPath}/admin/permissionList.do'"/>승인대기 목록</div>
+        	<div class="quick"><img src="${pageContext.request.contextPath }/resources/image/header/building.png" alt="" 
+        	onclick="location.href='${pageContext.request.contextPath}/admin/pcRoomList.do'"/>업체 목록</div>
+        	<div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/header/help.png" alt="" />FAQ</div>
+        </c:if>
     </c:if>
         <div id="goToTop">▲ TOP</div>
     </div>
     <script>
-    function buyCash(){
-		   window.open("${pageContext.request.contextPath}/pcRoom/buyCash.do?memberId=${loggedInUser.memberId}",
-		   		"뿌뿌링", "width=1000, height=700, left=50, top=20");
-    }
     function logout(){
     	if(confirm("정말로 로그아웃하시겠습니까?")){
 	    	if("${loggedInUser.isSocial}"=="kakao"){

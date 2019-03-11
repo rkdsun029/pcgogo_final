@@ -21,10 +21,10 @@ public class ChatDaoImpl implements ChatDao {
 	}
 
 	@Override
-	public List<Chat> selectByToId(String toId) {
+	public List<Chat> selectByToId(String fromId) {
 		
-		System.out.println("Dao@받는 사람 : " + toId);
-		List<Chat> list = sqlSession.selectList("chat.selectByToId", toId);
+		System.out.println("Dao@받는 사람 : " + fromId);
+		List<Chat> list = sqlSession.selectList("chat.selectByToId", fromId);
 		
 		
 		System.out.println("Dao@채팅있으면~ : " + list);
