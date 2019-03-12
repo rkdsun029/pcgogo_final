@@ -44,4 +44,8 @@ public interface ManagerDao {
 
 	List<Date> getChartData(int pcRoomNo);
 
+	PcRoom getPcRoom(int pcRoomNo);
+
+	int updatePcRoomInfo(PcRoom pr);
+
 }

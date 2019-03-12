@@ -57,9 +57,21 @@
   	select *
 	from(
 		select reservedtime, count(*) as cnt
-		from reserved
+		from (
+			select *
+			from reserved
+			where reservedPcRoomNo = ${value}
+		)
 		group by reservedtime
 		order by reservedtime)
 		where <![CDATA[reservedtime <= (sysdate-1)]]>
   	</select>
+  	<select id="getPcRoom" resultType="pcRoom">
+  		select * from pcRoom where pcRoomNo = ${value}
+  	</select>
+  	<update id="updatePcRoomInfo" parameterType="pcRoom">
+  		update pcRoom
+  		set pcRoomName = #{pcRoomName}, pcRoomAddress = #{pcRoomAddress}
+  		where pcRoomNo = ${pcRoomNo}
+  	</update>
 </mapper>

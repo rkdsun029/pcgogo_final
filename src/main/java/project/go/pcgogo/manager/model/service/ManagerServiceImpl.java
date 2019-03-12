@@ -101,5 +101,15 @@ public class ManagerServiceImpl implements ManagerService{
 		return managerDao.getChartData(pcRoomNo);
 	}
 
+	@Override
+	public PcRoom getPcRoom(int pcRoomNo) {
+		return managerDao.getPcRoom(pcRoomNo);
+	}
+
+	@Override
+	public int updatePcRoomInfo(PcRoom pr) {
+		return managerDao.updatePcRoomInfo(pr);
+	}
+
 	
 }

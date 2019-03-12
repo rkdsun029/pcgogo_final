@@ -91,4 +91,14 @@ public class ManagerDaoImpl implements ManagerDao{
 	public List<Date> getChartData(int pcRoomNo) {
 		return sqlSession.selectList("manager.getChartData", pcRoomNo);
 	}
+
+	@Override
+	public PcRoom getPcRoom(int pcRoomNo) {
+		return sqlSession.selectOne("manager.getPcRoom", pcRoomNo);
+	}
+
+	@Override
+	public int updatePcRoomInfo(PcRoom pr) {
+		return sqlSession.update("manager.updatePcRoomInfo", pr);
+	}
 }

@@ -495,4 +495,20 @@ public class ManagerController {
 		logger.info(chartData);
 		return chartData;
 	}
+	
+	@RequestMapping("/manager/update")
+	public ModelAndView updatePcRoomInfo(PcRoom pr, ModelAndView mav, HttpSession session) {
+		logger.info(pr);
+		int result = managerService.updatePcRoomInfo(pr);
+		if(result>0) {
+			session.removeAttribute("selectedPcRoom");
+			session.setAttribute("selectedPcRoom", managerService.getPcRoom(pr.getPcRoomNo()));
+		}
+		String msg = result>0?"수정이 완료되었습니다.":"수정 실패하였습니다. 다시 시도해주세요.";
+		String loc = "/manager/pcRoomView_manager.do";
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+		mav.setViewName("common/msg");
+		return mav;
+	}
 }
