@@ -120,20 +120,34 @@ public class FAQController {
 	// FAQ게시판 상세보기
 	@RequestMapping(value = "/faq/faqView.do")
 	public ModelAndView faqView(@RequestParam("postNo") int postNo, 
+								@RequestParam(value="cPage", defaultValue="1") int cPage,
 								ModelAndView mav) {
 
 		logger.info("FAQ게시판 상세보기 페이지");
 		logger.info("postNo = " + postNo);
- 
-		List<Map<String, String>> list = faqService.selectFaqView(postNo);
-		List<Map<String, Object>> attachList = faqService.selectFaqAttachView(postNo);
-		System.out.println("list = " + list);
-		System.out.println("attachList = " + attachList);
 		
+		Post p = faqService.selectFaqView(postNo);
+		List<Map<String, Object>> attachList = faqService.selectFaqAttachView(postNo);
+//		System.out.println("list = " + list);
+		System.out.println("attachList = " + attachList);
+		logger.info(p);
 		// 조회수 증가
 		faqService.increaseReadCount(postNo);
 
-		mav.addObject("list", list);
+		// 댓글 페이징
+		int numPerPage = 10;
+
+		List<PostComment> commentList = (List<PostComment>) faqService.selectFaqCommentList(postNo);
+		System.out.println("commentList = " + commentList);
+
+		// 댓글 개수
+		int totalContents = faqService.selectFaqCommentTotalContents(postNo);
+
+		mav.addObject("numPerPage", numPerPage);
+		mav.addObject("commentList", commentList);
+		mav.addObject("totalContents", totalContents);
+		mav.addObject("cPage", cPage);
+		mav.addObject("Post", p);
 		mav.addObject("attachList", attachList);
 		mav.setViewName("faq/faqView");
 		return mav;
@@ -154,7 +168,6 @@ public class FAQController {
 								  ModelAndView mav) {
 
 		logger.info("FAQ게시판 글쓰기 : POST");
-		logger.debug("post = " + post);
 		logger.debug("fileName1="+upFiles[0].getOriginalFilename());
 		logger.debug("size1="+upFiles[0].getSize());
 
@@ -341,48 +354,48 @@ public class FAQController {
 //	}
 
 	// FAQ게시판 댓글 목록(Controller 방식, view를 리턴)
-	@RequestMapping("/faq/faqCmtList.do")
-	public ModelAndView faqCommentList(Post post, 
-									   @RequestParam int postNo, 
-									   @RequestParam(defaultValue = "1") int cPage,
-									   HttpSession session, 
-									   ModelAndView mav) {
-
-		// 댓글 페이징
-		int numPerPage = 10;
-
-		List<Map<String, String>> commentList = faqService.selectFaqCommentList(postNo);
-		System.out.println("commentList = " + commentList);
-
-		// 댓글 개수
-		int totalContents = faqService.selectFaqCommentTotalContents(postNo);
-
-		mav.addObject("numPerPage", numPerPage);
-		mav.addObject("commentList", commentList);
-		mav.addObject("totalContents", totalContents);
-		mav.addObject("cPage", cPage);
-		mav.setViewName("faq/faqView");
-		return mav;
-	}
+//	@RequestMapping("/faq/faqCmtList.do")
+//	public ModelAndView faqCommentList(Post post, 
+//									   @RequestParam int postNo, 
+//									   @RequestParam(value="cPage", defaultValue = "1") int cPage,
+//									   HttpSession session, 
+//									   ModelAndView mav) {
+//
+//		// 댓글 페이징
+//		int numPerPage = 10;
+//
+//		List<Map<String, String>> commentList = faqService.selectFaqCommentList(postNo);
+//		System.out.println("commentList = " + commentList);
+//
+//		// 댓글 개수
+//		int totalContents = faqService.selectFaqCommentTotalContents(postNo);
+//
+//		mav.addObject("numPerPage", numPerPage);
+//		mav.addObject("commentList", commentList);
+//		mav.addObject("totalContents", totalContents);
+//		mav.addObject("cPage", cPage);
+//		mav.setViewName("faq/faqView");
+//		return mav;
+//	}
 
 	// FAQ게시판 댓글 목록(JSON 방식, 데이터를 리턴)
-	@RequestMapping("/faq/faqJsonList.do")
-	@ResponseBody // 리턴 데이터를 json으로 변환
-	public Map<String, Object> faqCommentListJson(@RequestParam int postNo) {
-		logger.info("postNo = " + postNo);
-
-		// 댓글용 페이징
-		int numPerPage = 10;
-
-		int totalContents = faqService.selectFaqCommentTotalContents(postNo);
-
-		List<Map<String, String>> list = faqService.selectFaqCommentList(postNo);
-		Map<String, Object> map = new HashMap<>();
-		map.put("numPerPage", numPerPage);
-		map.put("list", list);
-		map.put("totalContents", totalContents);
-		return map;
-	}
+//	@RequestMapping("/faq/faqJsonList.do")
+//	@ResponseBody // 리턴 데이터를 json으로 변환
+//	public Map<String, Object> faqCommentListJson(@RequestParam int postNo) {
+//		logger.info("postNo = " + postNo);
+//
+//		// 댓글용 페이징
+//		int numPerPage = 10;
+//
+//		int totalContents = faqService.selectFaqCommentTotalContents(postNo);
+//
+//		List<Map<String, String>> list = faqService.selectFaqCommentList(postNo);
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("numPerPage", numPerPage);
+//		map.put("list", list);
+//		map.put("totalContents", totalContents);
+//		return map;
+//	}
 
 	// FAQ게시판 댓글 쓰기
 	@RequestMapping("/faq/insertFaqCmt.do")

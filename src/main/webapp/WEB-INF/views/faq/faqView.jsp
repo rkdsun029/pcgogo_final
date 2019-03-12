@@ -84,58 +84,6 @@ button{
 }
 </style>
 <script>
-//첨부파일 다운
-function fileDownload(originalFileName, renamedFileName){
-	// 한글 파일명에 대비한 인코딩
-	oName = encodeURIComponent(originalFileName);
-	rName = encodeURIComponent(renamedFileName);
-	location.href="${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="+oName+"&renamedFileName="+renamedFileName;
-	
-	event.prenventDefault();
-/*  	var file = event.originalevent.dataTransfer.files
-	var form = document.getElementById("downloadFileFrm");
-	var formData = new formData();
-	formData.appned("file", file); */
-	
-	console.log(file);
-/* 	form.originalFileName.value = originalFileName; */
-	
-	$.ajax({
-		type: "post",
-		url: "${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="+oName+"&renamedFileName="+rName, 
-		data: formData,
-		dataType: "text",
-		processData: false, 
-		contentType: false, 
-		success: function(data) {
-			var str = "";
-			str += "<div><a href='${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="
-					+data+"'>"
-			str +=	"<img src='${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="+data"'></a>";
-		}
-		
-	})
-	
-	/* form.submit(); */
-}
-
-//첨부파일 수정
-$("#btn-updateFile").on("click", function(){
-	if(confirm("첨부파일을 수정하시겠습니까?")) {
-	location.href = "${pageContext.request.contextPaath}/faq/updateFaq.do";
-	}
-	return;
-});
-
-//첨부파일 삭제
-$("#btn-deleteFile").on("click", function(){
-	if(confirm("첨부파일을 삭제하시겠습니까?")){
-		location.href="${pageContext.request.contextPaath}/faq/deleteFaqFile.do";	
-	}
-	return;
-		
-});
-
 //글 수정 & 삭제
 $(document).ready(function(){
 	// 글 수정
@@ -176,15 +124,15 @@ $(document).ready(function(){
 });
 
 //댓글 목록 불러오기(controller 사용)
-function commentList(){
+/* function commentList(){
 	$.ajax({
 		type: "get", 
-		url: "${pageContext.request.contextPath}/faq/faqView.do?postNo=${p.POSTNO}", 
+		url: "${pageContext.request.contextPath}/faq/faqCmtList.do?postNo=${Post.postNo}", 
 		success: function(result) {
 			$("#commentList").html(result);
 		}
 	});
-}
+} */
 
 /*
 //댓글 목록(json-restcontroller 사용)
@@ -237,14 +185,15 @@ $("#updateComment").on("click", function(){
 		$("#postComment").val().focus();
 		return false;
 	}
-	
+	/*
 	$("#commentUpdateEnd").on("click", function() {
 	if(confirm("댓글을 수정하시겠습니까?")) {
 		document.faqCmtUpdateFrm.action = "${pageContext.request.contextPath}/faq/updateFaqCmt.do";
 	$("[name=CommentUpdFrm]").submit();
-	});
+	// }} else {
+		// return });
 	return;
-});
+}); */
 
 //댓글 삭제하기
 $("#deleteComment").on("click", function(){
@@ -272,32 +221,82 @@ $("#replyComment").on("click", function(){
 		})
 });
 
+//첨부파일 다운
+function fileDownload(originalFileName, renamedFileName){
+	// 한글 파일명에 대비한 인코딩
+	oName = encodeURIComponent(originalFileName);
+	rName = encodeURIComponent(renamedFileName);
+	location.href="${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="+oName+"&renamedFileName="+rName;
+	
+	event.prenventDefault();
+/*  	var file = event.originalevent.dataTransfer.files
+	var form = document.getElementById("downloadFileFrm");
+	var formData = new formData();
+	formData.appned("file", file); */
+	
+	// console.log(file);
+/* 	form.originalFileName.value = originalFileName; */
+	
+	$.ajax({
+		type: "post",
+		url: "${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="+oName+"&renamedFileName="+rName, 
+		data: formData,
+		dataType: "text",
+		processData: false, 
+		contentType: false, 
+		success: function(data) {
+			var str = "";
+			str += "<div><a href='${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="
+					+data+"'>"
+			str +=	"<img src='${pageContext.request.contextPath}/faq/downloadFaqFile.do?originalFileName="+data"'></a>";
+		}
+		
+	})
+	
+	/* form.submit(); */
+}
+
+//첨부파일 수정
+$("#btn-updateFile").on("click", function(){
+	if(confirm("첨부파일을 수정하시겠습니까?")) {
+		return;
+	}
+	return;
+});
+
+//첨부파일 삭제
+$("#btn-deleteFile").on("click", function(){
+	if(confirm("첨부파일을 삭제하시겠습니까?")){
+		return;		
+	}
+	return;
+		
+});
 </script>
 <div id="faq-container">
 <form name="faqUpdateFrm" method="post">
-	<c:forEach items="${list}" var="p" varStatus="vs">
 	<div id="faq-category">
-		<strong>카테고리 &nbsp;</strong> ${p.CATEGORY }
+		<strong>카테고리 &nbsp;</strong> ${Post.category }
 	</div>
  	<div id="faq-no">
- 		<strong>글 번호 &nbsp;</strong> ${p.POSTNO }
+ 		<strong>글 번호 &nbsp;</strong> ${Post.postNo }
  	</div>
  	<div id="faq-title">
 	 	<label for="postTitle"><strong>제목&nbsp;</strong></label>
-	 	<input type="text" class="form-control" name="postTitle" id="postTitle" value="${p.POSTTITLE }" required/>
+	 	<input type="text" class="form-control" name="postTitle" id="postTitle" value="${Post.postTitle }" required/>
  	</div>
 	<div id="faq-writer">
-		<strong>작성자 &nbsp;</strong> ${p.POSTWRITER }
+		<strong>작성자 &nbsp;</strong> ${Post.postWriter }
 	</div>
 	<div id="faq-date">
-		<strong>작성일 &nbsp;</strong> <fmt:formatDate value="${p.POSTDATE }" pattern="yyyy-MM-dd HH:mm:ss"/>
+		<strong>작성일 &nbsp;</strong> <fmt:formatDate value="${Post.postDate }" pattern="yyyy-MM-dd"/>
 	</div>
 	<div id="faq-readcount">
-		<strong>조회수 &nbsp;</strong> ${p.POSTREADCOUNT }
+		<strong>조회수 &nbsp;</strong> ${Post.postReadCount }
 	</div>
 	<div id="faq-content">
 		<label for="postContent"><strong>내용&nbsp;</strong></label>
-		<textarea name="postContent" id="postContent" cols="100" rows="20" required>${p.POSTCONTENT }</textarea>	 
+		<textarea name="postContent" id="postContent" cols="100" rows="20" required>${Post.postContent }</textarea>	 
 	</div>
    	<!-- 공개/비공개 설정 -->
 	<div id="faq-postOpened">
@@ -307,17 +306,24 @@ $("#replyComment").on("click", function(){
 		<input type="radio" name="postOpened" id="postOpened2" value="n"/>
 		<label for="postOpened2">관리자에게만 공개</label>
 	</div>
-	 </c:forEach>
 	<br />
 	
+	<!-- 로그인된 아이디가 작성자 아이디와 같아도 수정, 삭제 버튼이 나오지 않음 -->
+	<!-- 본인이 작성한 게시글만 수정, 삭제 가능 -->
+	<c:if test="${loggedInUser == Post.postWriter }">
+		<button id="btn-delete">수정</button>
+		<button id="btn-update">삭제</button>
+	</c:if>
+
+	</form>
+	
+	<!-- 첨부파일 등록, 수정, 삭제 버튼이 나오지 않음 -->
+	<!-- 다운로드 버튼 누를시 console창에서 Uncaught ReferenceError: fileDownload is not defined 에러 발생 -->
 	<!-- 첨부파일 -->
 	<c:forEach items="${attachList}" var="a" varStatus="vs">
 		파일명: ${a.originalFileName } 
-		<br />
-		다운로드 수: ${vs.downloadCount}
-		<button type="button"
-				onclick="fileDownload('${a.originalFileName}','${a.renamedFileName }');">
-			다운로드
+		<button type="button" onclick="fileDownload('${a.originalFileName}, ${a.renamedFileName}');">
+		다운로드
 		</button>
 		<br />
 	</c:forEach>
@@ -328,14 +334,9 @@ $("#replyComment").on("click", function(){
 		<button id="btn-deleteFile" onclick="deleteFile();">파일 삭제</button>
 	</c:if>
  	<br />
-	<!-- 본인이 작성한 게시글만 수정, 삭제 가능 -->
-	<c:if test="${loggedInUser == p.postWriter }">
-		<button id="btn-delete">수정</button>
-		<button id="btn-update">삭제</button>
-	</c:if>
 	</c:forEach>
-	</form>
 
+<!-- 댓글 페이징바만 불러오기가 되며 댓글 작성칸, 댓글 리스트가 뜨지 않음 -->
 <div id="faq-commemt-list">
 	<c:forEach items="${commentList}" var="c">
 	<!-- 게시글 작성자가 본인/관리자일 때만 댓글 달기 가능 -->
@@ -359,10 +360,10 @@ $("#replyComment").on("click", function(){
 		<c:when test="${fn:length(commentList) > 0}">
 		<c:forEach items="list" var="p">
 			<tr>
-				<td>${c.C_POSTNO }</td>
-				<td>${c.C_POSTWRITER }</td>
-				<td>${c.C_POSTENROLLDATE }</td>
-				<td><textarea id="postComment" required></textarea>${c.C_CONTENT }</td>
+				<td>${c.c_postNo }</td>
+				<td>${c.c_postWriter }</td>
+				<td>${c.c_postEnrollDate }</td>
+				<td><textarea id="postComment" required></textarea>${c.c_content }</td>
 			</tr>
 		</c:forEach>
 		</c:when>
@@ -389,6 +390,7 @@ $("#replyComment").on("click", function(){
 		</c:if>
 		</c:forEach>
 	</div>
+	
 	<!-- 댓글 페이징-->
 	<% 
 	int totalContents = (int)request.getAttribute("totalContents");

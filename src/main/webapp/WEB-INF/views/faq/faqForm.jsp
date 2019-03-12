@@ -120,16 +120,27 @@ $(document).ready(function(){
 		// 폼에 입력한 데이터를 서버로 전송
 		document.faqFrm.submit;
 	});
+		
+}
 
-	//등록취소
-	$("#btn-cancel").click(function(){
-		if(confirm("등록을 취소하시겠습니까?")){
-			location.href="${pageContext.request.contextPath }/faq/faq.do";
-		} else {
-			return false;
-		}
+//등록취소
+$("#btn-cancel").click(function(){
+	if(confirm("등록을 취소하시겠습니까?")){
+		location.href="${pageContext.request.contextPath }/faq/faq.do";
+	} else {
+		return false;
+	}
+});
+
+//부트스트랩 : 파일변경시 파일명 보이기
+$(function(){
+	$("[name=upFile]").on('change', function(){
+		//var fileName = $(this).val();
+		console.log($(this));
+		var fileName = $(this).prop("files")[0].name;
+		$(this).next(".custom-file-label").html(fileName);
 	});
-
+})
 </script>
 <form name="faqFrm" 
 	  action="${pageContext.request.contextPath }/faq/insertFaq.do" 
@@ -193,20 +204,9 @@ $(document).ready(function(){
 		</div>
 		<br />
 		
+		<!-- 작성, 취소 버튼 누를 시 400 오류 발생 -->
 		<input type="submit" id="btn-submit" value="작성">
 		<button id="btn-cancel">취소</button>
-<script>
-//부트스트랩 : 파일변경시 파일명 보이기
-$(function(){
-	$("[name=upFile]").on('change', function(){
-		//var fileName = $(this).val();
-		console.log($(this));
-		var fileName = $(this).prop("files")[0].name;
-		$(this).next(".custom-file-label").html(fileName);
-	});
-});
-
-</script>
 </div> 
 </form>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

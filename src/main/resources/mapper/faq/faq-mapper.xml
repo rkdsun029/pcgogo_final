@@ -115,7 +115,7 @@
 	
 	<!-- FAQ게시판 글쓰기 -->
 	<!-- faqattach join -->
- 	<insert id="insertFaq">	
+ 	<insert id="insertFaq" parameterType="faq">	
 		insert into faq (category, postno, posttitle, postwriter, postcontent, 
 		postoriginalfilename, postrenamedfile, 
 		postdate, postopened, attachno)
@@ -125,7 +125,7 @@
 	</insert>
 	
 	<!-- FAQ게시판 첨부파일 올리기 -->
-	<insert id="insertFaqAttach">
+	<insert id="insertFaqAttach" parameterType="attachFile">
 		insert into faqattach (attachno, postno, postoriginalfilename, 
 		postrenamedfilename, uploaddate, status)
 		values(seq_faqattach_attachno.nextval, seq_faqattach_postno.nextval, 
@@ -168,10 +168,10 @@
 	</select>
 	
 	<!-- FAQ게시판 게시글의 댓글보기 -->
-	<select id="selectFaqCommentList" parameterType="faqComment">
+	<select id="selectFaqCommentList" parameterType="_int" resultType="faqComment">
 		select *
 		from c_faq
-		where o_postno = #{o_postno}
+		where o_postno = #{value}
 		order by c_postno desc
 	</select>
 	
@@ -182,7 +182,7 @@
 	</select>
 	
 	<!-- FAQ게시판 댓글쓰기 -->
-	<insert id="insertComment">
+	<insert id="insertComment" parameterType="faqComment">
 		insert into c_faq (c_postno, o_postno, c_postwriter, c_postenrolldate, c_content)
 		values(seq_c_faq_c_postno.nextval, seq_c_faq_o_postno.nextval, #{c_postwriter}, sysdate, #{c_content})
 	</insert>
