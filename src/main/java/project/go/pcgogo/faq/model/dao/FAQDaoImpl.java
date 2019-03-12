@@ -59,13 +59,13 @@ public class FAQDaoImpl implements FAQDao {
 	}
 
 	@Override
-	public List<Map<String, String>> selectFaqView(int postNo) {
-		return sqlSession.selectList("faq.selectFaqView", postNo);
+	public Post selectFaqView(int postNo) {
+		return sqlSession.selectOne("faq.selectFaqView", postNo);
 	}
 	
 	@Override
 	public List<Map<String, Object>> selectFaqAttachView(int postNo) {
-		return sqlSession.selectList("faq.selecctFaqAttachView", postNo);
+		return sqlSession.selectList("faq.selectFaqAttachView", postNo);
 	}
 	
 	@Override
@@ -109,28 +109,28 @@ public class FAQDaoImpl implements FAQDao {
 	}
 
 	@Override
-	public List<Map<String, String>> selectFaqCommentList(int postNo) {
-		return sqlSession.selectList("faqComment.selectFaqCommentList", postNo);
+	public PostComment selectFaqCommentList(int postNo) {
+		return sqlSession.selectOne("faq.selectFaqCommentList", postNo);
 	}
 	
 	@Override
 	public int selectFaqCommentTotalContents(int postNo) {
-		return sqlSession.selectOne("faqComment.selectFaqCommentTotalContents", postNo);
+		return sqlSession.selectOne("faq.selectFaqCommentTotalContents", postNo);
 	}
 
 	@Override
 	public int insertComment(PostComment pc) {
-		return sqlSession.insert("faqComment.insertComment", pc);
+		return sqlSession.insert("faq.insertComment", pc);
 	}
 
 	@Override
 	public int updateComment(int c_postNo) {
-		return sqlSession.update("faqComment.updateComment", c_postNo);
+		return sqlSession.update("faq.updateComment", c_postNo);
 	}
 
 	@Override
 	public int deleteComment(int c_postNo) {
-		return sqlSession.delete("faqComment.deleteComment", c_postNo);
+		return sqlSession.delete("faq.deleteComment", c_postNo);
 	}
 
 }

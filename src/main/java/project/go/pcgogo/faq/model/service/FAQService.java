@@ -21,7 +21,7 @@ public interface FAQService {
 
 	int selectSearchFaqTotalContents(String searchOption, String searchKeyword);
 
-	List<Map<String, String>> selectFaqView(int postNo);
+	Post selectFaqView(int postNo);
 	
 	List<Map<String, Object>> selectFaqAttachView(int postNo);
 	
@@ -41,7 +41,7 @@ public interface FAQService {
 	
 	int faqCommentNum(int commentNum);
 	
-	List<Map<String, String>> selectFaqCommentList(int postNo);
+	PostComment selectFaqCommentList(int postNo);
 	
 	int selectFaqCommentTotalContents(int postNo);
 	

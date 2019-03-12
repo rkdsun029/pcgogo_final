@@ -50,7 +50,7 @@ public class FAQServiceImpl implements FAQService {
 	}
 
 	@Override
-	public List<Map<String, String>> selectFaqView(int postNo) {
+	public Post selectFaqView(int postNo) {
 		return faqDao.selectFaqView(postNo);
 	}
 	
@@ -100,7 +100,7 @@ public class FAQServiceImpl implements FAQService {
 	}
 
 	@Override
-	public List<Map<String, String>> selectFaqCommentList(int postNo) {
+	public PostComment selectFaqCommentList(int postNo) {
 		return faqDao.selectFaqCommentList(postNo);
 	}
 	
