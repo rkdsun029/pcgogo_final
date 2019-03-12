@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,16 @@ public class FAQDaoImpl implements FAQDao {
 	@Override
 	public int selectFaqTotalContents() {
 		return sqlSession.selectOne("faq.selectFaqTotalContents");
+	}
+	
+	@Override
+	public List<Map<String, Object>> selectFaqListCategory(String category) {
+		return sqlSession.selectList("faq.selectFaqListCategory", category);
+	}
+	
+	@Override
+	public int selectFaqSelectContents(String category) {
+		return sqlSession.selectOne("faq.selectFaqSelectContents", category);
 	}
 
 	@Override
@@ -68,6 +76,11 @@ public class FAQDaoImpl implements FAQDao {
 	@Override
 	public int insertFaq(Post post, List<AttachFile> attachList) {
 		return sqlSession.insert("faq.insertFaq", post);
+	}
+	
+	@Override
+	public int fileDownload(int postNo) {
+		return 0;
 	}
 
 	@Override

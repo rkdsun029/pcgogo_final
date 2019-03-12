@@ -3,8 +3,6 @@ package project.go.pcgogo.faq.model.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import project.go.pcgogo.faq.model.vo.AttachFile;
 import project.go.pcgogo.faq.model.vo.Post;
 import project.go.pcgogo.faq.model.vo.PostComment;
@@ -14,6 +12,10 @@ public interface FAQService {
 	List<Map<String, String>> selectFaqList(int cPage, int numPerPage);
 	
 	int selectFaqTotalContents();
+	
+	List<Map<String, Object>> selectFaqListCategory(String category);
+	
+	int selectFaqSelectContents(String category);
 
 	List<Map<String, String>> selectSearchFaqList(String searchOption, String searchKeyword);
 
@@ -27,6 +29,8 @@ public interface FAQService {
 
 	int insertFaq(Post post, List<AttachFile> attachList);
 
+	int fileDownload(int postNo);
+	
 	int updateFaq(Post post);
 	
 	int updateFaqFile(int attachNo);

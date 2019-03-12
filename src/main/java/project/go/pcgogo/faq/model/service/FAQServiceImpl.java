@@ -3,8 +3,6 @@ package project.go.pcgogo.faq.model.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +28,16 @@ public class FAQServiceImpl implements FAQService {
 	public int selectFaqTotalContents() {
 		return faqDao.selectFaqTotalContents();
 	}
+	
+	@Override
+	public List<Map<String, Object>> selectFaqListCategory(String category) {
+		return faqDao.selectFaqListCategory(category);
+	}
+	
+	@Override
+	public int selectFaqSelectContents(String category) {
+		return faqDao.selectFaqSelectContents(category);
+	}
 
 	@Override
 	public List<Map<String, String>> selectSearchFaqList(String searchOption, String searchKeyword) {
@@ -54,12 +62,16 @@ public class FAQServiceImpl implements FAQService {
 	@Override
 	public int increaseReadCount(int postNo) {
 		return faqDao.increaseReadCount(postNo);
-
 	}
-
+	
 	@Override
 	public int insertFaq(Post post, List<AttachFile> attachList) {
 		return faqDao.insertFaq(post, attachList);
+	}
+	
+	@Override
+	public int fileDownload(int postNo) {
+		return faqDao.fileDownload(postNo);
 	}
 
 	@Override

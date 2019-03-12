@@ -21,6 +21,20 @@
 	    select count(*) 
 	    from faq
 	</select>
+	
+	<!-- FAQ게시판 목록 카테고리로 보기 -->
+	<select id="selectFaqListCategory" resultMap="faqMap">
+		select *
+		from faq
+		where category like #{category}
+		order by postno
+	</select>
+	
+	<!-- FAQ게시판 카테고리로 보기 게시글 수 -->
+	<select id="selectFaqSelectContents" resultType="_int">
+		select count(*) from faq
+		where category like #{category}
+	</select>
 
 	<!-- FAQ게시판 검색된 리스트보기 쿼리 -->
  	<select id="selectSearchFaqList" parameterType="faq" resultMap="faqMap">
@@ -70,7 +84,7 @@
 	</select>
 	
 	<!-- FAQ게시판 상세보기 -->
- 	<select id="selectFaqView" parameterType="faq">
+ 	<select id="selectFaqView" resultType="faq">
 		select *
 		from faq
 		where postno = #{postno}
@@ -79,8 +93,8 @@
 	<!-- FAQ게시판 상세보기 첨부파일 -->
 	<select id="selectFaqAttachView" resultType="attachFile">
 		select *
-		from faqattach B 
-		where #{postno} = postno 
+		from faqattach
+		where postno = #{postno} 
 		order by postno desc
 	</select>
 	

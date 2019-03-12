@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,11 +52,7 @@ public class FAQController {
 
 		// 2. 전체 컨텐츠 수
 		int totalContents = faqService.selectFaqTotalContents();
-
-		// 3. 카테고리 별로 나눠서 목록 보이기
-		// String category = getCategory();
-		// faqService.selectFaqList(category);
-		// System.out.println();
+		System.out.println("totalContents = " + totalContents);
 
 		// 데이터를 mav에 저장
 		mav.addObject("list", list); // 전체 게시글 목록
@@ -66,6 +63,25 @@ public class FAQController {
 		// view 지정
 		mav.setViewName("faq/faq");
 		return mav;
+	}
+	
+	// FAQ게시판 목록 카테고리로 정렬(JSON 사용)
+	@RequestMapping("/faq/faq.do/{category}")
+	@ResponseBody
+	public Map<String, Object> selectFaqListCategory(@PathVariable("category") String category) {
+		
+		logger.info("FAQ게시판 카테고리로 보기");
+		
+		List<Map<String, Object>> list = faqService.selectFaqListCategory(category);
+		System.out.println("list = " + list);
+		
+		int selectContents = faqService.selectFaqSelectContents(category);
+		System.out.println("selectContents = " + selectContents);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("selectContents", selectContents);
+		return map;
 	}
 
 	// FAQ게시판 검색하기
@@ -102,9 +118,8 @@ public class FAQController {
 	}
 
 	// FAQ게시판 상세보기
-	@RequestMapping(value = "/faq/faqView.do", method = RequestMethod.GET)
-	public ModelAndView faqView(Post post, 
-								@RequestParam("postNo") int postNo, 
+	@RequestMapping(value = "/faq/faqView.do")
+	public ModelAndView faqView(@RequestParam("postNo") int postNo, 
 								ModelAndView mav) {
 
 		logger.info("FAQ게시판 상세보기 페이지");
@@ -114,7 +129,7 @@ public class FAQController {
 		List<Map<String, Object>> attachList = faqService.selectFaqAttachView(postNo);
 		System.out.println("list = " + list);
 		System.out.println("attachList = " + attachList);
-
+		
 		// 조회수 증가
 		faqService.increaseReadCount(postNo);
 
@@ -134,14 +149,18 @@ public class FAQController {
 	@RequestMapping(value = "/faq/insertFaq.do", method = RequestMethod.POST)
 	public ModelAndView insertFaq(Post post, 
 								  @RequestParam(name = "upFile", required = false) MultipartFile[] upFiles, 
+								  @RequestParam("postOpened") String postOpened, 
 								  HttpServletRequest request,
 								  ModelAndView mav) {
 
 		logger.info("FAQ게시판 글쓰기 : POST");
+		logger.debug("post = " + post);
+		logger.debug("fileName1="+upFiles[0].getOriginalFilename());
+		logger.debug("size1="+upFiles[0].getSize());
 
 		try {
 			// 1. 파일업로드
-			String saveDirectory = request.getSession().getServletContext().getRealPath("/resources/upload/faq");
+			String saveDirectory = request.getSession().getServletContext().getRealPath("/resources/upload/board");
 			logger.info(saveDirectory);
 			
 			List<AttachFile> attachList = new ArrayList<>();
@@ -170,13 +189,7 @@ public class FAQController {
 					attach.setOriginalFileName(originalFileName);
 					attach.setRenamedFileName(renamedFileName);
 					attachList.add(attach);
-					
-					// 게시글 공개여부 설정
-					if(post.getPostOpened().equals("y")) {
-						post.setPostOpened("y");
-					} else {
-						post.setPostOpened("n");
-					}
+
 				}
 			}
 
@@ -207,7 +220,9 @@ public class FAQController {
 
 	// FAQ게시판 파일 다운로드
 	@RequestMapping(value = "/faq/downloadFaqFile.do", method = RequestMethod.GET)
-	public ModelAndView fileDownload(MultipartFile upFiles, ModelAndView mav) {
+	public ModelAndView fileDownload(@RequestParam("postNo") int postNo, 
+									 MultipartFile upFiles, 
+									 ModelAndView mav) {
 		// 파일 원본 이름 저장
 		String originalFileName = upFiles.getOriginalFilename();
 		
@@ -215,7 +230,7 @@ public class FAQController {
 		logger.info("파일 속성 : " + upFiles.getContentType());
 		logger.info("파일 크기 : " + upFiles.getSize());
 		
-		// faqService.fileDownload();
+		int result = faqService.fileDownload(postNo);
 		
 		mav.addObject("originalFileName", originalFileName);
 		mav.setViewName("faq/faq");
