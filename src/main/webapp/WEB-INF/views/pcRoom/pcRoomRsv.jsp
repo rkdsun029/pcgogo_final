@@ -483,7 +483,7 @@ function letRsv(){
          tempTime += d*c;
    });
    tempPrice = tempPrice*max;
-   tempTimea = tempTime/60+"시간"+tempTime%60+"분";
+   tempTimea = Math.floor(tempTime/60)+"시간"+tempTime%60+"분";
    if(confirm("총 "+max+"명의 "+tempTimea+"을 합한 가격"+tempPrice+"입니다. 확인해주세요.")){
       totalPrice = tempPrice;
       totalTime = tempTime;
