@@ -140,7 +140,7 @@ $(function(){
 				var object = {
 					pmRow_ : $("table").eq(i).find("tr").length,
 					pmCol_ : $("table").eq(i).find("tr:first-of-type td").length,
-					floorNum_ : $("input#floorNum_").eq(i).val(),
+					floorNum_ : $("input.hiddenFloorNum").eq(i).val(),
 					pmContent_ : $("input.table_tdContent").eq(i).val(),
 					seatCount_ : $("input.seat_tdCount").eq(i).val()
 				}

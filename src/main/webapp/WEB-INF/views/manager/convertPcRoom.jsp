@@ -16,19 +16,40 @@
 <style>
 body{
 	font-family:'Nanum Gothic', sans-serif;
+	text-align:center;
 }
 ul#pcRoomList_{
+	width:300px;
 	list-style:none;
+	padding:0;
+	display:block;
+	margin:0 auto;
+	text-align:center;
 }
 ul#pcRoomList_ li{
 	cursor:pointer;
+	margin:0 auto;
+	padding:0;
+	width:250px;
+}
+h3{
+	text-align:center;
+}
+h1#head-title{
+    display:inline-block;
+    font-family: 'Fredoka One', cursive; 
+    font-size:30px;
+    font-weight: bold;
+    margin:0 auto;
+    margin-top:15px;
 }
 </style>
 </head>
 <body>
-<h3>소유하신 PC방 목록입니다.</h3>
-<h3>전환할 PC방을 선택해주세요.</h3>
-
+<h1 id="head-title">PCGOGO.COM</h1>
+<h4>소유하신 PC방 목록입니다.</h4>
+<h4>전환할 PC방을 선택해주세요.</h4>
+<br>
 <ul id="pcRoomList_">
 	<c:forEach var="p" items="${pcRoomList }">
 		<li>

@@ -34,7 +34,7 @@ $(function(){
 	
 	$("span#change").on("click", function(){
 		window.open("${pageContext.request.contextPath}/manager/convertPcRoom.do",
-				"pc방 전환", "width=700, height=500, left=50, top=50");
+				"pc방 전환", "width=400, height=400, left=50, top=50");
 	});
 });
 </script>

@@ -6,7 +6,7 @@
 	</select>
 	
 	<insert id="insertPcRoom" parameterType="pcRoom">
-		insert into pcRoom values(seq_pcRoom_pcRoomNo.nextval, #{pcRoomName}, #{pcRoomAddress}, #{pcRoomManagerId}, default)
+		insert into pcRoom values(seq_pcRoom_pcRoomNo.nextval, #{pcRoomName}, #{pcRoomAddress}, #{pcRoomManagerId}, default, #{xLoc}, #{yLoc})
 	</insert>
 	
 	<insert id="insertPlacement" parameterType="placement">
@@ -35,7 +35,7 @@
 	
 	<update id="updatePriceList" parameterType="priceList">
 		update priceList set pl1000 = #{pl1000}, pl2000 = #{pl2000}, pl3000 = #{pl3000}, pl5000 = #{pl5000}, 
-							 pl10000 = #{pl10000}, , pl20000 = #{pl20000}, , pl30000 = #{pl30000}, , pl50000 = #{pl50000}
+							 pl10000 = #{pl10000}, pl20000 = #{pl20000}, pl30000 = #{pl30000}, pl50000 = #{pl50000}
 							where plPcRoomNo = #{plPcRoomNo} 
 	</update>
 	

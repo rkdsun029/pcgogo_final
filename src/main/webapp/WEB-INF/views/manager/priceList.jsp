@@ -61,8 +61,8 @@ $(function(){
 	
 	for(var i=0; i<8; i++){
 		var temp = parseInt(values.eq(i).val());
-		$("input.hour").eq(i).val(temp/60);
-		$("input.minute").eq(i).val(temp%60);
+		$("input.hour").eq(i).val(Math.floor(temp/60));
+		$("input.minute").eq(i).val(Math.floor(temp%60));
 	}
 	
 	console.log($("input.hour"));
