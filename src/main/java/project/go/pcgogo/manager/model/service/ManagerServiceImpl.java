@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import project.go.pcgogo.manager.model.dao.ManagerDao;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Service
@@ -45,6 +46,30 @@ public class ManagerServiceImpl implements ManagerService{
 	public List<Placement> getPlacementList(int pcRoomNo) {
 		List<Placement> pList = managerDao.getPlacementList(pcRoomNo);
 		return pList;
+	}
+	
+	@Override
+	public PriceList getPriceList(int pcRoomNo) {
+		PriceList pl = managerDao.getPriceList(pcRoomNo);
+		return pl;
+	}
+	
+	@Override
+	public int deletePriceList(int pcRoomNo) {
+		int result = managerDao.deletePriceList(pcRoomNo);
+		return result;
+	}
+	
+	@Override
+	public int insertPriceList(PriceList newPriceList) {
+		int result = managerDao.insertPriceList(newPriceList);
+		return result;
+	}
+	
+	@Override
+	public int updatePriceList(PriceList newPriceList) {
+		int result = managerDao.updatePriceList(newPriceList);
+		return result;
 	}
 	
 	

@@ -15,10 +15,11 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <style>
 form#loginFrm{
-	width: 300px;
+	width: 350px;
 	margin: 0 auto;
-	border : 2px solid #A0A3A5;
-	box-shadow : 3px 3px 5px gray;
+	margin-top:50px;
+	margin-bottom:20px;
+	box-shadow : 3px 3px 10px gray;
 	padding: 20px;
 }
 div#loginToSocial{

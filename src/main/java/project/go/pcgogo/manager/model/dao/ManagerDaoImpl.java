@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Repository
@@ -40,6 +41,26 @@ public class ManagerDaoImpl implements ManagerDao{
 	@Override
 	public List<Placement> getPlacementList(int pcRoomNo) {
 		return sqlSession.selectList("manager.getPlacementList", pcRoomNo);
+	}
+	
+	@Override
+	public PriceList getPriceList(int pcRoomNo) {
+		return sqlSession.selectOne("manager.getPriceList", pcRoomNo);
+	}
+	
+	@Override
+	public int deletePriceList(int pcRoomNo) {
+		return sqlSession.delete("manager.deletePriceList", pcRoomNo);
+	}
+	
+	@Override
+	public int insertPriceList(PriceList newPriceList) {
+		return sqlSession.insert("manager.insertPriceList", newPriceList);
+	}
+	
+	@Override
+	public int updatePriceList(PriceList newPriceList) {
+		return sqlSession.update("manager.updatePriceList", newPriceList);
 	}
 	
 	

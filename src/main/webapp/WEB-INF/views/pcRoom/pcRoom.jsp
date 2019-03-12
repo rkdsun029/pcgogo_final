@@ -49,38 +49,95 @@
     #seatsTable tr td{
         width: 20px;
         height: 20px;
-
+t
     }
+    #map{
+   		position: relative;
+    	display: inline-block;
+    	left: 0px;
+   		top: -50px;
+    	overflow: hidden;
+        }
+        input#btn-pcSrc{
+	        margin: 0 0 15px;
+	        display:inline-block;
+	        width:100px;
+	        height:35px;
+	        border-radius:5px;
+	        border: 1px rgba(255, 40, 40, .7);
+	        background:rgba(255, 40, 40, .7);
+	        color:white;
+	        font-size:12px;
+	        font-family:'Nanum Gothic', sans-serif;
+	        cursor:pointer;
+        }
+        input#map-pcSrc{
+	        display:inline-block;
+	        width:100px;
+	        height:30px;
+	        border-radius:5px;
+	        border: 1px solid rgba(255, 40, 40, .7);
+
+        }
+        #setArea{
+            position:relative;
+	        display:inline-block;
+            top: 2px;
+            padding: 0em .5em;
+	        width:100px;
+	        height:35px;
+	        border-radius:5px;
+	        border: 1px solid rgba(255, 40, 40, .7);
+
+        }
+        #src-container{
+               position: relative;
+    		/* float: left; */
+    		left: 703px;
+    		top: 0px;
+    		width: 316px;
+    		height: 50px;
+	        border: 1px solid rgba(255, 40, 40, .7);
+        }
+
+
+
     </style>
  
 	<section id="main-container">
-        <div id="container">
-            <h1>자리현황</h1>
-           	<button onclick="srcPcRoom()">내 주변 검색</button>
-			<select name="setArea" id="setArea">
-				<option value="" disabled selected>지역 선택</option>
-				<option area_seq="1" value="서울">서울</option>
-				<option area_seq="2" value="경기">경기</option>
-				<option area_seq="3" value="인천">인천</option>
-				<option area_seq="4" value="강원">강원</option>
-				<option area_seq="5" value="부산">부산</option>
-				<option area_seq="6" value="대구">대구</option>
-				<option area_seq="7" value="경북">경북</option>
-				<option area_seq="8" value="울산">울산</option>
-				<option area_seq="9" value="대전">대전</option>
-				<option area_seq="10" value="충남">충남</option>
-				<option area_seq="11" value="충북">충북</option>
-				<option area_seq="12" value="광주">광주</option>
-				<option area_seq="13" value="전남">전남</option>
-				<option area_seq="14" value="전북">전북</option>
-				<option area_seq="15" value="제주">제주</option>
-			</select>
-			<input type="text" id="mapSrc" name="mapSrc" placeholder="피씨방 이름" />
-           	<button onclick="mapSrc()">피씨방 검색 </button>
-			</div>
-        <div id="map" style="width:300px;height:300px;"></div>
-			<div id="seats"></div>
-    </section>   
+            <div id="container">
+                <h1>자리현황</h1>
+                <div id="src-container">
+                    <select name="setArea" id="setArea">
+	                    <option value="" disabled selected>지역 선택</option>
+	                    <option area_seq="1" value="서울">서울</option>
+	                    <option area_seq="2" value="경기">경기</option>
+	                    <option area_seq="3" value="인천">인천</option>
+	                    <option area_seq="4" value="강원">강원</option>
+	                    <option area_seq="5" value="부산">부산</option>
+	                    <option area_seq="6" value="대구">대구</option>
+	                    <option area_seq="7" value="경북">경북</option>
+	                    <option area_seq="8" value="울산">울산</option>
+	                    <option area_seq="9" value="대전">대전</option>
+	                    <option area_seq="10" value="충남">충남</option>
+	                    <option area_seq="11" value="충북">충북</option>
+	                    <option area_seq="12" value="광주">광주</option>
+	                    <option area_seq="13" value="전남">전남</option>
+	                    <option area_seq="14" value="전북">전북</option>
+                    	<option area_seq="15" value="제주">제주</option>
+                	</select>
+                	<input type="text" id="map-pcSrc" name="mapSrc" placeholder="피씨방 이름" />
+                	<input type="button" value="피씨방 검색" id="btn-pcSrc" onclick = "mapSrc()"/>
+                	<button onclick="location.href='${pageContext.request.contextPath}/pcRoom/mapTest.do'">test</button>
+                </div>
+                <div id="listTable">
+                
+                </div>
+                
+            </div>
+            <div id="map" style="width:700px;height:500px;"></div>
+                <div id="seats"></div>
+        </section>   
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec95021a67763d0b8e870b0e01a6797c&libraries=services"></script>
 <script>
@@ -114,7 +171,7 @@ function mapSrc(){
 	map = new daum.maps.Map(mapContainer, mapOption); 
 	// 장소 검색 객체를 생성합니다
 	var ps = new daum.maps.services.Places(); 
-	pcRoomName = $("#mapSrc").val();
+	pcRoomName = $("#map-pcSrc").val();
 	// 키워드로 장소를 검색합니다
 	ps.keywordSearch(pcRoomName, placesSearchCB);
   	
@@ -161,20 +218,50 @@ function placesSearchCB (data, status, pagination) {
         // LatLngBounds 객체에 좌표를 추가합니다
         var bounds = new daum.maps.LatLngBounds();
         
+        
+        //내 db에 있는 자료들 가져오는것
+        $.ajax({
+        	url:"${pageContext.request.contextPath}/pcRoom/pcRoomDetail.do",
+    		type: "get",
+    		dataType : "json",
+    		success : function(data){
+    			for(var i=0 ; i<data.length; i++){
+    				console.log(data[i]);
+    	        	var c = data[i].category_name;
+    	        	console.log(c)
+    	        	var b = data[i].address_name; 	//지역 이름
+    	        		if(c.indexOf('PC방')>-1){
+    	        			if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
+    	        				displayMarker(data[i]);  	//마커표시
+    	                		bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
+    	                		//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
+    	        			}
+	    				}
+    	        }
+
+    	        map.setBounds(bounds);
+    		},
+    	    error: function(){
+    	    	console.log("@@@@@@@@@@@@@@@");
+    	    	console.log("@@Ajax 실행 실패@@");
+    	    	console.log("@@@@@@@@@@@@@@@");
+    	    }
+    		
+    	});
 		//지도 마커에 표시할 데이터를 보내는 곳 데이터는 
         for (var i=0; i<data.length; i++) {
-        	//console.log(data[i]);
+        	console.log(data[i]);
         	var c = data[i].category_name;
         	console.log(c)
         	var b = data[i].address_name; 	//지역 이름
         	if(c.indexOf('PC방')>-1){
-        	if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
-        		displayMarker(data[i]);  	//마커표시
-                bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
-        	}
+        		if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
+        			displayMarker(data[i]);  	//마커표시
+                	bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
+                	//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
+        		}
         	}
         }       
-
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         map.setBounds(bounds);
     } 
@@ -194,24 +281,33 @@ function displayMarker(place) {
     // 마커에 클릭이벤트를 등록합니다
     daum.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        
+        data = null;
         $.ajax({
         	url:"${pageContext.request.contextPath}/pcRoom/nowPcStatus.do",
     	    data: {pcRoomName : place.place_name},
     		type: "get",
     		success : function(data){
-    			pcRoomNo=data[0].pcRoomNo;
     			if(data!=''){
+    				pcRoomNo=data[0].pmPcRoomNo;
+    				var a = data[0].sitted;
+                	var b = new Array();
+                	b = a.split(",");
+                	var usingSeat = 0;
+                	for(var i=0; i<b.length;i++){
+                    	if(b[i]=="o" || b[i]=="s") usingSeat++;
+                    
+                	}
+    				var unUsingSeat = data[0].pmSeats-usingSeat;
     				infowindow.setContent(
     					place.place_name+'<div class="txt">피시방의 전체 좌석수 </div>'
-    					+data[0].totalSeat+'<div class="txt">중 </div>'
-    					+data[0].usingSeat+'<div class="txt">자리가 이용 중이며 </div>'
-    					+data[0].unUsingSeat+'<div class="txt">자리가 이용 가능합니다.</div>'
+    					+data[0].pmSeats+'<div class="txt">중 </div>'
+    					+usingSeat+'<div class="txt">자리가 이용 중이며 </div>'
+    					+unUsingSeat+'<div class="txt">자리가 이용 가능합니다.</div>'
     					+'<button onclick="rsv();">좌석확인/예약하기</button>'
     					);
     			}else{
         			infowindow.setContent(
-    					pcRoomName+'<div class="txt">피시방은 Pcgogo에 등록되어있지 않는 지점입니다.</div>'
+        				place.place_name+'<div class="txt">피시방은 Pcgogo에 등록되어있지 않는 지점입니다.</div>'
     				);
     			}
     			
@@ -263,7 +359,7 @@ function displayMarker(place) {
 }
 function rsv(){
 	console.log(pcRoomNo);
-	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do?pcRoomNo="+pcRoomNo,
+	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do?pcRoomNo="+pcRoomNo,//+"&memberId="+,
 			"뿌뿌링", "width=1000, height=700, left=50, top=20");
 
 }
@@ -281,6 +377,33 @@ function suc(position){
 function err(){
     	alert('현재 위치를 가져올 수 없습니다.');
 };
+
+//목록 뽑기 보류
+function getListItem(index, places) {
+
+    var el = document.createElement('li'),
+    			itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                		  '<div class="info">' +
+                   		  '   <h5>' + places.place_name + '</h5>';
+
+    			if (places.road_address_name) {
+        			itemStr += '    <span>' + places.road_address_name + '</span>' +
+                    		   '   <span class="jibun gray">' +  places.address_name  + '</span>';
+    			} else {
+        			itemStr += '    <span>' +  places.address_name  + '</span>'; 
+    			}
+                 
+      			itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                '</div>';           
+
+    el.innerHTML = itemStr;
+    el.className = 'item';
+
+    return el;
+}
+
+
+
 </script>
  
 

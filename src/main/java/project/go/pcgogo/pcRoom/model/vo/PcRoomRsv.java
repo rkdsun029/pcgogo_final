@@ -8,8 +8,33 @@ public class PcRoomRsv {
 	private int pmRow;
 	private int pmCol;
 	private String pmContent;
-	private int seatCount;
-	private String seated;
+	private int pmSeats;
+	private String sitted;
+	private String plProductName;
+	private String plProductPrice;
+	public PcRoomRsv() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public PcRoomRsv(int pmPcRoomNo, String pmFloor, int pmRow, int pmCol, String pmContent, int pmSeats, String sitted,
+			String plProductName, String plProductPrice) {
+		super();
+		this.pmPcRoomNo = pmPcRoomNo;
+		this.pmFloor = pmFloor;
+		this.pmRow = pmRow;
+		this.pmCol = pmCol;
+		this.pmContent = pmContent;
+		this.pmSeats = pmSeats;
+		this.sitted = sitted;
+		this.plProductName = plProductName;
+		this.plProductPrice = plProductPrice;
+	}
+	@Override
+	public String toString() {
+		return "PcRoomRsv [pmPcRoomNo=" + pmPcRoomNo + ", pmFloor=" + pmFloor + ", pmRow=" + pmRow + ", pmCol=" + pmCol
+				+ ", pmContent=" + pmContent + ", pmSeats=" + pmSeats + ", sitted=" + sitted + ", plProductName="
+				+ plProductName + ", plProductPrice=" + plProductPrice + "]";
+	}
 	public int getPmPcRoomNo() {
 		return pmPcRoomNo;
 	}
@@ -40,36 +65,32 @@ public class PcRoomRsv {
 	public void setPmContent(String pmContent) {
 		this.pmContent = pmContent;
 	}
-	public int getSeatCount() {
-		return seatCount;
+	public int getPmSeats() {
+		return pmSeats;
 	}
-	public void setSeatCount(int seatCount) {
-		this.seatCount = seatCount;
+	public void setPmSeats(int pmSeats) {
+		this.pmSeats = pmSeats;
 	}
-	public String getSeated() {
-		return seated;
+	public String getSitted() {
+		return sitted;
 	}
-	public void setSeated(String seated) {
-		this.seated = seated;
+	public void setSitted(String sitted) {
+		this.sitted = sitted;
 	}
-	@Override
-	public String toString() {
-		return "PcRoomRsv [pmPcRoomNo=" + pmPcRoomNo + ", pmFloor=" + pmFloor + ", pmRow=" + pmRow + ", pmCol=" + pmCol
-				+ ", pmContent=" + pmContent + ", seatCount=" + seatCount + ", seated=" + seated + "]";
+	public String getPlProductName() {
+		return plProductName;
 	}
-	public PcRoomRsv(int pmPcRoomNo, String pmFloor, int pmRow, int pmCol, String pmContent, int seatCount,
-			String seated) {
-		super();
-		this.pmPcRoomNo = pmPcRoomNo;
-		this.pmFloor = pmFloor;
-		this.pmRow = pmRow;
-		this.pmCol = pmCol;
-		this.pmContent = pmContent;
-		this.seatCount = seatCount;
-		this.seated = seated;
+	public void setPlProductName(String plProductName) {
+		this.plProductName = plProductName;
 	}
-	public PcRoomRsv() {
-		super();
-		// TODO Auto-generated constructor stub
+	public String getPlProductPrice() {
+		return plProductPrice;
 	}
+	public void setPlProductPrice(String plProductPrice) {
+		this.plProductPrice = plProductPrice;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

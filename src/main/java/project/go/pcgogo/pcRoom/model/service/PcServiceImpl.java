@@ -1,15 +1,17 @@
 package project.go.pcgogo.pcRoom.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.go.pcgogo.pcRoom.model.dao.PcDao;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
-import project.go.pcgogo.pcRoom.model.vo.PcRoom;
+import project.go.pcgogo.pcRoom.model.vo.PcRoomDetail;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomRsv;
+import project.go.pcgogo.pcRoom.model.vo.PcRoomRsvDetail;
 
 @Service
 public class PcServiceImpl implements PcService {
@@ -18,15 +20,53 @@ public class PcServiceImpl implements PcService {
 	PcDao pcDao;
 
 	@Override
-	public List<PcRoom> pcList(String pcRoom) {
-		System.out.println("Service"+pcRoom);
-		return pcDao.pcList(pcRoom);
-	}
-
-	@Override
 	public List<PcRoomList> pcRoomList(String place_name) {
 		System.out.println("Service"+place_name);
 		return pcDao.pcRoomList(place_name);
+	}
+	
+	@Override
+	public List<PcRoomRsv> pcRoomRsv(String pcRoomNo) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomRsv(pcRoomNo);
+	}
+
+
+	@Override
+	public int pcRoomRsvGo(PcRoomRsv rsv) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomRsvGo(rsv);
+	}
+
+	@Override
+	public int pcRoomRsvSet(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomRsvSet(map);
+	}
+
+	@Override
+	public int pcRoomRsvDetail(PcRoomRsvDetail rsv) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomRsvDetail(rsv);
+	}
+
+	@Override
+	public int deleteRsv() {
+		// TODO Auto-generated method stub
+		
+		return pcDao.deleteRsv();
+	}
+
+	@Override
+	public int buyCashEnd(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return pcDao.buyCashEnd(map);
+	}
+
+	@Override
+	public List<PcRoomRsv> pcRoomProduct(String pcRoomNo) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomProduct(pcRoomNo);
 	}
 
 	@Override
@@ -36,10 +76,12 @@ public class PcServiceImpl implements PcService {
 	}
 
 	@Override
-	public List<PcRoomRsv> pcRoomRsv(String pcRoomNo) {
+	public List<PcRoomDetail> pcRoomDetail() {
 		// TODO Auto-generated method stub
-		return pcDao.pcRoomRsv(pcRoomNo);
+		return pcDao.pcRoomDetail();
 	}
+
+
 
 	
 }

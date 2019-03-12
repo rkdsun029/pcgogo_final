@@ -138,9 +138,9 @@ margin-left:70px;
 		</script>
 	</div>   
 	<div><br><br><br><br>
-	<%-- <c:if test="${loggedInUser.isSocial == 'admin' }"> --%>
-	<input type="button" value="분실물 등록" id="btn-add" class="btn btn-outline-success" onclick="fn_golnfForm();"/>
-	<%-- </c:if> --%>
+	<c:if test="${(loggedInUser.isSocial == 'admin') or (loggedInUser.isSocial == 'manager') }">
+		<input type="button" value="분실물 등록" id="btn-add" class="btn btn-outline-success" onclick="fn_golnfForm();"/>
+	</c:if>
 	</div>
 	<div id="lnfList-container">
 	

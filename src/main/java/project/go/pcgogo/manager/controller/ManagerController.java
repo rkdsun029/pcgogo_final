@@ -23,6 +23,7 @@ import project.go.pcgogo.manager.model.jsoup.Crawling;
 import project.go.pcgogo.manager.model.service.ManagerService;
 import project.go.pcgogo.manager.model.vo.PcRoom;
 import project.go.pcgogo.manager.model.vo.Placement;
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.user.model.vo.Manager;
 
 @Controller
@@ -103,25 +104,110 @@ public class ManagerController {
 		List<Placement> pList = managerService.getPlacementList(pcRoom.getPcRoomNo());
 		logger.info("이 피시방 번호 배치도 리스트 : " + pList);
 		
-		mav.addObject("selectedPlacementList", pList);
+		session.setAttribute("selectedPlacementList", pList);
 		mav.setViewName("manager/placement");
 		return mav;
 	}
 	
+	@RequestMapping("manager/readPlacement.do")
+	public ModelAndView readPlacement(ModelAndView mav, HttpSession session) {
+		List<Placement> pList = (List<Placement>) session.getAttribute("selectedPlacementList");
+		mav.addObject("selectedPlacementList", pList);
+		mav.setViewName("manager/readPlacement");
+		return mav;
+	}
+	
+	@RequestMapping("manager/updatePlacement.do")
+	public ModelAndView updatePlacement(ModelAndView mav, HttpSession session) {
+		List<Placement> pList = (List<Placement>) session.getAttribute("selectedPlacementList");
+		mav.addObject("selectedPlacementList", pList);
+		mav.setViewName("manager/updatePlacement");
+		return mav;
+	}
+	
 	@RequestMapping("manager/priceList.do")
-	public String selectedPriceList(PcRoom pcRoom, HttpSession session) {
-		return "manager/priceList";
+	public ModelAndView selectedPriceList(PcRoom pcRoom, HttpSession session, ModelAndView mav) {
+		pcRoom = (PcRoom) session.getAttribute("selectedPcRoom");
+		PriceList pl = managerService.getPriceList(pcRoom.getPcRoomNo());
+		if(pl == null) {
+			pl.setPlPcRoomNo(pcRoom.getPcRoomNo());
+			pl.setPl1000(60);
+			pl.setPl2000(120);
+			pl.setPl3000(180);
+			pl.setPl5000(300);
+			pl.setPl10000(600);
+			pl.setPl20000(1200);
+			pl.setPl30000(1800);
+			pl.setPl50000(3000);
+		}
+		
+		mav.addObject("selectedPriceList", pl);
+		mav.setViewName("manager/priceList");
+		return mav;
 	}
 	
 	@RequestMapping("manager/insertOrUpdatePrice.do")
-	@ResponseBody
-	public void insertOrUpdatePrice() {
-		//리스트에 없으면 insert 있으면 update
+	public ModelAndView insertOrUpdatePrice(@RequestParam(value="pcRoomNo") int pcRoomNo,
+											@RequestParam(value="priceArr") String priceArr,
+											ModelAndView mav) {
+		
+		String[] tempArr = priceArr.split(",");
+		PriceList newPriceList = new PriceList();
+		
+		newPriceList.setPl1000(Integer.parseInt(tempArr[0]));
+		newPriceList.setPl2000(Integer.parseInt(tempArr[1]));
+		newPriceList.setPl3000(Integer.parseInt(tempArr[2]));
+		newPriceList.setPl5000(Integer.parseInt(tempArr[3]));
+		newPriceList.setPl10000(Integer.parseInt(tempArr[4]));
+		newPriceList.setPl20000(Integer.parseInt(tempArr[5]));
+		newPriceList.setPl30000(Integer.parseInt(tempArr[6]));
+		newPriceList.setPl50000(Integer.parseInt(tempArr[7]));
+		newPriceList.setPlPcRoomNo(pcRoomNo);
+		
+		logger.info("입력된 가격표 : " + newPriceList);
+		
+		PriceList pl = managerService.getPriceList(pcRoomNo);
+		logger.info("호출된 가격표 : " + pl);
+		
+		int result = 0;
+		
+		if(pl == null) result = managerService.insertPriceList(newPriceList);
+		else result = managerService.updatePriceList(newPriceList);
+		
+		if(result != 1) {
+			mav.addObject("msg", "가격표 등록 중 오류가 발생하였습니다.");
+			mav.addObject("loc", "/manager/priceList.do");
+			mav.setViewName("common/msg");
+		}
+		else {
+			mav.addObject("msg", "가격표가 변경되었습니다.");
+			mav.addObject("loc", "/manager/priceList.do");
+			mav.setViewName("common/msg");
+		}
+		return mav;
 	}
 	
 	@RequestMapping("manager/deletePrice.do")
-	public void deletePrice() {
-		//초기화버튼 누를시 잇으면 삭제 없으면 그대로
+	public ModelAndView deletePrice(@RequestParam(value="pcRoomNo") int pcRoomNo,
+									ModelAndView mav) throws Exception {
+		PriceList pl = managerService.getPriceList(pcRoomNo);
+		logger.info("호출된 가격표 : " + pl);
+		
+		if(pl == null) {
+			mav.addObject("msg", "초기화가 완료되었습니다.");
+			mav.addObject("loc", "/manager/priceList.do");
+			mav.setViewName("common/msg");
+		}
+		else {
+			int result = managerService.deletePriceList(pcRoomNo);
+			if(result == 1) {
+				mav.addObject("msg", "초기화가 완료되었습니다.");
+				mav.addObject("loc", "/manager/priceList.do");
+				mav.setViewName("common/msg");
+			}
+			else throw new Exception("삭제 과정에서 문제가 발생하였습니다.");
+		}
+		return mav;
 	}
 	
 	@RequestMapping("manager/reservationList.do")
@@ -385,4 +471,18 @@ public class ManagerController {
 		
 		return "redirect:/manager/managerCommunity.do";
 	}
+	
+	@RequestMapping("/index")
+	@ResponseBody
+	public Map<String, Object> index_ranking() { 		
+		Map<String, Object> test = new HashMap<>();
+		List<Map<String, String>> listOnline = new Crawling().Crawling_marketShareOnlineGame();
+		List<Map<String, String>> listWeb = new Crawling().Crawling_marketShareWebGame();
+		System.out.println("listOnline = " + listOnline);
+		System.out.println("listWeb = " + listWeb);
+		test.put("listOnline" , listOnline);
+		test.put("listWeb" , listWeb);
+		return test; 
+	}
+	
 }

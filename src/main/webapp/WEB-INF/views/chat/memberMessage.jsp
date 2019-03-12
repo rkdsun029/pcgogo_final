@@ -6,11 +6,8 @@
 
 <!-- 맨 앞의 '/'는 webapp을 가리킨다. -->
 <fmt:requestEncoding value="UTF-8"/>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<jsp:include page="/WEB-INF/views/chat/chatting.jsp">
-	<jsp:param value="PCGOGO 채팅" name="pageTitle"/>
+<jsp:include page="/WEB-INF/views/common/messageHeader.jsp">
+	<jsp:param value="PCGOGO 쪽지" name="pageTitle"/>
 </jsp:include>
 
 <style>
@@ -18,7 +15,6 @@
 	#navbar {
 		width : 500px;
 		margin : 0 auto;
-		margin-top : -178px;
 	}
 
 	.table {
@@ -73,7 +69,7 @@
                  html += "<tr><td><input type='hidden' name='toId' value='" + member.memberId + "'></td>";
                  html += "<td>" + member.memberId + "</td>";
                  html += "<td>" + member.memberEmail + "</td>";
-                 html += "<td><button type='button' class='btn btn-primary' id='btn-chatting'>채팅하기</button></td></tr>";
+                 html += "<td><button type='button' class='btn btn-primary' id='btn-chatting'>쪽지 쓰기</button></td></tr>";
              }
              
              html += "</table>";
@@ -84,8 +80,8 @@
              var toId = $("input[name=toId]").val();
              
              $("#btn-chatting").on("click", function() {
-               var url = "${pageContext.request.contextPath}/chat/chatRoom.do?toId=" + toId;
-               var title = "PCGOGO 채팅";
+               var url = "${pageContext.request.contextPath}/chat/messageRoom.do?toId=" + toId;
+               var title = "PCGOGO 쪽지";
                var status = "left=300px, top=100px, width=500px, height=850px";
                 
                open(url, title, status);

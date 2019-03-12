@@ -25,9 +25,19 @@ public class MemberChatController {
 	@Autowired
 	ChatService chatService;
 	
-	@RequestMapping("/chat/memberChat.do")
-	public String memberChatMain() {
-		return "chat/memberChat";
+	@RequestMapping("/common/messageHeader.do")
+	public String memberMessage() {
+		return "common/messageHeader";
+	}
+	
+	@RequestMapping("/chat/memberMessage.do")
+	public String memberSearch() {
+		return "chat/memberMessage";
+	}
+	
+	@RequestMapping("/chat/messageRoom.do")
+	public String messageRoom() {
+		return "chat/messageRoom";
 	}
 	
 	@RequestMapping("/chat/selectByName.do")
@@ -41,12 +51,6 @@ public class MemberChatController {
 		model.addAttribute("list", list);
 		
 		return list;
-	}
-	
-	@RequestMapping("/chat/chatRoom.do")
-	public String chatRoom() {
-		
-		return "chat/chatRoom";
 	}
 	
 	@RequestMapping("/chat/selectByToId.do")
