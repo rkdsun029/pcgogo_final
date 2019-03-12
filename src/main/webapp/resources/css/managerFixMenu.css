@@ -33,7 +33,7 @@ div.card span{
 }
 div.sub-card{
 	width:230px;
-	height:175px;
+	/* height:175px; */
 	max-height:190px;
 	background:rgb(255, 40, 40, .6);
 	border-bottom:1px solid white;

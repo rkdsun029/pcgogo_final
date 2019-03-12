@@ -113,6 +113,7 @@ public class ManagerController {
 	@RequestMapping("manager/readPlacement.do")
 	public ModelAndView readPlacement(ModelAndView mav, HttpSession session) {
 		List<Placement> pList = (List<Placement>) session.getAttribute("selectedPlacementList");
+		mav.addObject("selectedPcRoom", (PcRoom) session.getAttribute("selectedPcRoom"));
 		mav.addObject("selectedPlacementList", pList);
 		mav.setViewName("manager/readPlacement");
 		return mav;
@@ -121,6 +122,7 @@ public class ManagerController {
 	@RequestMapping("manager/updatePlacement.do")
 	public ModelAndView updatePlacement(ModelAndView mav, HttpSession session) {
 		List<Placement> pList = (List<Placement>) session.getAttribute("selectedPlacementList");
+		mav.addObject("selectedPcRoom", (PcRoom) session.getAttribute("selectedPcRoom"));
 		mav.addObject("selectedPlacementList", pList);
 		mav.setViewName("manager/updatePlacement");
 		return mav;

@@ -15,7 +15,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
 <script>
 $(function(){
-	
 	$(".toilet").css("cursor", "default");
 	$(".exit").css("cursor", "default");
 	$(".counter").css("cursor", "default");
@@ -37,143 +36,33 @@ $(function(){
 		for(var s=0; s<tempArr.length; s++){
 			/* console.log("찍기 : ",s,":", tempArr[s]); */
 			if(tempArr[s] != ""){
-				table.eq(i).find("td").eq(s).find("input[type=hidden]").val(tempArr[s]);
+				var temp___ = tempArr[s].charAt(0);
+				table.eq(i).find("td").eq(s).find("input[type=hidden]").val(temp___);
 				table.eq(i).find("td").eq(s).find("div#seat__").removeClass("wall");
-				if(tempArr[s] == "a") {
-					table.eq(i).find("td").eq(s).find("div#seat__").addClass("plain").css("cursor", "pointer");
+				if(temp___ == "a") {
+					table.eq(i).find("td").eq(s).find("div#seat__").addClass("plain");
+					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'>" + tempArr[s].charAt(1) + tempArr[s].charAt(2) + "</span>");
+				}
+				if(temp___ == "b"){
+					table.eq(i).find("td").eq(s).find("div#seat__").addClass("special");
 					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
 				}
-				if(tempArr[s] == "b"){
-					table.eq(i).find("td").eq(s).find("div#seat__").addClass("special").css("cursor", "pointer");
+				if(temp___ == "c"){
+					table.eq(i).find("td").eq(s).find("div#seat__").addClass("couple");
 					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
 				}
-				if(tempArr[s] == "c"){
-					table.eq(i).find("td").eq(s).find("div#seat__").addClass("couple").css("cursor", "pointer");
-					table.eq(i).find("td").eq(s).find("div#seat__").append("<span id='seatNo' name='seatNo'></span>");
-				}
-				if(tempArr[s] == "d") table.eq(i).find("td").eq(s).find("div#seat__").addClass("toilet");
-				if(tempArr[s] == "e") table.eq(i).find("td").eq(s).find("div#seat__").addClass("exit");
-				if(tempArr[s] == "f") table.eq(i).find("td").eq(s).find("div#seat__").addClass("counter");
-				if(tempArr[s] == "g") table.eq(i).find("td").eq(s).find("div#seat__").addClass("kiosk");
-				if(tempArr[s] == "h") table.eq(i).find("td").eq(s).find("div#seat__").addClass("water");
-				if(tempArr[s] == "i") table.eq(i).find("td").eq(s).find("div#seat__").addClass("air");
-				if(tempArr[s] == "j") table.eq(i).find("td").eq(s).find("div#seat__").addClass("smoking");
-				if(tempArr[s] == "k") table.eq(i).find("td").eq(s).find("div#seat__").addClass("etc");
-				if(tempArr[s] == "z") table.eq(i).find("td").eq(s).find("div#seat__").addClass("wall");
+				if(temp___ == "d") table.eq(i).find("td").eq(s).find("div#seat__").addClass("toilet");
+				if(temp___ == "e") table.eq(i).find("td").eq(s).find("div#seat__").addClass("exit");
+				if(temp___ == "f") table.eq(i).find("td").eq(s).find("div#seat__").addClass("counter");
+				if(temp___ == "g") table.eq(i).find("td").eq(s).find("div#seat__").addClass("kiosk");
+				if(temp___ == "h") table.eq(i).find("td").eq(s).find("div#seat__").addClass("water");
+				if(temp___ == "i") table.eq(i).find("td").eq(s).find("div#seat__").addClass("air");
+				if(temp___ == "j") table.eq(i).find("td").eq(s).find("div#seat__").addClass("smoking");
+				if(temp___ == "k") table.eq(i).find("td").eq(s).find("div#seat__").addClass("etc");
+				if(temp___ == "z") table.eq(i).find("td").eq(s).find("div#seat__").addClass("wall");
 			}
 		}
 	}
-	
-	var pmTd_ = $("td").length;
-	var currValNum = 0;
-	
-	/* 좌석누르면 좌석번호 생성 */
-	$(".plain, .special, .couple").on("click", function(){
-		$(this).find("span").html(++currValNum);
-		$(this).find("span").val(currValNum);
-		
-		$(this).off("click");
-	});	
-
-	/* 되돌리기 */
-	$("button#ctrlZ").on("click", function(){
-		
-	});
-	
-	/* 자동번호 생성 */
-	$("button#makeAutoSeatNo").on("click", function(){
-		for(var i=0; i<pmTd_; i++){
-			var tempVal_td = $("td").eq(i).find("input[type=hidden]").val();
-			if(tempVal_td == "a" || tempVal_td == "b" || tempVal_td == "c"){
-				$("td").eq(i).find("span#seatNo").html(++currValNum);	
-			}
-		}
-	});
-	
-	/* 초기화 */
-	$("button#resetSeatNo").on("click", function(){
-		var temp = confirm("정말 초기화 하시겠습니까?");
-		if(!temp) return;
-		else window.location.reload(true);
-	});
-	
-	/* 등록 */
-	$("button#submitSeatNo").on("click", function(){
-		var temp = confirm("좌석번호를 저장하시겠습니까?");
-		if(!temp) return;
-		else{
-			var hiddenPmContentWithSeatNo = $(".hiddenPmContentWithSeatNo");
-			var tempContent_ = "";
-			
-			var hiddenPmRow_ = $(".hiddenPmRow");
-			var hiddenPmCol_ = $(".hiddenPmCol");
-			
-			for(var i=0; i<tableLength; i++){
-				var thisTableTdCount = parseInt(hiddenPmRow_.eq(i).val()) * parseInt(hiddenPmCol_.eq(i).val());
-				
-				for(var j=0; j<thisTableTdCount; j++){
-					var tdList = table.eq(i).find("td");
-					var tdListLength = table.eq(i).find("td").length;
-					
-					if(j == parseInt(tdListLength)-1){
-						if(tdList.eq(j).find("span#seatNo").length != 0){
-							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
-							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").html());
-						}
-						else{
-							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
-						}
-					}
-					else {
-						if(tdList.eq(j).find("span#seatNo").length != 0){
-							tempContent_ += tdList.eq(j).find("input[type=hidden]").val();										
-							tempContent_ += parseInt(tdList.eq(j).find("span#seatNo").html()) + ",";
-						}
-						else{
-							tempContent_ += tdList.eq(j).find("input[type=hidden]").val() + ",";										
-						}
-					}
-				}
-				
-				hiddenPmContentWithSeatNo.eq(i).val(tempContent_);
-				tempContent_ = "";
-			}
-			
-			////////////////
-			var seatMapList_ = new Array();
-			
-			for(var i=0; i<tableLength; i++){
-				var object = {
-					pmRow_ : $("table").eq(i).find("tr").length,
-					pmCol_ : $("table").eq(i).find("tr:first-of-type td").length,
-					floorNum_ : $("input.hiddenFloorNum").eq(i).val(),
-					pmContent_ : $("input.hiddenPmContentWithSeatNo").eq(i).val(),
-					seatCount_ : $("input.hiddenSeatCount").eq(i).val()
-				};
-				
-				seatMapList_.push(object);
-			}
-			
-			console.log(JSON.stringify(seatMapList_));
-
-			$.ajax({
-				url : "${pageContext.request.contextPath}/manager/pcRoomForm_step7.do",
-				data : JSON.stringify(seatMapList_),
-				traditional : true,
-				type : "post",
-				contentType : "application/json; charset=utf-8",
-				success : function(){
-					console.log("AJAX SUCCEED");
-					location.href = "${pageContext.request.contextPath}/manager/pcRoomForm_end.do";
-				},
-				error : function(){
-					console.log("AJAX FAILED");
-				}
-			});
-			
-			///////////////
-		};
-	});
 });
 </script>
 <style>
@@ -232,26 +121,29 @@ input#currVal{
 	font-weight:bold;
 	font-family:'Nanum Gothic', sans-serif;
 }
+h2#pcRoomName__{
+	text-align:center;
+	font-family:'Nanum Gothic', sans-serif;
+}
 </style>
 </head>
 <body>
 <h1 id="head-title">PCGOGO.COM</h1>
-
-<h3>${selectedPcRoom.pcRoomName }</h3>
-
-<c:forEach var="seatMap" items="${sessionScope.seatMapList }" varStatus="cnt">
-	<input type="hidden" class="hiddenPmContent" value="${seatMap.pmContent_ }"/>
-	<input type="hidden" class="hiddenFloorNum" value="${seatMap.floorNum_ }"/>
-	<input type="hidden" class="hiddenPmRow" value="${seatMap.pmRow_ }"/>
-	<input type="hidden" class="hiddenPmCol" value="${seatMap.pmCol_ }"/>
-	<input type="hidden" class="hiddenSeatCount" value="${seatMap.seatCount_ }"/>
+<h2 id="pcRoomName__">${selectedPcRoom.pcRoomName }</h2>
+<br>
+<c:forEach var="p" items="${selectedPlacementList}" varStatus="cnt">
+	<input type="hidden" class="hiddenPmContent" value="${p.pmContent }"/>
+	<input type="hidden" class="hiddenFloorNum" value="${p.pmFloor }"/>
+	<input type="hidden" class="hiddenPmRow" value="${p.pmRow }"/>
+	<input type="hidden" class="hiddenPmCol" value="${p.pmCol }"/>
+	<input type="hidden" class="hiddenSeatCount" value="${p.pmSeats }"/>
 	
 	<input type="hidden" class="hiddenPmContentWithSeatNo"/>
-	<h2 class="floorNum_">${seatMap.floorNum_ } 층</h2>
+	<h2 class="floorNum_">${p.pmFloor } 층</h2>
 	<table id="placement">
-		<c:forEach var="i" begin="1" end="${seatMap.pmRow_ }" step="1">
+		<c:forEach var="i" begin="1" end="${p.pmRow }" step="1">
 			<tr>
-				<c:forEach var="j" begin="1" end="${seatMap.pmCol_ }" step="1">
+				<c:forEach var="j" begin="1" end="${p.pmCol }" step="1">
 					<td>
 						<div id="seat__" class="seat wall">
 							<input type="hidden"/>									
