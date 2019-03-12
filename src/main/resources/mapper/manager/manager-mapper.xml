@@ -10,7 +10,7 @@
 	</insert>
 	
 	<insert id="insertPlacement" parameterType="placement">
-		insert into placement values(seq_pcRoom_pcRoomNo.currval, #{pmFloor}, #{pmRow}, #{pmCol}, #{pmContent}, #{pmSeats})
+		insert into placement values(seq_pcRoom_pcRoomNo.currval, #{pmFloor}, #{pmRow}, #{pmCol}, #{pmContent}, #{pmSeats}, 'x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x')
 	</insert>
 	
 	<select id="getPcRoomList" parameterType="string" resultType="pcRoom">

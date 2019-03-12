@@ -6,7 +6,7 @@
 		#{managerCodeImgRenamed}, #{managerName}, #{managerPhone}, #{managerEmail}, default, default)
 	</insert>
 	<insert id="insertMember" parameterType="member">
-		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default)
+		insert into member values(#{memberId}, #{memberEmail}, #{memberPassword}, #{memberPhone}, default, default)
 	</insert>
 	<select id="checkDup" resultType="_int">
 		select count(*) 
