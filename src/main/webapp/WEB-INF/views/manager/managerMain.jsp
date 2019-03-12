@@ -31,13 +31,30 @@ div.panel-group{
 
 
 <script>
+var days = [];
+var counts = [];
+$.ajax({
+	url: "${pageContext.request.contextPath}/manager/getChartData",
+	data: {pcRoomNo : "${selectedPcRoom.pcRoomNo}"},
+	async: false,
+	dataType: "json",
+	success: function(data){
+		console.log(data);
+		for(var i in data){
+			day = new Date(data[i].RESERVEDTIME);
+			days[i] = (day.getMonth()+1)+" / "+day.getDate();
+			counts[i] = data[i].CNT;
+		}
+	}
+});
+
 var barChartData = {
-	labels: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+	labels: days,
 	datasets: [{
 		label: '건 수',
 		backgroundColor: "#33E240",
 		data: 
-			[20, 25, 19, 30, 33, 27, 34],				
+			counts,				
 		
 	},  ]
 };
@@ -64,7 +81,7 @@ window.onload = function() {
 					stacked: true,
 					scaleLabel: {
 						display: true,
-						labelString: '요일'
+						labelString: '날짜'
 					}
 				}],
 				yAxes: [{

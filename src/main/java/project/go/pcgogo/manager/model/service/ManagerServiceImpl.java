@@ -1,5 +1,6 @@
 package project.go.pcgogo.manager.model.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -93,6 +94,11 @@ public class ManagerServiceImpl implements ManagerService{
 	@Override
 	public int deleteMemo(Map<String, String> map) {
 		return managerDao.deleteMemo(map);
+	}
+
+	@Override
+	public List<Date> getChartData(int pcRoomNo) {
+		return managerDao.getChartData(pcRoomNo);
 	}
 
 	

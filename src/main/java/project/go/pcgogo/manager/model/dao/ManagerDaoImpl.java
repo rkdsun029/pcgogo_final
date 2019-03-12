@@ -1,5 +1,6 @@
 package project.go.pcgogo.manager.model.dao;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -84,5 +85,10 @@ public class ManagerDaoImpl implements ManagerDao{
 	@Override
 	public int deleteMemo(Map<String, String> map) {
 		return sqlSession.delete("manager.deleteMemo", map);
+	}
+
+	@Override
+	public List<Date> getChartData(int pcRoomNo) {
+		return sqlSession.selectList("manager.getChartData", pcRoomNo);
 	}
 }
