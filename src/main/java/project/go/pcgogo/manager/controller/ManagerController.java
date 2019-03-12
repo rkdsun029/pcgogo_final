@@ -131,8 +131,15 @@ public class ManagerController {
 	@RequestMapping("manager/priceList.do")
 	public ModelAndView selectedPriceList(PcRoom pcRoom, HttpSession session, ModelAndView mav) {
 		pcRoom = (PcRoom) session.getAttribute("selectedPcRoom");
-		PriceList pl = managerService.getPriceList(pcRoom.getPcRoomNo());
-		if(pl == null) {
+		
+		PriceList pl = null;
+		
+		try {
+			pl = managerService.getPriceList(pcRoom.getPcRoomNo());
+			logger.info("thispl : " + pl);			
+		}
+		catch(NullPointerException e) {
+			pl = new PriceList();
 			pl.setPlPcRoomNo(pcRoom.getPcRoomNo());
 			pl.setPl1000(60);
 			pl.setPl2000(120);
@@ -141,7 +148,7 @@ public class ManagerController {
 			pl.setPl10000(600);
 			pl.setPl20000(1200);
 			pl.setPl30000(1800);
-			pl.setPl50000(3000);
+			pl.setPl50000(3000);		
 		}
 		
 		mav.addObject("selectedPriceList", pl);
