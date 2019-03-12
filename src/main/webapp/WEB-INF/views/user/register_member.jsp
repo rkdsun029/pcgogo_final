@@ -187,10 +187,9 @@ fieldset input{width: 220px !important;}
   			return;
   		} else $target.removeClass("is-invalid");
   		
-		disalbeAuth(); //테스트용, 나중에 지울것. 밑에 주석도 취소.
 		
-/*    		$.ajax({
-  			url: "${pageContext.request.contextPath}/signUp/sendToken",
+   		$.ajax({
+ 			url: "${pageContext.request.contextPath}/signUp/sendToken",
   			type: "post",
   			data: "phone="+$target.val().trim(),
   			success:function(data){
@@ -205,14 +204,14 @@ fieldset input{width: 220px !important;}
   		  		disableAuth();
   		  		auth_token(data.token);
   			}
-  		}); */
+  		});
   	}
   	</script>
   	<div class="form-row" id="auth-container" style="display:none;">
 	  	<div class="col-md-5 mb-3">
 	  	
 	  		<!-- 테스트 후 value=0으로 바꿀것. -->
-	  		<input type="hidden" value="1" /> 
+	  		<input type="hidden" value="0" /> 
 		  	<input type="text" class="form-control" placeholder="인증번호 입력"/>
 		  	<div class=""></div>
 		  	<span id="timer" style="margin: -15px 0px 12px 5px;
