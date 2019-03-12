@@ -19,6 +19,8 @@ public interface ManagerService {
 
 	List<PcRoom> getPcRoomList(String managerId);
 	
+	PcRoom getPcRoom(int pcRoomNo);
+	
 	List<Placement> getPlacementList(int pcRoomNo);
 	
 	PriceList getPriceList(int pcRoomNo);
@@ -38,4 +40,6 @@ public interface ManagerService {
 	int deleteMemo(Map<String, String> map);
 
 	List<Date> getChartData(int pcRoomNo);
+
+	int updatePcRoomInfo(PcRoom pr);
 }
