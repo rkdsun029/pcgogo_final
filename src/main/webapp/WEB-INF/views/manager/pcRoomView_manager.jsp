@@ -83,10 +83,7 @@ function updatePcRoomInfo(){
 	location.href="${pageContext.request.contextPath}/manager/update?"+reqData;
 }
 </script>
-<br><br>
-<div id="map">
-	
-</div>
+
 
 <jsp:include page="/WEB-INF/views/common/managerFixMenu_foot.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

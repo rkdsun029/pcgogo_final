@@ -25,7 +25,7 @@ div#outer-container{
 <div id="outer-container">
 	<h1 id="head-title">PCGOGO.COM</h1>
 	<h3 class="blah">PC방 등록이 완료되었습니다.</h3><br>
-	<h3 class="blah">해당 PC방은 관리자의 승인을 거쳐 검색결과로 노출됩니다..</h3><br><br>
+	<h3 class="blah">해당 PC방은 관리자의 승인을 거쳐 검색결과로 노출됩니다.</h3><br>
 	<h3 class="blah">저희 서비스를 이용해 주셔서 감사합니다.</h3>
 	
 	<button class="submit-info">닫기</button>

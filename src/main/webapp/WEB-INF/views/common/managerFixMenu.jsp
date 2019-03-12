@@ -47,7 +47,6 @@ $(function(){
 				<li><a href="${pageContext.request.contextPath }/manager/pcRoomView_manager.do">- 기본정보</a></li>
 				<li><a href="${pageContext.request.contextPath }/manager/placement.do">- 자리배치도</a></li>
 				<li><a href="${pageContext.request.contextPath }/manager/priceList.do">- 가격표</a></li>
-				<li><a href="${pageContext.request.contextPath }/reservationLog.do">- 예약현황</a></li>
 			</ul>
 		</div>
 		<div class="card" id="insertPcRoom"><span>PC방 등록하기</span></div>
