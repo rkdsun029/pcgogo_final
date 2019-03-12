@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.pcRoom.model.dao.PcDao;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomDetail;
@@ -64,7 +65,7 @@ public class PcServiceImpl implements PcService {
 	}
 
 	@Override
-	public List<PcRoomRsv> pcRoomProduct(String pcRoomNo) {
+	public List<PriceList> pcRoomProduct(String pcRoomNo) {
 		// TODO Auto-generated method stub
 		return pcDao.pcRoomProduct(pcRoomNo);
 	}
@@ -75,10 +76,17 @@ public class PcServiceImpl implements PcService {
 		return pcDao.nowPcStatus(pcRoomName);
 	}
 
+
 	@Override
-	public List<PcRoomDetail> pcRoomDetail() {
+	public List<PcRoomDetail> pcRoomDetail(String pcRoomName) {
 		// TODO Auto-generated method stub
-		return pcDao.pcRoomDetail();
+		return pcDao.pcRoomDetail(pcRoomName);
+	}
+
+	@Override
+	public List<PcRoomDetail> pcRoomDetailDesc(PcRoomDetail d) {
+		// TODO Auto-generated method stub
+		return pcDao.pcRoomDetailDesc(d);
 	}
 
 

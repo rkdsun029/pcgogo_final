@@ -3,6 +3,7 @@ package project.go.pcgogo.pcRoom.model.service;
 import java.util.List;
 import java.util.Map;
 
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomDetail;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
@@ -25,9 +26,12 @@ public interface PcService {
 
 	int buyCashEnd(Map<String, String> map);
 
-	List<PcRoomRsv> pcRoomProduct(String pcRoomNo);
+	List<PriceList> pcRoomProduct(String pcRoomNo);
 
 	List<NowPcStatus> nowPcStatus(String pcRoomName);
 
-	List<PcRoomDetail> pcRoomDetail();
+	List<PcRoomDetail> pcRoomDetail(String pcRoomName);
+
+	List<PcRoomDetail> pcRoomDetailDesc(PcRoomDetail d);
+
 }

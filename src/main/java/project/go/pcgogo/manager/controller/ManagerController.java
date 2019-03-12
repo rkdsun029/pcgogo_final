@@ -195,12 +195,16 @@ public class ManagerController {
 	public ModelAndView pcRoomFormStep3(@RequestParam(value="pcRoomName") String pcRoomName,
 								  @RequestParam(value="mainAddress") String mainAddress,
 								  @RequestParam(value="detailAddress") String detailAddress,
+								  @RequestParam(value="xLoc") String xLoc,
+								  @RequestParam(value="yLoc") String yLoc,
 								  HttpSession session,
 								  ModelAndView mav) {
 		PcRoom pcRoom = new PcRoom();
 		pcRoom.setPcRoomName(pcRoomName);
 		pcRoom.setPcRoomAddress(mainAddress + " " + detailAddress);
 		pcRoom.setPcRoomManagerId(((Manager) session.getAttribute("loggedInUser")).getManagerId());
+		pcRoom.setxLoc(xLoc);
+		pcRoom.setyLoc(yLoc);
 		
 		System.out.println("생성된 피시방 객체 : " + pcRoom);
 		

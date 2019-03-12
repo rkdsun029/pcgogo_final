@@ -12,8 +12,8 @@
 		select * from placement where pmPcRoomNo = #{pcRoomNo}
 	</select>
 	
-	<select id="pcRoomProduct" resultType="pcRoomRsv">
-		select plproductname, plproductprice from priceList where plpcroomno = #{pcRoomNo}
+	<select id="pcRoomProduct" resultType="priceList">
+		select * from priceList where plpcroomno = #{pcRoomNo}
 	</select>
 	<!-- 예약정보를 업데이트하는 mapper -->
 	<update id="pcRoomRsvGo" parameterType="pcRoomRsv">
@@ -43,6 +43,10 @@
 	
 	<!-- 지도에 핑 찍기 위한 mapper -->
 	<select id="pcRoomDetail" resultType = "pcRoomDetail">
-		select * from pcRoomDetail
+		select * from pcRoomDetail where place_name like '%'||#{pcRoomName}||'%'
+	</select>
+	
+	<select id="pcRoomDetailDesc" parameterType ="pcRoomDetail" resultType = "pcRoomDetail">
+		select * from pcRoomDetail where place_name like '%'||#{place_name}||'%' order by (#{x}-x)+(#{y}-y) asc
 	</select>
 </mapper>

@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomDetail;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomList;
@@ -70,15 +71,21 @@ public class PcDaoImpl implements PcDao {
 	}
 
 	@Override
-	public List<PcRoomRsv> pcRoomProduct(String pcRoomNo) {
+	public List<PriceList> pcRoomProduct(String pcRoomNo) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("pcRoom.pcRoomProduct",pcRoomNo);
 	}
 
 	@Override
-	public List<PcRoomDetail> pcRoomDetail() {
+	public List<PcRoomDetail> pcRoomDetail(String pcRoomName) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("pcRoom.pcRoomDetail");
+		return sqlSession.selectList("pcRoom.pcRoomDetail", pcRoomName);
+	}
+
+	@Override
+	public List<PcRoomDetail> pcRoomDetailDesc(PcRoomDetail d) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("pcRoom.pcRoomDetailDesc",d);
 	}
 
 

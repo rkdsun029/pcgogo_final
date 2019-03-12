@@ -49,7 +49,6 @@
     #seatsTable tr td{
         width: 20px;
         height: 20px;
-t
     }
     #map{
    		position: relative;
@@ -97,7 +96,6 @@ t
     		top: 0px;
     		width: 316px;
     		height: 50px;
-	        border: 1px solid rgba(255, 40, 40, .7);
         }
 
 
@@ -128,10 +126,9 @@ t
                 	</select>
                 	<input type="text" id="map-pcSrc" name="mapSrc" placeholder="피씨방 이름" />
                 	<input type="button" value="피씨방 검색" id="btn-pcSrc" onclick = "mapSrc()"/>
-                	<button onclick="location.href='${pageContext.request.contextPath}/pcRoom/mapTest.do'">test</button>
-                </div>
+                	</div>
                 <div id="listTable">
-                
+            
                 </div>
                 
             </div>
@@ -154,6 +151,7 @@ function srcPcRoom(){
 var area = "";
 $("#setArea").change(function(){
     area = $("#setArea>option:selected").html();
+    console.log(area);
 });
 
 //마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
@@ -230,6 +228,9 @@ function placesSearchCB (data, status, pagination) {
     	        	var c = data[i].category_name;
     	        	console.log(c)
     	        	var b = data[i].address_name; 	//지역 이름
+    	        	var d = data[i].place_name;
+    	        	if(d.indexOf($("#map-pcSrc").val())>-1){
+    	        		console.log($("#map-pcSrc").val());
     	        		if(c.indexOf('PC방')>-1){
     	        			if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
     	        				displayMarker(data[i]);  	//마커표시
@@ -237,6 +238,7 @@ function placesSearchCB (data, status, pagination) {
     	                		//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
     	        			}
 	    				}
+    	        	}
     	        }
 
     	        map.setBounds(bounds);
@@ -248,22 +250,22 @@ function placesSearchCB (data, status, pagination) {
     	    }
     		
     	});
-		//지도 마커에 표시할 데이터를 보내는 곳 데이터는 
-        for (var i=0; i<data.length; i++) {
-        	console.log(data[i]);
-        	var c = data[i].category_name;
-        	console.log(c)
-        	var b = data[i].address_name; 	//지역 이름
-        	if(c.indexOf('PC방')>-1){
-        		if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
-        			displayMarker(data[i]);  	//마커표시
-                	bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
-                	//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
-        		}
-        	}
-        }       
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        map.setBounds(bounds);
+		//다음 서버에서 자료 가져오는 데이터 주석처리함
+	    //    for (var i=0; i<data.length; i++) {
+	    //    	console.log(data[i]);
+	    //    	var c = data[i].category_name;
+	    //    	console.log(c)
+	    //    	var b = data[i].address_name; 	//지역 이름
+	    //    	if(c.indexOf('PC방')>-1){
+	    //    		if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
+	    //    			displayMarker(data[i]);  	//마커표시
+	    //            	bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
+	    //            	//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
+	    //    		}
+	    //    	}
+	    //    }       
+	    //    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+	    //    map.setBounds(bounds);
     } 
 }
 
