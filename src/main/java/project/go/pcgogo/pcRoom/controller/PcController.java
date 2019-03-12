@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import project.go.pcgogo.manager.model.vo.PriceList;
 import project.go.pcgogo.pcRoom.model.service.PcService;
 import project.go.pcgogo.pcRoom.model.vo.NowPcStatus;
 import project.go.pcgogo.pcRoom.model.vo.PcRoomDetail;
@@ -65,9 +66,9 @@ public class PcController {
    		
    		//mav.addObject("loggedInManager", ((Manager) session.getAttribute("loggedInUser")).getManagerId());
 
+   		List<PcRoomRsv> a = pcService.pcRoomRsv(pcRoomNo);
    		
-    	List<PcRoomRsv> a = pcService.pcRoomRsv(pcRoomNo);
-    	List<PcRoomRsv> b = pcService.pcRoomProduct(pcRoomNo);
+    	List<PriceList> b = pcService.pcRoomProduct(pcRoomNo);
     	System.out.println("AAAA"+a);
     	String view = "";
     	String msg="";
@@ -210,12 +211,29 @@ public class PcController {
     }
     
     @RequestMapping("/pcRoom/pcRoomDetail.do")
-    public @ResponseBody List<PcRoomDetail> pcRoomDetail() {
-    	List<PcRoomDetail> b = pcService.pcRoomDetail();
-    	System.out.println("b@controller"+b);
+    public @ResponseBody List<PcRoomDetail> pcRoomDetail(@RequestParam(value="pcRoomName")String pcRoomName) {
+    	List<PcRoomDetail> b = pcService.pcRoomDetail(pcRoomName);
+    	System.out.println("지도에 핑찍히기위한 데이터@controller"+b);
         
     	return b;
     }
+    @RequestMapping("/pcRoom/pcRoomDetailDesc.do")
+    public @ResponseBody List<PcRoomDetail> pcRoomDetailDesc(@RequestParam(value="pcRoomName")String pcRoomName,
+													    		@RequestParam(value="x")String x,
+													    		@RequestParam(value="y")String y
+				) {
+    	
+    	PcRoomDetail d = new PcRoomDetail();
+    	d.setPlace_name(pcRoomName);
+    	d.setX(x);
+    	d.setY(y);
+    	
+    	
+    	List<PcRoomDetail> b = pcService.pcRoomDetailDesc(d);
+        
+    	return b;
+    }
+    
     @RequestMapping("/pcRoom/mapTest.do")
     public String mapTest() {
     	

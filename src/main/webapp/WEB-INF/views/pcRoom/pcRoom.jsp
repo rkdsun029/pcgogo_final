@@ -1,163 +1,99 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-    <script>
-    $(function(){
-        $("div#head-container").on("mouseenter", function(){
-            $("div#head-container").css({
-                "background": "white",
-                "animation": "colorAni1 .5s 1 forwards" 
-            });
-            $("a").css("color", "rgba(255, 40, 40, .7)");
-        });
-        $("div#head-container").on("mouseleave", function(){
-            $("div#head-container").css({
-                "background": "rgba(30, 30, 30, .3)",
-                "animation": "colorAni2 .5s 1 forwards" 
-            });
-            $("a").css("color", "white");
-        });
-
-        $("#goToTop").on("click", function(){
-            $("html, body").animate({
-                scrollTop : 0
-            }, 400);
-        });
-
-        $(window).scroll(function(){
-            var top = $(document).scrollTop();
-            $("#quick-menu").animate({"top": (top+100)}, 50);
-        });
-    });
-    </script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>키워드로 장소검색하고 목록으로 표출하기</title>
+    <style>
+.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+.map_wrap {position:relative;width:100%;height:500px;}
+#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+.bg_white {background:#fff;}
+#menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+#menu_wrap .option{text-align: center;}
+#menu_wrap .option p {margin:10px 0;}  
+#menu_wrap .option button {margin-left:5px;}
+#placesList li {list-style: none;}
+#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+#placesList .item span {display: block;margin-top:4px;}
+#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+#placesList .item .info{padding:10px 0 10px 55px;}
+#placesList .info .gray {color:#8a8a8a;}
+#placesList .info .jibun {padding-left:26px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+#placesList .info .tel {color:#009900;}
+#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+#placesList .item .marker_1 {background-position: 0 -10px;}
+#placesList .item .marker_2 {background-position: 0 -56px;}
+#placesList .item .marker_3 {background-position: 0 -102px}
+#placesList .item .marker_4 {background-position: 0 -148px;}
+#placesList .item .marker_5 {background-position: 0 -194px;}
+#placesList .item .marker_6 {background-position: 0 -240px;}
+#placesList .item .marker_7 {background-position: 0 -286px;}
+#placesList .item .marker_8 {background-position: 0 -332px;}
+#placesList .item .marker_9 {background-position: 0 -378px;}
+#placesList .item .marker_10 {background-position: 0 -423px;}
+#placesList .item .marker_11 {background-position: 0 -470px;}
+#placesList .item .marker_12 {background-position: 0 -516px;}
+#placesList .item .marker_13 {background-position: 0 -562px;}
+#placesList .item .marker_14 {background-position: 0 -608px;}
+#placesList .item .marker_15 {background-position: 0 -654px;}
+#pagination {margin:10px auto;text-align: center;}
+#pagination a {display:inline-block;margin-right:10px;}
+#pagination .on {font-weight: bold; cursor: default;color:#777;}
+</style>
 </head>
 <body>
-	<style>
-    .nowSitting{
-        animation-name: nowSitting;
-        animation-duration: .5s;
-        animation-iteration-count: infinite;      
-    }
-    @keyframes nowSitting{
-        0%{border:1px solid white}
-        100%{border:1px solid black}
-    }
-    #seatsTable tr td{
-        width: 20px;
-        height: 20px;
-t
-    }
-    #map{
-   		position: relative;
-    	display: inline-block;
-    	left: 0px;
-   		top: -50px;
-    	overflow: hidden;
-        }
-        input#btn-pcSrc{
-	        margin: 0 0 15px;
-	        display:inline-block;
-	        width:100px;
-	        height:35px;
-	        border-radius:5px;
-	        border: 1px rgba(255, 40, 40, .7);
-	        background:rgba(255, 40, 40, .7);
-	        color:white;
-	        font-size:12px;
-	        font-family:'Nanum Gothic', sans-serif;
-	        cursor:pointer;
-        }
-        input#map-pcSrc{
-	        display:inline-block;
-	        width:100px;
-	        height:30px;
-	        border-radius:5px;
-	        border: 1px solid rgba(255, 40, 40, .7);
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 
-        }
-        #setArea{
-            position:relative;
-	        display:inline-block;
-            top: 2px;
-            padding: 0em .5em;
-	        width:100px;
-	        height:35px;
-	        border-radius:5px;
-	        border: 1px solid rgba(255, 40, 40, .7);
-
-        }
-        #src-container{
-               position: relative;
-    		/* float: left; */
-    		left: 703px;
-    		top: 0px;
-    		width: 316px;
-    		height: 50px;
-	        border: 1px solid rgba(255, 40, 40, .7);
-        }
-
-
-
-    </style>
- 
-	<section id="main-container">
-            <div id="container">
-                <h1>자리현황</h1>
-                <div id="src-container">
-                    <select name="setArea" id="setArea">
-	                    <option value="" disabled selected>지역 선택</option>
-	                    <option area_seq="1" value="서울">서울</option>
-	                    <option area_seq="2" value="경기">경기</option>
-	                    <option area_seq="3" value="인천">인천</option>
-	                    <option area_seq="4" value="강원">강원</option>
-	                    <option area_seq="5" value="부산">부산</option>
-	                    <option area_seq="6" value="대구">대구</option>
-	                    <option area_seq="7" value="경북">경북</option>
-	                    <option area_seq="8" value="울산">울산</option>
-	                    <option area_seq="9" value="대전">대전</option>
-	                    <option area_seq="10" value="충남">충남</option>
-	                    <option area_seq="11" value="충북">충북</option>
-	                    <option area_seq="12" value="광주">광주</option>
-	                    <option area_seq="13" value="전남">전남</option>
-	                    <option area_seq="14" value="전북">전북</option>
-                    	<option area_seq="15" value="제주">제주</option>
-                	</select>
-                	<input type="text" id="map-pcSrc" name="mapSrc" placeholder="피씨방 이름" />
-                	<input type="button" value="피씨방 검색" id="btn-pcSrc" onclick = "mapSrc()"/>
-                	<button onclick="location.href='${pageContext.request.contextPath}/pcRoom/mapTest.do'">test</button>
-                </div>
-                <div id="listTable">
-                
-                </div>
-                
+    <div id="menu_wrap" class="bg_white">
+        <div class="option">
+            <div>
+                <form onsubmit="searchPlaces(); return false;">
+                    키워드 : <input type="text" placeholder="검색어를 입력하세요." id="keyword" size="15" value="pc"> 
+                    
+                    <button type="submit">검색하기</button>
+                </form>
             </div>
-            <div id="map" style="width:700px;height:500px;"></div>
-                <div id="seats"></div>
-        </section>   
+        </div>
+        <hr>
+        <ul id="placesList"></ul>
+        <div id="pagination"></div>
+    </div>
+</div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec95021a67763d0b8e870b0e01a6797c&libraries=services"></script>
 <script>
-function srcPcRoom(){
+// 내 위치 검색 
+var markers = [];
+$(function (){
 	if(!!navigator.geolocation){//gps 사용할 수 있는지 여부 확인
 		navigator.geolocation.getCurrentPosition(suc,err);
 	}else{
 		alert("현재 위치를 가져올 수 없습니다.\n 브라우저 설정의 위치정보 사용을 허용으로 바꾸어 주시거나 GPS 사용을 On으로 변경 후 다시 시도해주세요!");
 	}	
+});
+var lat ="";
+var lng ="";
+function suc(position){
+   lat = position.coords.latitude;
+   lng = position.coords.longitude;
+};
+function err(){
+	alert('현재 위치를 가져올 수 없습니다.');
 };
 
+function srcMe(){
+	console.log(lat+","+lng);
+};
 
-
-var area = "";
-$("#setArea").change(function(){
-    area = $("#setArea>option:selected").html();
-});
-
-//마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
-var infowindow = new daum.maps.InfoWindow({zIndex:1});
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
         center: new daum.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -166,80 +102,48 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 
 // 지도를 생성합니다    
 var map = new daum.maps.Map(mapContainer, mapOption); 
-var pcRoomName ="";
-function mapSrc(){
-	map = new daum.maps.Map(mapContainer, mapOption); 
-	// 장소 검색 객체를 생성합니다
-	var ps = new daum.maps.services.Places(); 
-	pcRoomName = $("#map-pcSrc").val();
-	// 키워드로 장소를 검색합니다
-	ps.keywordSearch(pcRoomName, placesSearchCB);
-  	
-	
-};
 
+// 장소 검색 객체를 생성합니다
+var ps = new daum.maps.services.Places();  
 
+// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+var infowindow = new daum.maps.InfoWindow({zIndex:1});
 
+// 키워드로 장소를 검색합니다
+searchPlaces();
 
-// 키워드 검색 완료 시 호출되는 콜백함수 입니다
-function placesSearchCB (data, status, pagination) {
-	
-	
-	//----------내 db 마커 찍기 보류----
-/* 	console.log("@@@@@@@"+data,status,pagination);
-    
-    	$.ajax({
-    		url:"${pageContext.request.contextPath}/pcRoom/pcRoomList.do",
-    	    data: {pcRoomName : pcRoomName},
-    	    dataType: "json",
-    		type: "get",
-    		success: function(data1){
-    			console.log("asdasd");
-    			
-    			var bounds = new daum.maps.LatLngBounds();
-    			for(var i=0; i<data1.length; i++){
-    				console.log(data1[i]);
-    				displayMarker(data1[i]);
-    				bounds.extend(new daum.map.latLng(data1[i].y, data1[i].x));//y,x 좌표에 마커 위치하기 
-    				
-    			}
-    			
-    	        map.setBounds(bounds);
-    			
-    		},
-    	    error: function(){
-    	    	console.log("error");
-    	    }
-    	}); */
+// 키워드 검색을 요청하는 함수입니다
+function searchPlaces() {
+
+    var keyword = document.getElementById('keyword').value;
+
+    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        alert('키워드를 입력해주세요!');
+        return false;
+    }
+
+    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+    ps.keywordSearch( keyword, placesSearchCB); 
+}
+
+// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+function placesSearchCB(data, status, pagination) {
+
+    var keyword = document.getElementById('keyword').value;
+    if (status === daum.maps.services.Status.OK) {
     	
-    	 
-    	if (status === daum.maps.services.Status.OK) {
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        var bounds = new daum.maps.LatLngBounds();
-        
-        
-        //내 db에 있는 자료들 가져오는것
-        $.ajax({
+    	if( lat == null || lng == null){
+    		
+    	$.ajax({
         	url:"${pageContext.request.contextPath}/pcRoom/pcRoomDetail.do",
+        	data: {pcRoomName :keyword },
     		type: "get",
     		dataType : "json",
     		success : function(data){
-    			for(var i=0 ; i<data.length; i++){
-    				console.log(data[i]);
-    	        	var c = data[i].category_name;
-    	        	console.log(c)
-    	        	var b = data[i].address_name; 	//지역 이름
-    	        		if(c.indexOf('PC방')>-1){
-    	        			if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
-    	        				displayMarker(data[i]);  	//마커표시
-    	                		bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
-    	                		//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
-    	        			}
-	    				}
-    	        }
 
-    	        map.setBounds(bounds);
+    	        displayPlaces(data);
+    	        
+
     		},
     	    error: function(){
     	    	console.log("@@@@@@@@@@@@@@@");
@@ -248,153 +152,123 @@ function placesSearchCB (data, status, pagination) {
     	    }
     		
     	});
-		//지도 마커에 표시할 데이터를 보내는 곳 데이터는 
-        for (var i=0; i<data.length; i++) {
-        	console.log(data[i]);
-        	var c = data[i].category_name;
-        	console.log(c)
-        	var b = data[i].address_name; 	//지역 이름
-        	if(c.indexOf('PC방')>-1){
-        		if(b.indexOf(area)>-1){			//지역이름에 검색할 옵션의 지역이름이 포함되면
-        			displayMarker(data[i]);  	//마커표시
-                	bounds.extend(new daum.maps.LatLng(data[i].y, data[i].x));
-                	//itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다 //목록보내기 보류
-        		}
-        	}
-        }       
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        map.setBounds(bounds);
-    } 
+        // 정상적으로 검색이 완료됐으면
+        // 검색 목록과 마커를 표출합니다
+
+        // 페이지 번호를 표출합니다
+        displayPagination(pagination);
+    	}else if(lat !=null || lng != null){
+    		$.ajax({
+            	url:"${pageContext.request.contextPath}/pcRoom/pcRoomDetailDesc.do",
+            	data: {pcRoomName :keyword, x : lng, y : lat },
+        		type: "get",
+        		dataType : "json",
+        		success : function(data){
+
+        	        displayPlaces(data);
+        	        
+
+        		},
+        	    error: function(){
+        	    	console.log("@@@@@@@@@@@@@@@");
+        	    	console.log("@@Ajax 실행 실패@@");
+        	    	console.log("@@@@@@@@@@@@@@@");
+        	    }
+        		
+        	});
+
+            displayPagination(pagination);
+    	}
+    		
+
+    } else if (status === daum.maps.services.Status.ZERO_RESULT) {
+
+        alert('검색 결과가 존재하지 않습니다.');
+        return;
+
+    } else if (status === daum.maps.services.Status.ERROR) {
+
+        alert('검색 결과 중 오류가 발생했습니다.');
+        return;
+
+    }
 }
 
+// 검색 결과 목록과 마커를 표출하는 함수입니다
+function displayPlaces(places) {
 
-var pcRoomNo="";
-// 지도에 마커를 표시하는 함수입니다
-function displayMarker(place) {
+    var listEl = document.getElementById('placesList'), 
+    menuEl = document.getElementById('menu_wrap'),
+    fragment = document.createDocumentFragment(), 
+    bounds = new daum.maps.LatLngBounds(), 
+    listStr = '';
     
-    // 마커를 생성하고 지도에 표시합니다
-    var marker = new daum.maps.Marker({
-        map: map,
-        position: new daum.maps.LatLng(place.y, place.x) 
-    });
+    // 검색 결과 목록에 추가된 항목들을 제거합니다
+    removeAllChildNods(listEl);
 
-    // 마커에 클릭이벤트를 등록합니다
-    daum.maps.event.addListener(marker, 'click', function() {
-        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        data = null;
-        $.ajax({
-        	url:"${pageContext.request.contextPath}/pcRoom/nowPcStatus.do",
-    	    data: {pcRoomName : place.place_name},
-    		type: "get",
-    		success : function(data){
-    			if(data!=''){
-    				pcRoomNo=data[0].pmPcRoomNo;
-    				var a = data[0].sitted;
-                	var b = new Array();
-                	b = a.split(",");
-                	var usingSeat = 0;
-                	for(var i=0; i<b.length;i++){
-                    	if(b[i]=="o" || b[i]=="s") usingSeat++;
-                    
-                	}
-    				var unUsingSeat = data[0].pmSeats-usingSeat;
-    				infowindow.setContent(
-    					place.place_name+'<div class="txt">피시방의 전체 좌석수 </div>'
-    					+data[0].pmSeats+'<div class="txt">중 </div>'
-    					+usingSeat+'<div class="txt">자리가 이용 중이며 </div>'
-    					+unUsingSeat+'<div class="txt">자리가 이용 가능합니다.</div>'
-    					+'<button onclick="rsv();">좌석확인/예약하기</button>'
-    					);
-    			}else{
-        			infowindow.setContent(
-        				place.place_name+'<div class="txt">피시방은 Pcgogo에 등록되어있지 않는 지점입니다.</div>'
-    				);
-    			}
-    			
-    		},
-    		error : function(){
-    			console.log("error!!");
-    		}
-        })
-        
-        infowindow.open(map, marker);
-        
-        //var pcRoom = place.place_name;
-        /* $.ajax({
-    		url:"${pageContext.request.contextPath}/pcRoom/pcList.do",
-    	    data: {pcRoom : pcRoom},
-    	    dataType: "json",
-    		type: "get",
-    		success : function(data){
-    			var html = "<table id='seatsTable'>"
-   				for(var j=1; j<4; j++){//j=y값
-    				html += "<tr id='tr"+j+"'>";
-	    			for(var i = 1; i<21; i++){// i=x값 i는 있는데 datak xloc 은 없어 
-	    				for(var k in data){
-        					var x = data[k].xLoc;
-        					var y = data[k].yLoc;
-        					if(j==y && i==x){
-        						var a = data[k].nowSitting;
-	        					console.log("j="+j+", y="+y+", i="+i+", x="+x+", a="+a);
-        						if(a=='y'){
-        	    					html += "<td id='td"+x+"'><div class='nowSitting legend "+data[i].legend+"'></div></td>";}
-                				else if(a=='n'){
-        	    					html += "<td id='td"+x+"'><div class='legend "+data[i].legend+"'></div></td>";}
-        					}
-        					//else if(j==y || i!=x){
-        						//html += "<td id='td"+x+"'><div class='legend empty'></div></td>";}
-						}
-    				}
-    					html +="</tr>";
-    			}
-    			html +="</table>";
-    			$("#seats").html(html);
-    		},
-    		error: function(){
-    			console.log("error");
-    		}
-    	}); */
-    });
+    // 지도에 표시되고 있는 마커를 제거합니다
+    removeMarker();
     
-}
-function rsv(){
-	console.log(pcRoomNo);
-	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do?pcRoomNo="+pcRoomNo,//+"&memberId="+,
-			"뿌뿌링", "width=1000, height=700, left=50, top=20");
+    for ( var i=0; i<places.length; i++ ) {
 
-}
-//---------------------------------보류상태--------------------------------내위치 찾기 기능 더 덧붙이기
-function suc(position){
-    var lat = position.coords.latitude;
-	var lng = position.coords.longitude;
-	var container = document.getElementById('map');
-    var options = { //지도를 생성할 때 필요한 기본 옵션
-			center: new daum.maps.LatLng(lat, lng), //지도의 중심좌표.
-    		level: 3 //지도의 레벨(확대, 축소 정도)
-    	};
-	map = new daum.maps.Map(container, options);
-};
-function err(){
-    	alert('현재 위치를 가져올 수 없습니다.');
-};
+        // 마커를 생성하고 지도에 표시합니다
+        var placePosition = new daum.maps.LatLng(places[i].y, places[i].x),
+            marker = addMarker(placePosition, i), 
+            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
-//목록 뽑기 보류
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(placePosition);
+
+        // 마커와 검색결과 항목에 mouseover 했을때
+        // 해당 장소에 인포윈도우에 장소명을 표시합니다
+        // mouseout 했을 때는 인포윈도우를 닫습니다
+        (function(marker, title) {
+            daum.maps.event.addListener(marker, 'mouseover', function() {
+                displayInfowindow(marker, title);
+            });
+
+            daum.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
+
+            itemEl.onmouseover =  function () {
+                displayInfowindow(marker, title);
+            };
+
+            itemEl.onmouseout =  function () {
+                infowindow.close();
+            };
+        })(marker, places[i].place_name);
+
+        fragment.appendChild(itemEl);
+    }
+
+    // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+    listEl.appendChild(fragment);
+    menuEl.scrollTop = 0;
+
+    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    map.setBounds(bounds);
+}
+
+// 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
 
     var el = document.createElement('li'),
-    			itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-                		  '<div class="info">' +
-                   		  '   <h5>' + places.place_name + '</h5>';
+    itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                '<div class="info">' +
+                '   <h5>' + places.place_name + '</h5>';
 
-    			if (places.road_address_name) {
-        			itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    		   '   <span class="jibun gray">' +  places.address_name  + '</span>';
-    			} else {
-        			itemStr += '    <span>' +  places.address_name  + '</span>'; 
-    			}
+    if (places.road_address_name) {
+        itemStr += '    <span>' + places.road_address_name + '</span>' +
+                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
+    } else {
+        itemStr += '    <span>' +  places.address_name  + '</span>'; 
+    }
                  
-      			itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>';           
+      itemStr += '<button onclick="rsv('+places.id+');">좌석확인/예약하기</button>'
+      	;           
 
     el.innerHTML = itemStr;
     el.className = 'item';
@@ -402,9 +276,90 @@ function getListItem(index, places) {
     return el;
 }
 
+// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+function addMarker(position, idx, title) {
+    var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new daum.maps.Size(36, 37),  // 마커 이미지의 크기
+        imgOptions =  {
+            spriteSize : new daum.maps.Size(36, 691), // 스프라이트 이미지의 크기
+            spriteOrigin : new daum.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new daum.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new daum.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage 
+        });
 
+    marker.setMap(map); // 지도 위에 마커를 표출합니다
+    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
 
+    return marker;
+}
+
+// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+function removeMarker() {
+    for ( var i = 0; i < markers.length; i++ ) {
+        markers[i].setMap(null);
+    }   
+    markers = [];
+}
+
+// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+function displayPagination(pagination) {
+    var paginationEl = document.getElementById('pagination'),
+        fragment = document.createDocumentFragment(),
+        i; 
+
+    // 기존에 추가된 페이지번호를 삭제합니다
+    while (paginationEl.hasChildNodes()) {
+        paginationEl.removeChild (paginationEl.lastChild);
+    }
+
+    for (i=1; i<=pagination.last; i++) {
+        var el = document.createElement('a');
+        el.href = "#";
+        el.innerHTML = i;
+
+        if (i===pagination.current) {
+            el.className = 'on';
+        } else {
+            el.onclick = (function(i) {
+                return function() {
+                    pagination.gotoPage(i);
+                }
+            })(i);
+        }
+
+        fragment.appendChild(el);
+    }
+    paginationEl.appendChild(fragment);
+}
+
+// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+// 인포윈도우에 장소명을 표시합니다
+function displayInfowindow(marker, title) {
+    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+}
+
+ // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+function removeAllChildNods(el) {   
+    while (el.hasChildNodes()) {
+        el.removeChild (el.lastChild);
+    }
+}
+function rsv(pcRoomNo){
+	if("${loggedInUser.memberId}"=="") alert("로그인 후에 이용하실 수 있습니다.")
+	else{console.log(pcRoomNo);
+	window.open("${pageContext.request.contextPath}/pcRoom/pcRoomRsv.do?pcRoomNo="+pcRoomNo,//+"&memberId="+,
+			"뿌뿌링", "width=1000, height=700, left=50, top=20");
+	}
+}
 </script>
- 
+</body>
+</html>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

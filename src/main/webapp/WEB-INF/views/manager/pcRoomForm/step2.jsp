@@ -17,8 +17,8 @@
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 <style>
 div#outer-container{
-	width:600px;
-	height:420px;
+	width:600px;    
+	height: 600px;
 	margin-top:120px;
 }
 table#basic-info{
@@ -51,6 +51,34 @@ button#postcodify_search_button{
 	font-family:'Nanum Gothic', sans-serif;
 	font-size:14px;
 }
+button#test{
+    position: relative;
+	display:inline-block;
+	width:120px;
+	height:30px;
+	color:white;
+	margin-left:10px;
+	background:rgb(255, 40, 40, .7);
+	border:1px rgb(255, 40, 40, .7);
+	border-radius:5px;
+	cursor:pointer;
+	font-family:'Nanum Gothic', sans-serif;
+	font-size:14px;
+    top: -200px;
+    left: 146px;
+}
+div#txt{
+	position: relative;
+	display:inline-block;
+	width:190px;
+	height:60px;
+	font-family:'Nanum Gothic', sans-serif;
+	font-size:9px;
+	top: -62px;
+}
+div#test{
+height:210px;
+}
 </style>
 </head>
 <body>
@@ -59,6 +87,8 @@ button#postcodify_search_button{
 	<h1 id="head-title">PCGOGO.COM</h1>
 	<h3>기본정보를 입력해 주세요.</h3>
 	<form action="${pageContext.request.contextPath }/manager/pcRoomForm_step3.do" method="POST">
+		<input type="hidden" name="xLoc" value="" />
+		<input type="hidden" name="yLoc" value="" />
 		<table id="basic-info">
 			<tr>
 				<th>상호명</th>
@@ -80,9 +110,85 @@ button#postcodify_search_button{
 				<td><input type="text" id="details" name="detailAddress" class="postcodify_details form-control" placeholder="직접 입력해주세요." required/></td>
 			</tr>
 		</table>
+		<div id="test">
+		
+			<div id="map" style="width:50%;height:200px;display:inline-block;"></div>
+			<div id="txt">도로명주소가 기입된 후에 <br>
+							지도 위치를 확인하신 후<br>
+							정확한 위치를 클릭해주세요</div>
+			
+		</div>
 		<button type="submit" class="submit-info">다음단계로 이동하기 →</button>
+		
 	</form>
+		<button id="test" onclick="test();">위치 확인하기</button>
 </div>
+	        		
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec95021a67763d0b8e870b0e01a6797c&libraries=services"></script>
+<script>
+
+$(".postcodify_search_result postcode_search_result").click(function(){
+	console.log(adr);	
+	
+})
+
+function test(){
+	var adr = $("#address").val();
+    geocoder.addressSearch(adr, function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면 
+         if (status === daum.maps.services.Status.OK) {
+
+            var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+            
+            map.setCenter(coords);
+        } 
+    });    
+}
+	
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new daum.maps.Map(mapContainer, mapOption); 
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new daum.maps.services.Geocoder();
+
+
+var marker = new daum.maps.Marker({ 
+    // 지도 중심좌표에 마커를 생성합니다 
+    position: map.getCenter() 
+}); 
+// 지도에 마커를 표시합니다
+marker.setMap(map);
+
+
+daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng; 
+    
+    // 마커 위치를 클릭한 위치로 옮깁니다
+    marker.setPosition(latlng);
+    
+    var x = latlng.getLng();
+    var y = latlng.getLat();
+    var message = 'x= ' + x ;
+    message += 'y= ' + y ;
+    var resultDiv = document.getElementById('clickLatlng'); 
+    $("input[name=xLoc]").val(x);
+    console.log( $("input[name=xLoc]").val())
+    $("input[name=yLoc]").val(y);
+    console.log( $("input[name=yLoc]").val())
+});
+   
+   
+</script>
 </body>
 </html>

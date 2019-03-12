@@ -11,6 +11,11 @@
 <meta charset="UTF-8">
 <title>피시방 예약하기</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">
+<style>
+
+
+</style>
 <script>
 
 $(function(){
@@ -72,6 +77,12 @@ $(function(){
 
 </script>
 <style>
+body{
+    background:skyblue;
+    font-family: 'Nanum Pen Script', cursive;
+    display: inline-block;
+}
+
 .reserved{
 	opacity:0.3;
 }
@@ -149,60 +160,189 @@ input#currVal{
 	font-weight:bold;
 	font-family:'Nanum Gothic', sans-serif;
 }
+div#productTable{
+ background-color : rgba(255,255,255,0.3);
+ border-radius: 10%;
+ text-align : center;
+ width: 450px;
+ height: 270px;
+}
+#productT {
+    display: inline-block;
+    position: relative;
+    left: -0px;
+	font-family:'Nanum Gothic', sans-serif;
+}
+#productT th td tr{
+    border : 1px solid black;
+    
+}
+#placementHead{
+	border-radius: 10% 10% 0% 0%;
+    background-color : rgba(255,255,255,0.3);
+    height:25px;
+    
+}
+#placementFood{
+
+	border-radius: 0% 0% 10% 10% ;
+    background-color : rgba(255,255,255,0.3);
+    height:25px;
+}
+#placementT{
+    background-color : rgba(255,255,255,0.3);
+ border-radius: 0;
+ text-align : center;
+ width: 450px;
+ height: 270px;
+}
+#myCash{
+    display:inline-block;
+    text-align: center;    background-color : rgba(255,255,255,0.3);
+ border-radius: 10%;
+ color:rgba(255,255,255,0.9);
+}
+#cash{
+    display :inline-block;
+    color:darkblue;
+    text-decoration: underline;
+}
+img{
+	opacity: .5;
+}
+input{
+ radius: 10%;
+ width: 50px;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.5);
+
+
+}
+input[type=button]{
+    width:75px;
+}
+#ppNum{
+    background-color: rgba(255,255,255,0.3);
+    width: 270px;
+    height: 30px;
+    border-radius: 10px;
+    left: 82px;
+    position: relative;
+    
+}
+#bodyNext{
+        text-align: center;
+    position: relative;
+    left: 60%;
+}
+.floorNum_{
+	height:30px;
+}
 </style>
 </head>
 <body>
-<div>
-현재${memberId }님의 잔여케쉬는 <div id="cash">${cash }</div>입니다.
+<div id="myCash">
+현재<div id="cash">${memberId }</div>님의 잔여케쉬는 <div id="cash">${cash }</div>입니다.
 </div>
+<div id="bodyNext">
+<div id="ppNum">
 <label for="">
-    사람 수    
+    자리를 예약할 사람의 수: 
     </label>
-    <input type="number" class="num" id="num" name="num"/>
-	<input type="number" class="time" id="time" name="time" />    
-    <button onclick="letRsv()">예약하기</button>
-    <button onclick="arrCheck()">예약자리 체크</button>
-    <button onclick="test()">test</button>
+    <input type="number" class="num" id="num" name="num"/>명
+</div>
+<img src="${pageContext.request.contextPath }/resources/image/pcRoom/let.png">
 <c:forEach var="rsv" items="${rsv }" varStatus="cnt">
 	<input type="hidden" id="hiddenPmContent" value="${rsv.pmContent }"/>
 	<input type="hidden" id="hiddenSitted" value="${rsv.sitted }"/>
 	<input type="hidden" id="pcRoomNo" value="${rsv.pmPcRoomNo }"/>
-	
-	<h2 class="floorNum_">${rsv.pmFloor } 층</h2>
-	<table id="placement">
-		<c:forEach var="i" begin="1" end="${rsv.pmRow }" step="1">
-			<tr>
-				<c:forEach var="j" begin="1" end="${rsv.pmCol }" step="1">
-					<td>
-						<div id="seats" class="seat wall">
-							<input type="hidden" id="legend"/>
-							<input type="hidden" id="isSitted" />
-						</div>
-					</td>
-				</c:forEach>
-			</tr>		
-		</c:forEach>
+    
+    <div id="placementT">
+	    <table id="placement">
+	    
+        <h2 class="floorNum_">${rsv.pmFloor } 층</h2>
+		    <c:forEach var="i" begin="1" end="${rsv.pmRow }" step="1">
+			    <tr>
+				    <c:forEach var="j" begin="1" end="${rsv.pmCol }" step="1">
+					    <td>
+						    <div id="seats" class="seat wall">
+							    <input type="hidden" id="legend"/>
+							    <input type="hidden" id="isSitted" />
+						    </div>
+					    </td>
+    				</c:forEach>
+	    		</tr>		
+		    </c:forEach>
+	    </table>
+    
+    <br><br><br>
+	</div>
+    
+</c:forEach>
+
+<img src="${pageContext.request.contextPath }/resources/image/pcRoom/let.png">
+<div id="productTable">
+	<table id="productT">
+		<tr>
+			<th>가격</th>
+			<th>상품이름</th>
+			<th>갯수</th>
+		</tr>
+	<c:forEach var="prd" items="${product }" varStatus="cnt">
+		<tr id="productTr">
+			<td id="price">1000원</td>
+			<td id="prdTime">${prd.pl1000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">2000원</td>
+			<td id="prdTime">${prd.pl2000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">3000원</td>
+			<td id="prdTime">${prd.pl3000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">5000원</td>
+			<td id="prdTime">${prd.pl5000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">10000원</td>
+			<td id="prdTime">${prd.pl10000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">20000원</td>
+			<td id="prdTime">${prd.pl20000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">30000원</td>
+			<td id="prdTime">${prd.pl30000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+		<tr id="productTr">
+			<td id="price">50000원</td>
+			<td id="prdTime">${prd.pl50000 }분</td>
+			<td><input type="number" id="productEA"/></td>
+		</tr>
+	</c:forEach>
+		<tr>
+			<td colspan="3"><input type="button" onclick="letRsv()" value="예약하기"></input></td>
+		</tr>
 	</table>
-	<br><br><br>
-</c:forEach>
-<table id="product">
-<tr>
-	<th>상품이름</th>
-	<th>가격</th>
-	<th>갯수</th>
-</tr>
-<c:forEach var="prd" items="${product }">
-<tr id="productTr">
-	<td id="productName">${prd.plProductName }</td>
-	<td id="price">${prd.plProductPrice }</td>
-	<td><input type="number" id="productEA"/></td>
-</tr>
-</c:forEach>
-<tr>
-<td colspan="3"><input type="button" onclick="test()" value="예약하기"></input></td>
-</tr>
-</table>
+</div>
+</div>
  </body>
+ 
+ 
+ 
+ 
+ 
+ 
 <script>
 
 var max = 0;
@@ -217,15 +357,18 @@ function test(){
 	var tempPrice =0;
 	var tempTime =0;
 	$("Tr[id=productTr]").each(function(){
-			var b = $(this).find("#price").html();
+			var b = $(this).find("#price").html().replace(/[^0-9]/g,'');
+			console.log("가격"+b);
 			var c = $(this).find("#productEA").val();
+			console.log("갯수"+c);
 			tempPrice += b*c;
-			var e = $(this).find("#productName").html();
+			var e = $(this).find("#prdTime").html();
 			var d = e.replace(/[^0-9]/g,'');
 			tempTime += d*c;
 	});
 	tempPrice = tempPrice*max;
-	if(confirm("총 "+max+"명의 "+tempTime+"시간을 합한 가격"+tempPrice+"입니다. 확인해주세요.")){
+	tempTimea = tempTime/60+"시간"+tempTime%60+"분";
+	if(confirm("총 "+max+"명의 "+tempTimea+"을 합한 가격"+tempPrice+"입니다. 확인해주세요.")){
 		totalPrice = tempPrice;
 		totalTime = tempTime;
 		}
@@ -283,31 +426,32 @@ var pcRoomNo = $(document).find("#pcRoomNo").val();
 var memberId = "${memberId}";
 var cash = $("#cash").html();
 function letRsv(){
-	var tempPrice =0;
-	var tempTime =0;
 	var timeSet = $("#time").val();
 	var rsvNo = selectedArr.valueOf();
+	var tempPrice =0;
+	var tempTime =0;
 	$("Tr[id=productTr]").each(function(){
-			var b = $(this).find("#price").html();
+			var b = $(this).find("#price").html().replace(/[^0-9]/g,'');
+			console.log("가격"+b);
 			var c = $(this).find("#productEA").val();
+			console.log("갯수"+c);
 			tempPrice += b*c;
-			var e = $(this).find("#productName").html();
+			var e = $(this).find("#prdTime").html();
 			var d = e.replace(/[^0-9]/g,'');
 			tempTime += d*c;
 	});
 	tempPrice = tempPrice*max;
-	if(confirm(memberId+"님, 예약하실 좌석은 "+rsvNo+"번이고, 총 "+max+"명의 "+tempTime+"시간을 합한 가격"+tempPrice+"입니다. 확인해주세요.")){
+	tempTimea = tempTime/60+"시간"+tempTime%60+"분";
+	if(confirm("총 "+max+"명의 "+tempTimea+"을 합한 가격"+tempPrice+"입니다. 확인해주세요.")){
 		totalPrice = tempPrice;
 		totalTime = tempTime;
 		}
-	
 	
 	if(cnt!=max){alert("좌석 수를 확인해주세요.")}
 	else{
 		if(totalPrice > cash){alert("케쉬가 부족합니다.")}
 		else{
-			if(confirm(memberId+"님, 예약하실 좌석은 "+rsvNo+"이고, "+totalTime+"시간 예약을 하여 총 "+totalPrice+"원입니다.")){
-				var sittedTemp = "";
+			var sittedTemp = "";
 				$("table[id=placement]").each(function(){
 					$(this).find("td").each(function(){
 						sittedTemp += $(this).find("input[id=isSitted]").val()+ ",";
@@ -333,9 +477,9 @@ function letRsv(){
 					}
 				});
 			}
-		}
+		
 	}
 };
 
 </script>
-</html>
+</html></html>

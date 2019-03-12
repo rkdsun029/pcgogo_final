@@ -31,8 +31,7 @@
 						<input type="number" name="cash" step="1000">원 충전
 						
 				<button id="check_module" type="button">결제하기</button>
-				<div class="quick" id="menu1"><img src="${pageContext.request.contextPath }/resources/image/header/myInfo.png" alt="" 
-    	onclick="location.href='${pageContext.request.contextPath}/pcRoom/buyCashEnd1.do'"/>내 정보</div>
+				
 
 		</form>
 	</div>

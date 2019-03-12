@@ -7,12 +7,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="pageTitle"/>
 </jsp:include>
-	<script>
-	alert("${msg}");
 	
-	$(function(){
-		location.href='${pageContext.request.contextPath}';
-	});
-	</script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>	

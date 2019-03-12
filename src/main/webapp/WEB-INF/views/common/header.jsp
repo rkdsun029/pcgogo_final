@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/header.css" />
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.js"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
  <meta name="google-signin-client_id" content="522789660173-lpfikvtl76o0p15h09bva0v7m905jjqv.apps.googleusercontent.com">
@@ -51,6 +52,43 @@ $(function(){
     }); */
 });
 </script>
+<style>
+#cashWindow{
+	position:absolute;
+	top: 320px;
+    left: -214px;
+    background-image: url("${pageContext.request.contextPath }/resources/image/header/cashWindow.png");
+    font-family: 'Nanum Gothic', sans-serif;
+    width: 213px;
+    height:110px;
+    display:block;
+}
+input#cashNum{
+	width: 56px;
+    height: 15px;
+    text-align: right;
+    font-size: 13px;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+input#check_module{
+	margin: 0 0 15px;
+	display:inline-block;
+	width:100px;
+	height:35px;
+	border-radius:5px;
+	border: 1px rgba(0, 0, 0, .3);
+	background:rgba(0, 0, 0, .3);
+	color:white;
+	font-size:12px;
+	font-family:'Nanum Gothic', sans-serif;
+	cursor:pointer;
+}
+div#chargeCoindiv{
+	top: -10px;
+    left: -8px;
+    position: relative;
+}
+</style>
 </head>
 <body>
     <div id="head-container">
@@ -85,6 +123,16 @@ $(function(){
 	        	onclick="location.href='${pageContext.request.contextPath}/reservationLog.do'"/>예약내역</div>
 	        	<div class="quick" id="menu5"><img src="${pageContext.request.contextPath }/resources/image/header/buyCash.png" alt="" 
 	        	onclick="buyCash()" />케쉬충전</div>
+	        	<div id="cashWindow" style="display: none;">
+        	<div id="chargeCoindiv">
+        		<form action="<%=request.getContextPath()%>/member/chargeCoinEnd" name="chargeCoinFrm" id="chargeCoinFrm" method="post">
+        			<br><br>
+					<input type="hidden" name="memberId" id="memberId" value="${loggedInUser.memberId }" />
+					<input type="number" name="cash" id="cashNum"step="1000">원 충전<br>
+					<input type="button" id="check_module" type="button" value="결제하기"/>
+				</form>
+        	</div>
+        </div>
 	        </c:if>
 	        <c:if test="${loggedInUser.isSocial == 'manager'}">
 		        <div class="quick" id="menu3"><img src="${pageContext.request.contextPath }/resources/image/user/register/manager.png" alt="" 
@@ -104,11 +152,61 @@ $(function(){
         </c:if>
     </c:if>
         <div id="goToTop">▲ TOP</div>
+        
     </div>
+    <c:if test="${loggedInUser!=null }">
+    	<c:if test="${loggedInUser.isSocial!='admin'and loggedInUser.isSocial!='manager'}">
+    	<script>
+    
+    	var loggedId = "${loggedInUser.memberId}";
+    
+    $("#check_module").click(function() {
+        var IMP = window.IMP; // 생략가능
+        var radioVal = $('input[name="cash"]').val();
+        var productName = $('input[name="cash"]').val()+"원 충전";
+        IMP.init('imp92461404'); // 부여받은 "가맹점 식별코드"를 사용
+        IMP.request_pay({
+           pg : 'html_5inicis', // version 1.1.0부터 지원. html5_inicis':이니시스(웹표준결제)
+           pay_method : 'card', // 'card':신용카드, 
+           merchant_uid : 'EscapeRoom_' + new Date().getTime(),
+           name : productName, //결제창에서 보여질 이름
+           amount : radioVal, //가격 
+           buyer_email : '', // 구매자 이메일
+           // 구매자명	
+           buyer_name : loggedId, 
+           buyer_tel : '' // 구매자 연락처
+        }, function(rsp) {
+           if (rsp.success) {
+              var msg = '결제가 완료되었습니다.';
+              
+              msg += '고유ID : ' + rsp.imp_uid;
+              msg += '상점 거래ID : ' + rsp.merchant_uid;
+              msg += '결제 금액 : ' + rsp.paid_amount;
+              msg += '카드 승인번호 : ' + rsp.apply_num;
+        	  location.href ="${pageContext.request.contextPath}/pcRoom/buyCashEnd.do?memberId=${loggedInUser.memberId}&cash="+radioVal;
+
+           } else {
+              var msg = '결제에 실패하였습니다.';
+              msg += '에러내용 : ' + rsp.error_msg;
+	          alert(msg);
+           }
+        });
+     });
+    </script>
+    	</c:if>
+    
+    </c:if>
     <script>
+	var cnt = 1;
     function buyCash(){
-    		window.open("${pageContext.request.contextPath}/pcRoom/buyCash.do",//+"&memberId="+,
-    				"?", "width=1000, height=700, left=50, top=20");
+    	if(cnt%2 == 1){
+    		$("#cashWindow").css("display","block");
+    		cnt++}
+    	else if(cnt%2 != 1){
+    		$("#cashWindow").css("display","none");
+    		cnt++}
+    	console.log(cnt);
+    	console.log($("#memberId").val());
     }
     function logout(){
     	if(confirm("정말로 로그아웃하시겠습니까?")){
