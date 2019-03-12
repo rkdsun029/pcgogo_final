@@ -37,10 +37,6 @@ div#map{
 		<td><button id="changePcRoomName">수정</button></td>
 	</tr>
 	<tr>
-		<th>소개글</th>
-		<td><textarea name="" id="" cols="30" rows="10"></textarea></td>
-	</tr>
-	<tr>
 		<th>주소</th>
 		<td>${selectedPcRoom.pcRoomAddress }</td>
 		<td><button id="changePcRoomAddress">주소 변경</button></td>
