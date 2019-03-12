@@ -104,14 +104,46 @@ public class ManagerController {
 		List<Placement> pList = managerService.getPlacementList(pcRoom.getPcRoomNo());
 		logger.info("이 피시방 번호 배치도 리스트 : " + pList);
 		
-		mav.addObject("selectedPlacementList", pList);
+		session.setAttribute("selectedPlacementList", pList);
 		mav.setViewName("manager/placement");
 		return mav;
 	}
 	
+	@RequestMapping("manager/readPlacement.do")
+	public ModelAndView readPlacement(ModelAndView mav, HttpSession session) {
+		List<Placement> pList = (List<Placement>) session.getAttribute("selectedPlacementList");
+		mav.addObject("selectedPlacementList", pList);
+		mav.setViewName("manager/readPlacement");
+		return mav;
+	}
+	
+	@RequestMapping("manager/updatePlacement.do")
+	public ModelAndView updatePlacement(ModelAndView mav, HttpSession session) {
+		List<Placement> pList = (List<Placement>) session.getAttribute("selectedPlacementList");
+		mav.addObject("selectedPlacementList", pList);
+		mav.setViewName("manager/updatePlacement");
+		return mav;
+	}
+	
 	@RequestMapping("manager/priceList.do")
-	public String selectedPriceList(PcRoom pcRoom, HttpSession session) {
-		return "manager/priceList";
+	public ModelAndView selectedPriceList(PcRoom pcRoom, HttpSession session, ModelAndView mav) {
+		pcRoom = (PcRoom) session.getAttribute("selectedPcRoom");
+		PriceList pl = managerService.getPriceList(pcRoom.getPcRoomNo());
+		if(pl == null) {
+			pl.setPlPcRoomNo(pcRoom.getPcRoomNo());
+			pl.setPl1000(60);
+			pl.setPl2000(120);
+			pl.setPl3000(180);
+			pl.setPl5000(300);
+			pl.setPl10000(600);
+			pl.setPl20000(1200);
+			pl.setPl30000(1800);
+			pl.setPl50000(3000);
+		}
+		
+		mav.addObject("selectedPriceList", pl);
+		mav.setViewName("manager/priceList");
+		return mav;
 	}
 	
 	@RequestMapping("manager/insertOrUpdatePrice.do")
