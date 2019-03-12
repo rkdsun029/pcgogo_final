@@ -451,8 +451,7 @@ function letRsv(){
 	else{
 		if(totalPrice > cash){alert("케쉬가 부족합니다.")}
 		else{
-			if(confirm(memberId+"님, 예약하실 좌석은 "+rsvNo+"이고, "+totalTime+"시간 예약을 하여 총 "+totalPrice+"원입니다.")){
-				var sittedTemp = "";
+			var sittedTemp = "";
 				$("table[id=placement]").each(function(){
 					$(this).find("td").each(function(){
 						sittedTemp += $(this).find("input[id=isSitted]").val()+ ",";
@@ -478,7 +477,7 @@ function letRsv(){
 					}
 				});
 			}
-		}
+		
 	}
 };
 
