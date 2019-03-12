@@ -52,5 +52,14 @@
 	<delete id="deleteMemo">
      delete from memo where memono = #{no} and password = #{password}
 	</delete>
-  
+  	
+  	<select id="getChartData" parameterType="_int" resultType="hashmap">
+  	select *
+	from(
+		select reservedtime, count(*) as cnt
+		from reserved
+		group by reservedtime
+		order by reservedtime)
+		where <![CDATA[reservedtime <= (sysdate-1)]]>
+  	</select>
 </mapper>

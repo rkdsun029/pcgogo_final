@@ -1,5 +1,6 @@
 package project.go.pcgogo.manager.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -487,4 +488,11 @@ public class ManagerController {
 		return test; 
 	}
 	
+	@RequestMapping("/manager/getChartData")
+	@ResponseBody
+	public List<Date> getChartData(@RequestParam("pcRoomNo") int pcRoomNo){
+		List<Date> chartData = managerService.getChartData(pcRoomNo);
+		logger.info(chartData);
+		return chartData;
+	}
 }
